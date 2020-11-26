@@ -10,15 +10,15 @@ from pathlib import Path
 from sklearn.neighbors import KDTree
 from tqdm import tqdm
 
-# use relative import for being compatible with Open3d main repo
-from open3d.ml.tf.ops import *
+# use relative import for being compatible with CloudViewer main repo
+from cloudViewer.ml.tf.ops import *
 from .network_blocks import *
 from .base_model import BaseModel
 from ...utils import MODEL
 from ...datasets.utils import DataProcessing, trans_normalize
 from .network_blocks import *
-from open3d.ml.tf.ops import batch_grid_subsampling as tf_batch_subsampling
-from open3d.ml.tf.ops import batch_ordered_neighbors as tf_batch_neighbors
+from cloudViewer.ml.tf.ops import batch_grid_subsampling as tf_batch_subsampling
+from cloudViewer.ml.tf.ops import batch_ordered_neighbors as tf_batch_neighbors
 
 
 class KPFCNN(BaseModel):

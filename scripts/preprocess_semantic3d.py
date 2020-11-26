@@ -8,7 +8,7 @@ import random
 import shutil
 from tqdm import tqdm
 import argparse
-from open3d.ml.datasets import utils
+from cloudViewer.ml.datasets import utils
 
 
 def parse_args():

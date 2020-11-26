@@ -1,8 +1,7 @@
-from open3d.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, S3DIS,
-                                Toronto3D)
-from open3d.ml.torch.pipelines import SemanticSegmentation
-from open3d.ml.torch.models import RandLANet
-from open3d.ml.utils import Config, get_module
+from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, S3DIS, Toronto3D)
+from cloudViewer.ml.torch.pipelines import SemanticSegmentation
+from cloudViewer.ml.torch.models import RandLANet
+from cloudViewer.ml.utils import Config, get_module
 
 import argparse
 
@@ -40,8 +39,8 @@ def demo_train(args):
 
 def demo_inference(args):
     # Inference and test example
-    from open3d.ml.tf.pipelines import SemanticSegmentation
-    from open3d.ml.tf.models import RandLANet
+    from cloudViewer.ml.tf.pipelines import SemanticSegmentation
+    from cloudViewer.ml.tf.models import RandLANet
 
     Pipeline = get_module("pipeline", "SemanticSegmentation", "tf")
     Model = get_module("model", "RandLANet", "tf")

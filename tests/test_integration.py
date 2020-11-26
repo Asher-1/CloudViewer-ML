@@ -2,19 +2,19 @@ import pytest
 import os
 
 if 'PATH_TO_OPEN3D_ML' in os.environ.keys():
-    base = os.environ['PATH_TO_OPEN3D_ML']
+    base = os.environ['PATH_TO_CLOUDVIEWER_ML']
 else:
     base = '.'
-    # base = '../Open3D-ML'
+    # base = '../CloudViewer-ML'
 
 
 def test_integration_torch():
     import torch
-    import open3d.ml.torch as ml3d
-    from open3d.ml.datasets import S3DIS
-    from open3d.ml.utils import Config, get_module
-    from open3d.ml.torch.models import RandLANet, KPFCNN
-    from open3d.ml.torch.pipelines import SemanticSegmentation
+    import cloudViewer.ml.torch as ml3d
+    from cloudViewer.ml.datasets import S3DIS
+    from cloudViewer.ml.utils import Config, get_module
+    from cloudViewer.ml.torch.models import RandLANet, KPFCNN
+    from cloudViewer.ml.torch.pipelines import SemanticSegmentation
     print(dir(ml3d))
 
     config = base + '/ml3d/configs/randlanet_toronto3d.yml'
@@ -27,11 +27,11 @@ def test_integration_torch():
 
 def test_integration_tf():
     import tensorflow as tf
-    import open3d.ml.tf as ml3d
-    from open3d.ml.datasets import S3DIS
-    from open3d.ml.utils import Config, get_module
-    from open3d.ml.tf.models import RandLANet, KPFCNN
-    from open3d.ml.tf.pipelines import SemanticSegmentation
+    import cloudViewer.ml.tf as ml3d
+    from cloudViewer.ml.datasets import S3DIS
+    from cloudViewer.ml.utils import Config, get_module
+    from cloudViewer.ml.tf.models import RandLANet, KPFCNN
+    from cloudViewer.ml.tf.pipelines import SemanticSegmentation
     print(dir(ml3d))
 
     config = base + '/ml3d/configs/randlanet_toronto3d.yml'

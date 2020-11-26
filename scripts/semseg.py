@@ -50,7 +50,7 @@ def parse_args():
     return args, vars(args_extra)
 
 
-import open3d.ml as _ml3d
+import cloudViewer.ml as _ml3d
 
 
 def main():
@@ -59,10 +59,10 @@ def main():
 
     framework = _ml3d.utils.convert_framework_name(args.framework)
     if framework == 'torch':
-        import open3d.ml.torch as ml3d
+        import cloudViewer.ml.torch as ml3d
     else:
         import tensorflow as tf
-        import open3d.ml.tf as ml3d
+        import cloudViewer.ml.tf as ml3d
 
         device = args.device
         gpus = tf.config.experimental.list_physical_devices('GPU')

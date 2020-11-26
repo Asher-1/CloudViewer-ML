@@ -4,7 +4,7 @@ import numpy as np
 
 def test_randlanet_torch():
     import torch
-    import open3d.ml.torch as ml3d
+    import cloudViewer.ml.torch as ml3d
 
     net = ml3d.models.RandLANet(num_points=5000, num_classes=10, dim_input=6)
     net.device = 'cpu'
@@ -43,7 +43,7 @@ def test_randlanet_torch():
 
 def test_randlanet_tf():
     import tensorflow as tf
-    import open3d.ml.tf as ml3d
+    import cloudViewer.ml.tf as ml3d
 
     net = ml3d.models.RandLANet(num_points=5000,
                                 num_classes=10,
@@ -78,7 +78,7 @@ def test_randlanet_tf():
 
 def test_kpconv_torch():
     import torch
-    import open3d.ml.torch as ml3d
+    import cloudViewer.ml.torch as ml3d
 
     net = ml3d.models.KPFCNN(lbl_values=[0, 1, 2, 3, 4, 5],
                              num_classes=4,
@@ -108,7 +108,7 @@ def test_kpconv_torch():
 
 def test_kpconv_tf():
     import tensorflow as tf
-    import open3d.ml.tf as ml3d
+    import cloudViewer.ml.tf as ml3d
 
     net = ml3d.models.KPFCNN(lbl_values=[0, 1, 2, 3, 4, 5],
                              num_classes=4,

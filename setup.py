@@ -14,6 +14,6 @@ if __name__ == '__main__':
     setup(
         name='ml3d',
         description='Open MMLab Detection Toolbox and Benchmark',
-        author='yi',
+        author='asher',
         packages=find_packages(exclude=('configs', 'tools', 'demo')),
     )
