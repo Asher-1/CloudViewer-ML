@@ -2,17 +2,17 @@ import time
 import math
 import torch
 import torch.nn as nn
-import open3d.core as o3c
+import cloudViewer.core as cv3c
 
 from tqdm import tqdm
 from torch.nn.parameter import Parameter
 from torch.nn.init import kaiming_uniform_
 from sklearn.neighbors import KDTree
 
-from open3d.ml.contrib import subsample_batch
-from open3d.ml.contrib import radius_search
+from cloudViewer.ml.contrib import subsample_batch
+from cloudViewer.ml.contrib import radius_search
 
-# use relative import for being compatible with Open3d main repo
+# use relative import for being compatible with CloudViewer main repo
 from .base_model import BaseModel
 from ..modules.losses import filter_valid_label
 from ...utils.ply import write_ply, read_ply
@@ -1957,9 +1957,9 @@ def batch_neighbors(queries, supports, q_batches, s_batches, radius):
     """
 
     ret = radius_search(
-        o3c.Tensor.from_numpy(queries), o3c.Tensor.from_numpy(supports),
-        o3c.Tensor.from_numpy(np.array(q_batches, dtype=np.int32)),
-        o3c.Tensor.from_numpy(np.array(s_batches, dtype=np.int32)),
+        cv3c.Tensor.from_numpy(queries), cv3c.Tensor.from_numpy(supports),
+        cv3c.Tensor.from_numpy(np.array(q_batches, dtype=np.int32)),
+        cv3c.Tensor.from_numpy(np.array(s_batches, dtype=np.int32)),
         radius).numpy()
 
     num_points = supports.shape[0]

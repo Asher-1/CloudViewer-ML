@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import open3d.ml.torch as ml3d
+import cloudViewer.ml.torch as ml3d
 import argparse
 import math
 import numpy as np

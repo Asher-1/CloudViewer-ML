@@ -1,8 +1,8 @@
 import numpy as np
 import threading
-import open3d as o3d
-from open3d.visualization import gui
-from open3d.visualization import rendering
+import cloudViewer as cv3d
+from cloudViewer.visualization import gui
+from cloudViewer.visualization import rendering
 from collections import deque
 from .colormap import *
 from .labellut import *
@@ -28,8 +28,8 @@ class Model:
         self._attr_rename = {"label": "labels", "feat": "feature"}
 
     def _init_data(self, name):
-        tcloud = o3d.t.geometry.PointCloud(o3d.core.Dtype.Float32,
-                                           o3d.core.Device("CPU:0"))
+        tcloud = cv3d.t.geometry.PointCloud(cv3d.core.Dtype.Float32,
+                                           cv3d.core.Device("CPU:0"))
         self.tclouds[name] = tcloud
         self._data[name] = {}
         self.data_names.append(name)
@@ -49,8 +49,8 @@ class Model:
 
         name = data["name"]
         pts = self._convert_to_numpy(data["points"])
-        tcloud = o3d.t.geometry.PointCloud(o3d.core.Dtype.Float32,
-                                           o3d.core.Device("CPU:0"))
+        tcloud = cv3d.t.geometry.PointCloud(cv3d.core.Dtype.Float32,
+                                           cv3d.core.Device("CPU:0"))
         known_attrs = set()
         if pts.shape[1] >= 4:
             # We can't use inplace Tensor creation (e.g. from_numpy())
@@ -300,8 +300,8 @@ class DatasetModel(Model):
         # Only unload if this was loadable; we might have an in-memory,
         # user-specified data created directly through create_point_cloud().
         if name in self._name2datasetidx:
-            tcloud = o3d.t.geometry.PointCloud(o3d.core.Dtype.Float32,
-                                               o3d.core.Device("CPU:0"))
+            tcloud = cv3d.t.geometry.PointCloud(cv3d.core.Dtype.Float32,
+                                               cv3d.core.Device("CPU:0"))
             self.tclouds[name] = tcloud
             self._data[name] = {}
 
@@ -859,7 +859,7 @@ class Visualizer:
             for i in range(0, 3):
                 min_val[i] = min(min_val[i], b[0][i])
                 max_val[i] = max(max_val[i], b[1][i])
-        bounds = o3d.geometry.AxisAlignedBoundingBox(min_val, max_val)
+        bounds = cv3d.geometry.AxisAlignedBoundingBox(min_val, max_val)
         self._3d.setup_camera(60, bounds, bounds.get_center())
 
     def show_geometries_under(self, name, show):
@@ -1294,10 +1294,10 @@ class Visualizer:
     @staticmethod
     def _make_tcloud_array(np_array, copy=False):
         if copy or not np_array.data.c_contiguous:
-            t = o3d.core.Tensor(np_array)
+            t = cv3d.core.Tensor(np_array)
         else:
-            t = o3d.core.Tensor.from_numpy(np_array)
-        return o3d.core.TensorList.from_tensor(t, inplace=True)
+            t = cv3d.core.Tensor.from_numpy(np_array)
+        return cv3d.core.TensorList.from_tensor(t, inplace=True)
 
     def visualize_dataset(self,
                           dataset,
@@ -1309,7 +1309,7 @@ class Visualizer:
 
         Example:
             Minimal example for visualizing a dataset::
-                import open3d.ml.torch as ml3d  # or open3d.ml.tf as ml3d
+                import cloudViewer.ml.torch as ml3d  # or cloudViewer.ml.tf as ml3d
 
                 dataset = ml3d.datasets.SemanticKITTI(dataset_path='/path/to/SemanticKITTI/')
                 vis = ml3d.vis.Visualizer()
@@ -1330,7 +1330,7 @@ class Visualizer:
         self.set_lut("labels", lut)
 
         self._init_dataset(dataset, split, indices)
-        self._visualize("Open3D - " + dataset.name, width, height)
+        self._visualize("CloudViewer - " + dataset.name, width, height)
 
     def visualize(self, data, width=1024, height=768):
         """Visualizes custom point cloud data
@@ -1339,8 +1339,8 @@ class Visualizer:
             Minimal example for visualizing a single point cloud with an
             attribute::
                 import numpy as np
-                import open3d.ml.torch as ml3d
-                # or import open3d.ml.tf as ml3d
+                import cloudViewer.ml.torch as ml3d
+                # or import cloudViewer.ml.tf as ml3d
 
                 data = [ {
                     'name': 'my_point_cloud',
@@ -1360,7 +1360,7 @@ class Visualizer:
             height: window height.
         """
         self._init_data(data)
-        self._visualize("Open3D", width, height)
+        self._visualize("CloudViewer", width, height)
 
     def _visualize(self, title, width, height):
         gui.Application.instance.initialize()

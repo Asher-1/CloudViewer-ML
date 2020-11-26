@@ -301,8 +301,7 @@ class KPConv(tf.keras.layers.Layer):
 
         # Get all difference matrices [n_points, n_neighbors, n_kpoints, dim]
         neighbors = tf.expand_dims(neighbors, 2)
-        neighbors = tf.tile(neighbors,
-                            [1, 1, n_kp, 1])  # TODO : not in pytorch ?
+        neighbors = tf.tile(neighbors, [1, 1, n_kp, 1])  # TODO : not in pytorch ?
         differences = neighbors - deformed_K_points
 
         # Get the square distances [n_points, n_neighbors, n_kpoints]

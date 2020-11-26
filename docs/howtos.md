@@ -28,8 +28,8 @@ Second, we will construct the networks and pipelines, load the pretrained weight
     from ml3d.torch.pipelines import SemanticSegmentation
     from ml3d.torch.models import RandLANet, KPFCNN
 
-    kpconv_url = "https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_semantickitti_202009090354utc.pth"
-    randlanet_url = "https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantickitti_202009090354utc.pth"
+    kpconv_url = "https://storage.googleapis.com/cloudViewer-releases/model-zoo/kpconv_semantickitti_202009090354utc.pth"
+    randlanet_url = "https://storage.googleapis.com/cloudViewer-releases/model-zoo/randlanet_semantickitti_202009090354utc.pth"
     
     ckpt_path = "./logs/vis_weights_{}.pth".format('RandLANet')
     if not exists(ckpt_path):
@@ -85,8 +85,8 @@ The data can be passed as PyTorch tensor, TensorFlow tensors or as numpy
 arrays.
 
 ```python
-import open3d.ml.torch as ml3d
-# or import open3d.ml.tf as ml3d
+import cloudViewer.ml.torch as ml3d
+# or import cloudViewer.ml.tf as ml3d
 import numpy as np
 
 num_points = 100000
@@ -143,7 +143,7 @@ Selecting the **int_attr** in the visualizer will then switch to our LUT.
 
 ## Adding a new model
 
-For adding a new model to Open3D-ML you need to clone the repository and add
+For adding a new model to CloudViewer-ML you need to clone the repository and add
 the model code to `ml3d/{tf,torch}/models`.
 
 All models should be derived from `BaseModel` defined in
@@ -228,17 +228,17 @@ class MyDatasetSplit():
     
 ```
 
-To test code with an already installed Open3D package you can set the
-environment variable `OPEN3D_ML_ROOT` to the root dir of the repo. This can be
+To test code with an already installed CloudViewer package you can set the
+environment variable `CLOUDVIEWER_ML_ROOT` to the root dir of the repo. This can be
 done with
 ```bash 
-source /path/to/Open3D-ML/set_open3d_ml_root.sh
+source /path/to/CloudViewer-ML/set_cloudViewer_ml_root.sh
 ```
 which will make the _ml_ namespace point to `ml3d` in the repo.
 Our example model can then be instantiated with
 ```python
-import open3d.ml.torch as ml3d
-# prints "Using external Open3D-ML in /path/to/Open3D-ML"
+import cloudViewer.ml.torch as ml3d
+# prints "Using external CloudViewer-ML in /path/to/CloudViewer-ML"
 
 model = ml3d.models.MyModel()
 dataset = ml3d.datasets.MyDataset()

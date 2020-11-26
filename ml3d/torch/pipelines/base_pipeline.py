@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 from os.path import join, exists, dirname, abspath
 
-# use relative import for being compatible with Open3d main repo
+# use relative import for being compatible with CloudViewer main repo
 from ...utils import Config, make_dir
 
 

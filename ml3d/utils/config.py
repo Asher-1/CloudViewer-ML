@@ -5,6 +5,7 @@ import tempfile
 import yaml
 from importlib import import_module
 from addict import Dict
+from collections import abc
 
 
 class ConfigDict(Dict):
