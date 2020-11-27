@@ -859,7 +859,7 @@ class Visualizer:
             for i in range(0, 3):
                 min_val[i] = min(min_val[i], b[0][i])
                 max_val[i] = max(max_val[i], b[1][i])
-        bounds = cv3d.geometry.AxisAlignedBoundingBox(min_val, max_val)
+        bounds = cv3d.geometry.ccBBox(min_val, max_val)
         self._3d.setup_camera(60, bounds, bounds.get_center())
 
     def show_geometries_under(self, name, show):
