@@ -26,7 +26,7 @@ ML frameworks such as data visualization.
 
 ### Users
 
-CloudViewer-ML is integrated in the CloudViewer v0.11+ python distribution and is
+CloudViewer-ML is integrated in the CloudViewer v0.3.7+ python distribution and is
 compatible with the following versions of ML frameworks.
 
  * PyTorch 1.6
