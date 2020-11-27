@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Asher-1/CloudViewer/master/docs/_static/open3d_logo_horizontal.png" width="320" />
+<img src="https://github.com/Asher-1/CloudViewer-ML/blob/main/docs/images/erow_logo_1024.png" width="320" />
 <span style="font-size: 220%"><b>ML</b></span>
 </p>
 
