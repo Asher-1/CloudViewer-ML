@@ -155,15 +155,16 @@ def main():
         v.set_lut("pred", lut)
         path = os.path.dirname(os.path.realpath(__file__)) + "/demo_data"
 
+        checkpoint_path = "../dataset/checkpoints"
+        if not os.path.exists(checkpoint_path):
+            os.makedirs(checkpoint_path)
+
         kpconv_url = "https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_semantickitti_202009090354utc.pth"
         randlanet_url = "https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantickitti_202009090354utc.pth"
-        ckpt_path = "../dataset/checkpoints/vis_weights_{}.pth".format(
-            args.model)
-
+        ckpt_path = checkpoint_path + "/vis_weights_{}.pth".format(args.model)
         pc_names = ["000700", "000750"]
 
-        ckpt_path = "../dataset/checkpoints/vis_weights_{}.pth".format(
-            'RandLANet')
+        ckpt_path = checkpoint_path + "/vis_weights_{}.pth".format('RandLANet')
         if not exists(ckpt_path):
             cmd = "wget {} -O {}".format(randlanet_url, ckpt_path)
             os.system(cmd)
@@ -171,7 +172,7 @@ def main():
         pipeline_r = SemanticSegmentation(model)
         pipeline_r.load_ckpt(model.cfg.ckpt_path)
 
-        ckpt_path = "../dataset/checkpoints/vis_weights_{}.pth".format('KPFCNN')
+        ckpt_path = checkpoint_path + "/vis_weights_{}.pth".format('KPFCNN')
         if not exists(ckpt_path):
             cmd = "wget {} -O {}".format(kpconv_url, ckpt_path)
             os.system(cmd)

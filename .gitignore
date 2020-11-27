@@ -20,9 +20,12 @@ eggs/
 *darwin.so
 *.idea/
 *.so
+*.pth
 #
 logs/
 test/
 test_kpconv/
 **/.fuse*
 train_log/
+examples/kernels/*
+examples/logs/*
