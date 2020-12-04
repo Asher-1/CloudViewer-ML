@@ -240,7 +240,7 @@ class DatasetModel(Model):
                 self._name2datasetidx[name] = i
 
             if dataset.__class__.__name__ in [
-                    "Toronto3D", "Semantic3D", "S3DIS"
+                    "Toronto3D", "Semantic3D", "S3DIS", "Electricity3D"
             ]:
                 self._attr_rename["feat"] = "colors"
                 self._attr_rename["feature"] = "colors"

@@ -9,7 +9,7 @@ import sys
 import torch
 from os.path import exists, join, isfile, dirname, abspath, split
 
-example_dir = os.path.dirname(os.path.realpath(__file__))
+example_dir = "../dataset/checkpoints"
 
 
 def get_custom_data(pc_names, path):
@@ -104,7 +104,7 @@ def main():
     pipeline_k = ml3d.pipelines.SemanticSegmentation(model)
     pipeline_k.load_ckpt(model.cfg.ckpt_path)
 
-    data_path = example_dir + "/demo_data"
+    data_path = os.path.dirname(os.path.realpath(__file__)) + "/demo_data"
     pc_names = ["000700", "000750"]
     pcs = get_custom_data(pc_names, data_path)
     pcs_with_pred = pred_custom_data(pc_names, pcs, pipeline_r, pipeline_k)

@@ -83,8 +83,7 @@ def main():
     if args.cfg_file is not None:
         cfg = _ml3d.utils.Config.load_from_file(args.cfg_file)
 
-        Pipeline = _ml3d.utils.get_module("pipeline", cfg.pipeline.name,
-                                          framework)
+        Pipeline = _ml3d.utils.get_module("pipeline", cfg.pipeline.name, framework)
         Model = _ml3d.utils.get_module("model", cfg.model.name, framework)
         Dataset = _ml3d.utils.get_module("dataset", cfg.dataset.name)
 
@@ -103,7 +102,6 @@ def main():
         Pipeline = _ml3d.utils.get_module("pipeline", args.pipeline, framework)
         Model = _ml3d.utils.get_module("model", args.model, framework)
         Dataset = _ml3d.utils.get_module("dataset", args.dataset)
-
 
         cfg_dict_dataset, cfg_dict_pipeline, cfg_dict_model = \
                         _ml3d.utils.Config.merge_module_cfg_file(args, extra_dict)

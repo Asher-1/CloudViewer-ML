@@ -19,13 +19,14 @@ eggs/
 *linux-gnu.so
 *darwin.so
 *.idea/
+*.pytest_cache/
 *.so
 *.pth
 #
 logs/
 test/
+tests/kernels/*
 test_kpconv/
 **/.fuse*
 train_log/
 examples/kernels/*
-examples/logs/*

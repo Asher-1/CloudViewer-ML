@@ -1,17 +1,14 @@
 #!/usr/bin/env python
+import os
+os.environ['CLOUDVIEWER_ML_ROOT'] = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML"
+
 import cloudViewer.ml.torch as ml3d
-from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, S3DIS, Toronto3D)
+from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, Electricity3D, S3DIS, Toronto3D)
 from cloudViewer.ml.vis import Visualizer, LabelLUT
 from cloudViewer.ml.utils import get_module
 
 import argparse
-import math
 import numpy as np
-import os
-import random
-import sys
-import tensorflow as tf
-import torch
 from os.path import exists, join, isfile, dirname, abspath, split
 
 
@@ -138,6 +135,8 @@ def main():
         dataset = Toronto3D(path)
     elif which == "semantic3d":
         dataset = Semantic3D(path)
+    elif which == "electricity3d":
+        dataset = Electricity3D(path)
     elif which == "s3dis":
         dataset = S3DIS(path)
     elif which == "custom":
