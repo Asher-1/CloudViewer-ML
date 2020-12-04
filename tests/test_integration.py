@@ -1,10 +1,10 @@
 import pytest
 import os
 
-if 'PATH_TO_OPEN3D_ML' in os.environ.keys():
+if 'PATH_TO_CLOUDVIEWER_ML' in os.environ.keys():
     base = os.environ['PATH_TO_CLOUDVIEWER_ML']
 else:
-    base = '.'
+    base = '..'
     # base = '../CloudViewer-ML'
 
 
@@ -43,3 +43,4 @@ def test_integration_tf():
 
 
 test_integration_torch()
+test_integration_tf()

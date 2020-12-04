@@ -19,25 +19,25 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
-class Semantic3D(BaseDataset):
+class Electricity3D(BaseDataset):
     """
-    SemanticKITTI dataset, used in visualizer, training, or test
+    Electricity dataset, used in visualizer, training, or test
     """
 
     def __init__(self,
                  dataset_path,
-                 name='Semantic3D',
+                 name='Electricity3D',
                  cache_dir='./logs/cache',
                  use_cache=False,
                  num_points=65536,
                  class_weights=[
-                     5181602, 5012952, 6830086, 1311528, 10476365, 946982,
-                     334860, 269353
+                     635262, 1881335, 3351389, 135650, 1132024, 282850, 3384, 102379, 357589, 20374,
+                     332435, 42973, 164957, 8626, 7962, 11651, 64765, 26884, 42479
                  ],
                  ignored_label_inds=[0],
                  val_files=[
-                     'bildstein_station3_xyz_intensity_rgb',
-                     'sg27_station2_intensity_rgb'
+                     '1_9_local_a',
+                     '7_29_local'
                  ],
                  test_result_folder='./test',
                  **kwargs):
@@ -68,11 +68,11 @@ class Semantic3D(BaseDataset):
         self.label_to_idx = {l: i for i, l in enumerate(self.label_values)}
         self.ignored_labels = np.array([0])
 
-        self.all_files = glob.glob(str(Path(self.cfg.dataset_path) / '*.txt'))
+        self.all_files = glob.glob(str(Path(self.cfg.dataset_path) / '*.xyz'))
 
         self.train_files = [
             f for f in self.all_files if exists(
-                str(Path(f).parent / Path(f).name.replace('.txt', '.labels')))
+                str(Path(f).parent / Path(f).name.replace('.xyz', '.labels')))
         ]
         self.test_files = [
             f for f in self.all_files if f not in self.train_files
@@ -102,12 +102,23 @@ class Semantic3D(BaseDataset):
             5: 'buildings',
             6: 'hard scape',
             7: 'scanning artifacts',
-            8: 'cars'
+            8: 'cars',
+            9: 'utility pole',
+            10: 'insulator',
+            11: 'electrical wire',
+            12: 'cross bar',
+            13: 'stick',
+            14: 'fuse',
+            15: 'wire clip',
+            16: 'linker insulator',
+            17: 'persons',
+            18: 'traffic sign',
+            19: 'traffic light'
         }
         return label_to_names
 
     def get_split(self, split):
-        return Semantic3DSplit(self, split=split)
+        return Electricity3DSplit(self, split=split)
 
     def get_split_list(self, split):
         if split in ['test', 'testing']:
@@ -147,7 +158,7 @@ class Semantic3D(BaseDataset):
         log.info("Saved {} in {}.".format(name, store_path))
 
 
-class Semantic3DSplit():
+class Electricity3DSplit():
 
     def __init__(self, dataset, split='training'):
         self.cfg = dataset.cfg
@@ -171,15 +182,13 @@ class Semantic3DSplit():
                          dtype=np.float32).values
 
         points = pc[:, 0:3]
-        feat = pc[:, [4, 5, 6]]
-        intensity = pc[:, 3]
+        feat = pc[:, 3:6]
 
         points = np.array(points, dtype=np.float32)
         feat = np.array(feat, dtype=np.float32)
-        intensity = np.array(intensity, dtype=np.float32)
 
-        if (self.split != 'test'):
-            labels = pd.read_csv(pc_path.replace(".txt", ".labels"),
+        if self.split != 'test':
+            labels = pd.read_csv(pc_path.replace(".xyz", ".labels"),
                                  header=None,
                                  delim_whitespace=True,
                                  dtype=np.int32).values
@@ -190,7 +199,6 @@ class Semantic3DSplit():
         data = {
             'point': points,
             'feat': feat,
-            'intensity': intensity,
             'label': labels
         }
 
@@ -198,10 +206,10 @@ class Semantic3DSplit():
 
     def get_attr(self, idx):
         pc_path = Path(self.path_list[idx])
-        name = pc_path.name.replace('.txt', '')
+        name = pc_path.name.replace('.xyz', '')
 
         attr = {'name': name, 'path': str(pc_path), 'split': self.split}
         return attr
 
 
-DATASET._register_module(Semantic3D)
+DATASET._register_module(Electricity3D)

@@ -1,0 +1,13 @@
+name: Electricity3D
+dataset_path: # path/to/your/dataset
+cache_dir: .logs/cache/
+class_weights: [635262, 1881335, 3351389, 135650, 1132024, 282850, 3384, 102379, 357589, 20374,
+                332435, 42973, 164957, 8626, 7962, 11651, 64765, 26884, 42479]
+ignored_label_inds:
+- 0
+num_points: 65536
+test_result_folder: ./test
+use_cache: true
+val_files:
+- 1_9_local_a
+- 7_29_local

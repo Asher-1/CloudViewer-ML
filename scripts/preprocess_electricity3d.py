@@ -8,14 +8,17 @@ import random
 import shutil
 from tqdm import tqdm
 import argparse
+
+os.environ['CLOUDVIEWER_ML_ROOT'] = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML"
+
 from cloudViewer.ml.datasets import utils
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Split large pointclouds in Semantic3D.')
+        description='Split large pointclouds in Electricity3D.')
     parser.add_argument('--dataset_path',
-                        help='path to Semantic3D',
+                        help='path to Electricity3D',
                         required=True)
     parser.add_argument('--out_path', help='Output path', default=None)
 
@@ -39,7 +42,7 @@ def parse_args():
 def preprocess(args):
     # Split large pointclouds into multiple point clouds.
 
-    extend = ".txt"
+    extend = ".xyz"
     label_extend = ".labels"
 
     dataset_path = args.dataset_path
@@ -50,7 +53,7 @@ def preprocess(args):
         out_path = Path(dataset_path) / 'processed'
         print("out_path not give, Saving output in {}".format(out_path))
 
-    all_files = glob.glob(str(Path(dataset_path) / '*.txt'))
+    all_files = glob.glob(str(Path(dataset_path) / '*.xyz'))
 
     train_files = [
         f for f in all_files
@@ -115,7 +118,7 @@ def preprocess(args):
                 name = join(out_path, Path(key).name.replace(extend, extend))
                 name_lbl = name.replace(extend, label_extend)
 
-                np.savetxt(name, pc, fmt='%.3f %.3f %.3f %i %i %i %i')
+                np.savetxt(name, pc, fmt='%.3f %.3f %.3f %i %i %i')
                 np.savetxt(name_lbl, labels, fmt='%i')
 
             continue
@@ -161,13 +164,13 @@ def preprocess(args):
         for i in range(parts):
             name = join(
                 out_path,
-                Path(key).name.replace(extend, '_part_{}.txt'.format(i)))
+                Path(key).name.replace(extend, '_part_{}.xyz'.format(i)))
             name_lbl = name.replace(extend, label_extend)
 
             shuf = np.arange(pcs[i].shape[0])
             np.random.shuffle(shuf)
 
-            np.savetxt(name, pcs[i][shuf], fmt='%.3f %.3f %.3f %i %i %i %i')
+            np.savetxt(name, pcs[i][shuf], fmt='%.3f %.3f %.3f %i %i %i')
             np.savetxt(name_lbl, lbls[i][shuf], fmt='%i')
 
     # for test files
@@ -194,7 +197,7 @@ def preprocess(args):
                                                     raw_pc_shape, subsampling_pc_shape))
 
         name = join(out_path, Path(key).name.replace(extend, extend))
-        np.savetxt(name, pc, fmt='%.3f %.3f %.3f %i %i %i %i')
+        np.savetxt(name, pc, fmt='%.3f %.3f %.3f %i %i %i')
 
 
 if __name__ == '__main__':

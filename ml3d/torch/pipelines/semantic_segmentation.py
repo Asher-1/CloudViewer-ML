@@ -364,6 +364,10 @@ class SemanticSegmentation(BasePipeline):
         '''
         Save experiment configuration with tensorboard summary
         '''
+        if not hasattr(self, "cfg_tb"):
+            log.warning("Do not set cfg_tb and ignore saving experiment configuration with tensorboard summary!")
+            return
+
         writer.add_text("Description/CloudViewer-ML", self.cfg_tb['readme'], 0)
         writer.add_text("Description/Command line", self.cfg_tb['cmd_line'], 0)
         writer.add_text('Configuration/Dataset',
