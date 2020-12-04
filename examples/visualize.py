@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-import os
-os.environ['CLOUDVIEWER_ML_ROOT'] = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML"
 
 import cloudViewer.ml.torch as ml3d
 from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, Electricity3D, S3DIS, Toronto3D)
@@ -9,6 +7,7 @@ from cloudViewer.ml.utils import get_module
 
 import argparse
 import numpy as np
+import os
 from os.path import exists, join, isfile, dirname, abspath, split
 
 
