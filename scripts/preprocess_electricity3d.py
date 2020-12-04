@@ -9,8 +9,6 @@ import shutil
 from tqdm import tqdm
 import argparse
 
-os.environ['CLOUDVIEWER_ML_ROOT'] = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML"
-
 from cloudViewer.ml.datasets import utils
 
 

@@ -1,5 +1,3 @@
-import os
-os.environ['CLOUDVIEWER_ML_ROOT'] = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML"
 
 from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, S3DIS, Toronto3D, Electricity3D)
 import argparse
