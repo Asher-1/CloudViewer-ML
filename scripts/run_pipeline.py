@@ -26,6 +26,7 @@ def parse_args():
     parser.add_argument('--cfg_dataset',
                         help='path to the dataset\'s config file')
     parser.add_argument('--dataset_path', help='path to the dataset')
+    # parser.add_argument('--ckpt_path', help='path to the checkpoint')
     parser.add_argument('--device',
                         help='device to run the pipeline',
                         default='gpu')
@@ -58,6 +59,8 @@ def main():
     args, extra_dict = parse_args()
 
     framework = _ml3d.utils.convert_framework_name(args.framework)
+    args.device = "gpu:0"
+    # args.device = _ml3d.utils.convert_device_name(args.device)
     if framework == 'torch':
         import cloudViewer.ml.torch as ml3d
     else:
@@ -72,7 +75,7 @@ def main():
                     tf.config.experimental.set_memory_growth(gpu, True)
                 if device == 'cpu':
                     tf.config.set_visible_devices([], 'GPU')
-                elif device == 'gpu':
+                elif device == 'cuda':
                     tf.config.set_visible_devices(gpus[0], 'GPU')
                 else:
                     idx = device.split(':')[1]
@@ -83,15 +86,15 @@ def main():
     if args.cfg_file is not None:
         cfg = _ml3d.utils.Config.load_from_file(args.cfg_file)
 
-        Pipeline = _ml3d.utils.get_module("pipeline", cfg.pipeline.name, framework)
+        Pipeline = _ml3d.utils.get_module("pipeline", cfg.pipeline.name,
+                                          framework)
         Model = _ml3d.utils.get_module("model", cfg.model.name, framework)
         Dataset = _ml3d.utils.get_module("dataset", cfg.dataset.name)
 
         cfg_dict_dataset, cfg_dict_pipeline, cfg_dict_model = \
-                        _ml3d.utils.Config.merge_cfg_file(cfg, args, extra_dict)
+            _ml3d.utils.Config.merge_cfg_file(cfg, args, extra_dict)
 
-        dataset = Dataset(cfg_dict_dataset.pop('dataset_path', None),
-                          **cfg_dict_dataset)
+        dataset = Dataset(cfg_dict_dataset.pop('dataset_path', None), **cfg_dict_dataset)
         model = Model(**cfg_dict_model)
         pipeline = Pipeline(model, dataset, **cfg_dict_pipeline)
     else:
@@ -104,7 +107,7 @@ def main():
         Dataset = _ml3d.utils.get_module("dataset", args.dataset)
 
         cfg_dict_dataset, cfg_dict_pipeline, cfg_dict_model = \
-                        _ml3d.utils.Config.merge_module_cfg_file(args, extra_dict)
+            _ml3d.utils.Config.merge_module_cfg_file(args, extra_dict)
 
         dataset = Dataset(**cfg_dict_dataset)
         model = Model(**cfg_dict_model)

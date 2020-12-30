@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import cloudViewer.ml.torch as ml3d
-from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, Electricity3D, S3DIS, Toronto3D)
+from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, S3DIS,
+                                     Toronto3D, Electricity3D)
 from cloudViewer.ml.vis import Visualizer, LabelLUT
 from cloudViewer.ml.utils import get_module
 
@@ -13,7 +14,7 @@ from os.path import exists, join, isfile, dirname, abspath, split
 
 def print_usage_and_exit():
     print(
-        "Usage: ml-test.py [kitti|paris|toronto|semantic3d|s3dis|custom] path/to/dataset"
+        "Usage: ml-test.py [kitti|semantickitti|paris|toronto|semantic3d|electricity3d|s3dis|custom] path/to/dataset"
     )
     exit(0)
 
@@ -55,7 +56,6 @@ def parse_args():
 
 
 def get_custom_data(pc_names, path):
-
     pc_data = []
     for i, name in enumerate(pc_names):
         pc_path = join(path, 'points', name + '.npy')
@@ -127,6 +127,8 @@ def main():
     path = args.dataset_path
 
     if which == "kitti":
+        dataset = KITTI(path)
+    elif which == "semantickitti":
         dataset = SemanticKITTI(path)
     elif which == "paris":
         dataset = ParisLille3D(path)
