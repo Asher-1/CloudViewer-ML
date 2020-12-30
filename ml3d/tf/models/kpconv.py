@@ -10,7 +10,7 @@ from pathlib import Path
 from sklearn.neighbors import KDTree
 from tqdm import tqdm
 
-# use relative import for being compatible with CloudViewer main repo
+# use relative import for being compatible with Open3d main repo
 from cloudViewer.ml.tf.ops import *
 from .network_blocks import *
 from .base_model import BaseModel
@@ -821,7 +821,7 @@ class KPFCNN(BaseModel):
             input_points = points[input_inds].copy() - pick_point
             feat = data['feat']
 
-            t_normalize = self.cfg.get('t_normalize', None)
+            t_normalize = self.cfg.get('t_normalize', {})
             input_points, feat = trans_normalize(input_points, feat,
                                                  t_normalize)
 
@@ -972,7 +972,7 @@ class KPFCNN(BaseModel):
                 input_points = points[input_inds].copy() - pick_point
                 feat = data['feat']
 
-                t_normalize = self.cfg.get('t_normalize', None)
+                t_normalize = self.cfg.get('t_normalize', {})
                 input_points, feat = trans_normalize(input_points, feat,
                                                      t_normalize)
 

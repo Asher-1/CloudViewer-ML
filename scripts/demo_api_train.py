@@ -1,4 +1,6 @@
 from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, S3DIS, Toronto3D, Electricity3D)
+from cloudViewer.ml.torch.pipelines import SemanticSegmentation
+from cloudViewer.ml.torch.models import RandLANet
 from cloudViewer.ml.utils import Config, get_module
 
 import argparse
@@ -8,7 +10,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Demo for training and inference')
     parser.add_argument('--path_semantickitti',
-                        help='path to SemanticKITTI',
+                        help='path to semantiSemanticKITTI',
                         required=True)
     parser.add_argument('--path_ckpt_randlanet',
                         help='path to RandLANet checkpoint')
@@ -25,25 +27,23 @@ def parse_args():
 
 
 def demo_train(args):
-    Pipeline = get_module("pipeline", "SemanticSegmentation", framework)
-    Model = get_module("model", "RandLANet", framework)
-    Dataset = get_module("dataset", "SemanticKITTI")
-
     # Initialize the training by passing parameters
-    dataset = Dataset(args.path_semantickitti, use_cache=True)
+    dataset = SemanticKITTI(args.path_semantickitti, use_cache=True)
 
-    model = Model(dim_input=3)
+    model = RandLANet(dim_input=3)
 
-    pipeline = Pipeline(model=model, dataset=dataset, max_epoch=100)
+    pipeline = SemanticSegmentation(model=model, dataset=dataset, max_epoch=100)
 
     pipeline.run_train()
 
 
 def demo_inference(args):
     # Inference and test example
+    from cloudViewer.ml.tf.pipelines import SemanticSegmentation
+    from cloudViewer.ml.tf.models import RandLANet
 
-    Pipeline = get_module("pipeline", "SemanticSegmentation", framework)
-    Model = get_module("model", "RandLANet", framework)
+    Pipeline = get_module("pipeline", "SemanticSegmentation", "tf")
+    Model = get_module("model", "RandLANet", "tf")
     Dataset = get_module("dataset", "SemanticKITTI")
 
     RandLANet = Model(ckpt_path=args.path_ckpt_randlanet)
@@ -60,6 +60,7 @@ def demo_inference(args):
     # restore weights
 
     # run inference
+    pipeline.load_ckpt(args.path_ckpt_randlanet)
     results = pipeline.run_inference(data)
     print(results)
 
@@ -68,8 +69,6 @@ def demo_inference(args):
 
 
 if __name__ == '__main__':
-
-    framework = "torch"
     args = parse_args()
     demo_train(args)
     demo_inference(args)
