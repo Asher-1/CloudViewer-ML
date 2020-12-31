@@ -7,7 +7,7 @@ import logging
 import yaml
 from scipy.spatial.transform import Rotation as R
 
-from .base_dataset import BaseDataset
+from .base_dataset import BaseDataset, BaseDatasetSplit
 from ..utils import Config, make_dir, DATASET
 from .utils import BEVBox3D
 
@@ -136,20 +136,17 @@ class NuScenes(BaseDataset):
         pass
 
 
-class NuSceneSplit():
+class NuSceneSplit(BaseDatasetSplit):
 
     def __init__(self, dataset, split='train'):
-        self.cfg = dataset.cfg
+        super().__init__(dataset, split=split)
 
-        self.infos = dataset.get_split_list(split)
+        self.infos = self.path_list
         self.path_list = []
         for info in self.infos:
             self.path_list.append(info['lidar_path'])
 
         log.info("Found {} pointclouds for {}".format(len(self.infos), split))
-
-        self.split = split
-        self.dataset = dataset
 
     def __len__(self):
         return len(self.infos)

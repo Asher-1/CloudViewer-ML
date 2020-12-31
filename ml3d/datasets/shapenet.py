@@ -7,7 +7,7 @@ from random import shuffle
 
 import numpy as np
 
-from .base_dataset import BaseDataset
+from .base_dataset import BaseDataset, BaseDatasetSplit
 from ..utils import make_dir, DATASET
 
 logging.basicConfig(
@@ -171,18 +171,17 @@ class ShapeNet(BaseDataset):
         log.info("Saved {} in {}.".format(name, store_path))
 
 
-class ShapeNetSplit:
+class ShapeNetSplit(BaseDatasetSplit):
 
     def __init__(self, dataset, split='training', task='classification'):
         assert task in ['classification',
                         'segmentation'], f"Invalid task {task}"
 
-        self.cfg = dataset.cfg
-        path_list = dataset.get_split_list(split)
-
-        self.path_list = path_list
-        self.split = split
-        self.dataset = dataset
+        super().__init__(dataset, split=split)
+        
+        log.info("Found {} pointclouds for {}".format(len(self.path_list),
+                                              split))
+        
         self.task = task
 
     def __len__(self):

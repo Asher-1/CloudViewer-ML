@@ -202,7 +202,7 @@ class Semantic3D(BaseDataset):
         log.info("Saved {} in {}.".format(name, store_path))
 
 
-class Semantic3DSplit():
+class Semantic3DSplit(BaseDatasetSplit):
     """
     This class is used to create a split for Semantic3D dataset.
     
@@ -218,14 +218,9 @@ class Semantic3DSplit():
     """
 
     def __init__(self, dataset, split='training'):
+        super().__init__(dataset, split=split)
 
-        self.cfg = dataset.cfg
-        path_list = dataset.get_split_list(split)
-        log.info("Found {} pointclouds for {}".format(len(path_list), split))
-
-        self.path_list = path_list
-        self.split = split
-        self.dataset = dataset
+        log.info("Found {} pointclouds for {}".format(len(self.path_list), split))
 
     def __len__(self):
         return len(self.path_list)

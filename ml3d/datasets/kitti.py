@@ -180,16 +180,12 @@ class KITTI(BaseDataset):
         pass
 
 
-class KITTISplit():
+class KITTISplit(BaseDatasetSplit):
 
     def __init__(self, dataset, split='train'):
-        self.cfg = dataset.cfg
-        path_list = dataset.get_split_list(split)
-        log.info("Found {} pointclouds for {}".format(len(path_list), split))
-
-        self.path_list = path_list
-        self.split = split
-        self.dataset = dataset
+        super().__init__(dataset, split=split)
+        
+        log.info("Found {} pointclouds for {}".format(len(self.path_list), split))
 
     def __len__(self):
         return len(self.path_list)

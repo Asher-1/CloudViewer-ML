@@ -7,7 +7,7 @@ from glob import glob
 import logging
 import yaml
 
-from .base_dataset import BaseDataset
+from .base_dataset import BaseDataset, BaseDatasetSplit
 from ..utils import Config, make_dir, DATASET
 from .utils import BEVBox3D
 
@@ -143,12 +143,12 @@ class Argoverse(BaseDataset):
         pass
 
 
-class ArgoverseSplit():
+class ArgoverseSplit(BaseDatasetSplit):
 
     def __init__(self, dataset, split='train'):
-        self.cfg = dataset.cfg
+        super().__init__(dataset, split=split)
 
-        infos = dataset.get_split_list(split)
+        infos = self.path_list
 
         self.num_pc = 0
         self.path_list = []
@@ -160,9 +160,6 @@ class ArgoverseSplit():
             self.bboxes += info['bbox']
 
         log.info("Found {} pointclouds for {}".format(self.num_pc, split))
-
-        self.split = split
-        self.dataset = dataset
 
     def __len__(self):
         return self.num_pc
