@@ -2,7 +2,7 @@
 
 import cloudViewer.ml.torch as ml3d
 from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, S3DIS,
-                                     Toronto3D, Electricity3D)
+                                     Toronto3D, Electricity3D, KITTI)
 from cloudViewer.ml.vis import Visualizer, LabelLUT
 from cloudViewer.ml.utils import get_module
 
