@@ -56,6 +56,7 @@ def parse_args():
 def demo_train(args):
     cmd_line = ' '.join(sys.argv[:])
     framework = _ml3d.utils.convert_framework_name(args.framework)
+    # args.device = _ml3d.utils.convert_device_name(args.device)
 
     if framework == 'torch':
         import cloudViewer.ml.torch as ml3d
@@ -189,5 +190,5 @@ def demo_inference(args):
 
 if __name__ == '__main__':
     args = parse_args()
-    # demo_train(args)
+    demo_train(args)
     demo_inference(args)
