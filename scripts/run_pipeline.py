@@ -59,8 +59,7 @@ def main():
     args, extra_dict = parse_args()
 
     framework = _ml3d.utils.convert_framework_name(args.framework)
-    args.device = "gpu:0"
-    # args.device = _ml3d.utils.convert_device_name(args.device)
+    args.device = _ml3d.utils.convert_device_name(args.device)
     if framework == 'torch':
         import cloudViewer.ml.torch as ml3d
     else:
