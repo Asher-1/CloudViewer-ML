@@ -9,7 +9,7 @@ from sklearn.neighbors import KDTree
 import logging
 
 from .utils import DataProcessing as DP
-from .base_dataset import BaseDataset
+from .base_dataset import BaseDataset, BaseDatasetSplit
 from ..utils import make_dir, DATASET
 
 logging.basicConfig(
@@ -158,16 +158,12 @@ class Electricity3D(BaseDataset):
         log.info("Saved {} in {}.".format(name, store_path))
 
 
-class Electricity3DSplit():
+class Electricity3DSplit(BaseDatasetSplit):
 
     def __init__(self, dataset, split='training'):
-        self.cfg = dataset.cfg
-        path_list = dataset.get_split_list(split)
-        log.info("Found {} pointclouds for {}".format(len(path_list), split))
-
-        self.path_list = path_list
-        self.split = split
-        self.dataset = dataset
+        super().__init__(dataset, split=split)
+        
+        log.info("Found {} pointclouds for {}".format(len(self.path_list), split))
 
     def __len__(self):
         return len(self.path_list)
