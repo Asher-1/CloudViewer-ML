@@ -104,12 +104,12 @@ class SemanticKITTI(BaseDataset):
     @staticmethod
     def get_label_to_names():
         """
-	Returns a label to names dictonary object.
-        
+        Returns a label to names dictonary object.
+
         Returns:
             A dict where keys are label numbers and 
             values are the corresponding names.
-    """
+        """
         label_to_names = {
             0: 'unlabeled',
             1: 'car',
