@@ -1,5 +1,9 @@
 # Scripts
 
+
+## set environment
+os.environ['CLOUDVIEWER_ML_ROOT'] = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
 ## `run_pipeline.py`
 
 This script creates and trains a pipeline (SemanticSegmentation by default).

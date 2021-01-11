@@ -82,11 +82,11 @@ class SemSegSpatiallyRegularSampler(object):
                     idxs = search_tree.query_radius(center_point, r=radius)[0]
                 elif num_points is not None:
                     if (pc.shape[0] < num_points):
+                        diff = num_points - pc.shape[0]
                         idxs = np.array(range(pc.shape[0]))
                         idxs = list(idxs) + list(random.choices(idxs, k=diff))
                     else:
-                        idxs = search_tree.query(center_point,
-                                                 k=num_points)[1][0]
+                        idxs = search_tree.query(center_point, k=num_points)[1][0]
                 n = len(idxs)
                 if n < 2:
                     self.possibilities[cloud_id][center_id] += 0.001

@@ -43,7 +43,7 @@ class Semantic3D(BaseDataset):
                  **kwargs):
         """
 		Initialize the function by passing the dataset and other details.
-	
+
 		Args:
 			dataset_path: The path to the dataset to use.
 			name: The name of the dataset (Semantic3D in this case).
@@ -54,8 +54,7 @@ class Semantic3D(BaseDataset):
 			ignored_label_inds: A list of labels that should be ignored in the dataset.
 			val_files: The files with the data.
 			test_result_folder: The folder where the test results should be stored.
-			
-	
+
 		Returns:
             class: The corresponding class.
         """
@@ -104,8 +103,8 @@ class Semantic3D(BaseDataset):
     @staticmethod
     def get_label_to_names():
         """
-	Returns a label to names dictonary object.
-        
+        Returns a label to names dictonary object.
+
         Returns:
             A dict where keys are label numbers and 
             values are the corresponding names.
@@ -124,31 +123,31 @@ class Semantic3D(BaseDataset):
         return label_to_names
 
     def get_split(self, split):
-        return Semantic3DSplit(self, split=split)
-        """Returns a dataset split.
-        
+        """ Returns a dataset split.
+
         Args:
             split: A string identifying the dataset split that is usually one of
             'training', 'test', 'validation', or 'all'.
 
         Returns:
             A dataset split object providing the requested subset of the data.
-	"""
+        """
+        return Semantic3DSplit(self, split=split)
 
     def get_split_list(self, split):
-        """Returns the list of data splits available.
-        
-        Args:
-            split: A string identifying the dataset split that is usually one of
-            'training', 'test', 'validation', or 'all'.
+        """ Returns the list of data splits available.
 
-        Returns:
-            A dataset split object providing the requested subset of the data.
-			
-		Raises:
-			ValueError: Indicates that the split name passed is incorrect. The split name should be one of
-            'training', 'test', 'validation', or 'all'.
-    """
+            Args:
+                split: A string identifying the dataset split that is usually one of
+                'training', 'test', 'validation', or 'all'.
+
+            Returns:
+                A dataset split object providing the requested subset of the data.
+
+            Raises:
+                ValueError: Indicates that the split name passed is incorrect. The split name should be one of
+                'training', 'test', 'validation', or 'all'.
+        """
         if split in ['test', 'testing']:
             files = self.test_files
         elif split in ['train', 'training']:
@@ -164,14 +163,14 @@ class Semantic3D(BaseDataset):
     def is_tested(self, attr):
         """Checks if a datum in the dataset has been tested.
         
-        Args:
-            dataset: The current dataset to which the datum belongs to.
-			attr: The attribute that needs to be checked.
+            Args:
+                dataset: The current dataset to which the datum belongs to.
+                attr: The attribute that needs to be checked.
 
-        Returns:
-            If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
-			
-	"""
+            Returns:
+                If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
+
+        """
         cfg = self.cfg
         name = attr['name']
         path = cfg.test_result_folder
@@ -188,7 +187,7 @@ class Semantic3D(BaseDataset):
         Args:
             results: The output of a model for the datum associated with the attribute passed.
             attr: The attributes that correspond to the outputs passed in results.
-    """
+        """
         cfg = self.cfg
         name = attr['name'].split('.')[0]
         path = cfg.test_result_folder

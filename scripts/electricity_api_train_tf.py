@@ -7,7 +7,6 @@ import os
 import cloudViewer.ml as _ml3d
 from cloudViewer.ml.utils import Config, get_module
 
-
 CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/scripts/logs/" \
             "RandLANet_Electricity3D_tf/checkpoint/ckpt-21"
 
@@ -49,7 +48,13 @@ def parse_args():
 def demo_train(args):
     cmd_line = ' '.join(sys.argv[:])
     framework = _ml3d.utils.convert_framework_name(args.framework)
-    # args.device = _ml3d.utils.convert_device_name(args.device)
+
+    if ":" in args.device:
+        device_type = _ml3d.utils.convert_device_name(args.device.split(':')[0])
+        idx = args.device.split(':')[1]
+        args.device = "{}:{}".format(device_type, idx)
+    else:
+        args.device = _ml3d.utils.convert_device_name(args.device)
 
     if framework == 'torch':
         import cloudViewer.ml.torch as ml3d

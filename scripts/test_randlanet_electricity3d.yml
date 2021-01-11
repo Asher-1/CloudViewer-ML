@@ -1,7 +1,7 @@
 dataset:
   name: Electricity3D
   dataset_path: # path/to/your/dataset
-  cache_dir: ./logs/cache/
+  cache_dir: ./logs/cache_electricity/
   class_weights: [635262, 1881335, 3351389, 135650, 1132024, 282850, 3384, 102379, 357589, 20374,
                   332435, 42973, 164957, 8626, 7962, 11651, 64765, 26884, 42479]
   ignored_label_inds:
@@ -14,6 +14,8 @@ dataset:
   - 7_29_local
   steps_per_epoch_train: 500
   steps_per_epoch_valid: 10
+#  sampler:
+#    name: SemSegSpatiallyRegularSampler
 model:
   name: RandLANet
   batcher: DefaultBatcher

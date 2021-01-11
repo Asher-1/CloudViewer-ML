@@ -1,6 +1,9 @@
 import sys
 import pprint
 from pathlib import Path
+import os
+
+os.environ['CLOUDVIEWER_ML_ROOT'] = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 import cloudViewer.ml as _ml3d
 from cloudViewer.ml.utils import Config, get_module
 
@@ -9,14 +12,16 @@ import argparse
 DATASET_NAME = "Semantic3D"
 
 if DATASET_NAME == "Electricity3D":
-    CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML" \
-                "/scripts/logs/RandLANet_Electricity3D_torch/checkpoint/ckpt_00100.pth"
+    CKPT_PATH = None
+    # CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML" \
+    #             "/scripts/logs/RandLANet_Electricity3D_torch/checkpoint/ckpt_00100.pth"
     DATASET_PATH = "/media/yons/data/dataset/pointCloud/data/Electricity3D/cloudViewer_processed"
     CONFIG_FILE = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/" \
                   "scripts/test_randlanet_electricity3d.yml"
 else:
-    CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/scripts/logs/" \
-                "RandLANet_Semantic3D_torch/checkpoint/ckpt_00100.pth"
+    CKPT_PATH = None
+    # CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/scripts/logs/" \
+    #             "RandLANet_Semantic3D_torch/checkpoint/ckpt_00100.pth"
     # CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/runtimeDll/randlanet_semantic3d_202012120312utc.pth"
     DATASET_PATH = "/media/yons/data/dataset/pointCloud/data/Semantic3D/cloudViewer_processed"
     CONFIG_FILE = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/" \
@@ -24,9 +29,9 @@ else:
 
 DEVICE = "gpu:1"
 FRAMEWORK = "torch"  # "torch", "tf"
-BATCH_SIZE = 4
+BATCH_SIZE = 2
 STEPS_PER_EPOCH_TRAIN = 500
-GRID_SIZE = 0.03
+GRID_SIZE = 0.06
 
 
 def parse_args():
@@ -41,6 +46,8 @@ def parse_args():
     parser.add_argument('--device', default=DEVICE, help='path to RandLANet checkpoint')
     parser.add_argument('--steps_per_epoch_train', default=STEPS_PER_EPOCH_TRAIN,
                         help='steps per epoch train')
+    parser.add_argument('--grid_size', default=GRID_SIZE, help='path to RandLANet checkpoint')
+
 
     args, _ = parser.parse_known_args()
 
@@ -56,7 +63,12 @@ def parse_args():
 def demo_train(args):
     cmd_line = ' '.join(sys.argv[:])
     framework = _ml3d.utils.convert_framework_name(args.framework)
-    # args.device = _ml3d.utils.convert_device_name(args.device)
+    if ":" in args.device:
+        device_type = _ml3d.utils.convert_device_name(args.device.split(':')[0])
+        idx = args.device.split(':')[1]
+        args.device = "{}:{}".format(device_type, idx)
+    else:
+        args.device = _ml3d.utils.convert_device_name(args.device)
 
     if framework == 'torch':
         import cloudViewer.ml.torch as ml3d
@@ -90,6 +102,7 @@ def demo_train(args):
         cfg_dict_dataset, cfg_dict_pipeline, cfg_dict_model = \
             _ml3d.utils.Config.merge_cfg_file(cfg, args,
                                               {"pipeline": {"batch_size": str(args.batch_size)},
+                                               "model": {"grid_size": str(args.grid_size)},
                                                "dataset": {"steps_per_epoch_train": str(args.steps_per_epoch_train)},
                                                })
 
@@ -135,6 +148,12 @@ def demo_train(args):
 
 def demo_inference(args):
     framework = _ml3d.utils.convert_framework_name(args.framework)
+    if ":" in args.device:
+        device_type = _ml3d.utils.convert_device_name(args.device.split(':')[0])
+        idx = args.device.split(':')[1]
+        args.device = "{}:{}".format(device_type, idx)
+    else:
+        args.device = _ml3d.utils.convert_device_name(args.device)
 
     if framework == 'torch':
         import cloudViewer.ml.torch as ml3d

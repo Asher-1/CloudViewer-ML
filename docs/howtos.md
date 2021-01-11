@@ -143,7 +143,7 @@ Selecting the **int_attr** in the visualizer will then switch to our LUT.
 
 ## Adding a new model
 
-For adding a new model to Open3D-ML you need to clone the repository and add
+For adding a new model to CloudViewer-ML you need to clone the repository and add
 the model code to `ml3d/{tf,torch}/models`.
 
 All models should be derived from `BaseModel` defined in
@@ -228,17 +228,17 @@ class MyDatasetSplit():
     
 ```
 
-To test code with an already installed Open3D package you can set the
-environment variable `OPEN3D_ML_ROOT` to the root dir of the repo. This can be
+To test code with an already installed CloudViewer package you can set the
+environment variable `CLOUDVIEWER_ML_ROOT` to the root dir of the repo. This can be
 done with
 ```bash 
-source /path/to/Open3D-ML/set_open3d_ml_root.sh
+source /path/to/CloudViewer-ML/set_open3d_ml_root.sh
 ```
 which will make the _ml_ namespace point to `ml3d` in the repo.
 Our example model can then be instantiated with
 ```python
 import cloudViewer.ml.torch as ml3d
-# prints "Using external Open3D-ML in /path/to/Open3D-ML"
+# prints "Using external CloudViewer-ML in /path/to/CloudViewer-ML"
 
 model = ml3d.models.MyModel()
 dataset = ml3d.datasets.MyDataset()
