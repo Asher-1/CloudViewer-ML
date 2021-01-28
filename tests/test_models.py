@@ -194,3 +194,7 @@ def test_pointpillars_tf():
     boxes = net.inference_end(results, data)
 
     assert type(boxes) == list
+
+
+if __name__ == '__main__':
+    test_randlanet_torch()

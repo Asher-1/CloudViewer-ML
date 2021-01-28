@@ -42,5 +42,7 @@ def test_integration_tf():
     print(model)
 
 
-test_integration_torch()
-test_integration_tf()
+if __name__ == '__main__':
+
+    test_integration_torch()
+    test_integration_tf()
