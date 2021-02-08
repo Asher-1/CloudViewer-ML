@@ -20,7 +20,8 @@ log = logging.getLogger(__name__)
 
 class NuScenes(BaseDataset):
     """
-    NuScenes 3D dataset for Object Detection, used in visualizer, training, or test
+    This class is used to create a dataset based on the NuScenes 3D dataset, and used in object detection, visualizer,
+     training, or testing. The NuScenes 3D dataset is best suited for autonomous driving applications.
     """
 
     def __init__(self,
@@ -31,10 +32,17 @@ class NuScenes(BaseDataset):
                  use_cache=False,
                  **kwargs):
         """
-        Initialize
+        Initialize the function by passing the dataset and other details.
+
         Args:
-            dataset_path (str): path to the dataset
-            kwargs:
+            dataset_path: The path to the dataset to use.
+            info_path: The path to the file that includes information about the dataset. This is default to dataset path if nothing is provided.
+            name: The name of the dataset (NuScenes in this case).
+            cache_dir: The directory where the cache is stored.
+            use_cache: Indicates if the dataset should be cached.
+
+        Returns:
+            class: The corresponding class.
         """
 
         if info_path is None:
@@ -72,6 +80,13 @@ class NuScenes(BaseDataset):
 
     @staticmethod
     def get_label_to_names():
+        """
+        Returns a label to names dictonary object.
+
+        Returns:
+            A dict where keys are label numbers and
+            values are the corresponding names.
+        """
         label_to_names = {
             0: 'ignore',
             1: 'barrier',
@@ -89,19 +104,30 @@ class NuScenes(BaseDataset):
 
     @staticmethod
     def read_lidar(path):
+        """
+        Reads lidar data from the path provided.
+
+        Returns:
+            A data object with lidar information.
+        """
         assert Path(path).exists()
 
         return np.fromfile(path, dtype=np.float32).reshape(-1, 5)
 
     @staticmethod
     def read_label(info, calib):
+        """
+        Reads labels of bound boxes.
+
+        Returns:
+            The data objects with bound boxes information.
+        """
         mask = info['num_lidar_pts'] != 0
         boxes = info['gt_boxes'][mask]
         names = info['gt_names'][mask]
 
         objects = []
         for name, box in zip(names, boxes):
-
             center = [float(box[0]), float(box[1]), float(box[2])]
             size = [float(box[3]), float(box[5]), float(box[4])]
             ry = float(box[6])
@@ -117,9 +143,31 @@ class NuScenes(BaseDataset):
         return objects
 
     def get_split(self, split):
+        """Returns a dataset split.
+
+        Args:
+            split: A string identifying the dataset split that is usually one of
+            'training', 'test', 'validation', or 'all'.
+
+        Returns:
+            A dataset split object providing the requested subset of the data.
+        """
         return NuSceneSplit(self, split=split)
 
     def get_split_list(self, split):
+        """Returns the list of data splits available.
+
+        Args:
+            split: A string identifying the dataset split that is usually one of
+            'training', 'test', 'validation', or 'all'.
+
+        Returns:
+            A dataset split object providing the requested subset of the data.
+
+        Raises:
+            ValueError: Indicates that the split name passed is incorrect. The split name should be one of
+            'training', 'test', 'validation', or 'all'.
+        """
         if split in ['train', 'training']:
             return self.train_info
         elif split in ['test', 'testing']:
@@ -129,10 +177,25 @@ class NuScenes(BaseDataset):
 
         raise ValueError("Invalid split {}".format(split))
 
-    def is_tested():
+    def is_tested(self, attr):
+        """Checks if a datum in the dataset has been tested.
+
+        Args:
+            dataset: The current dataset to which the datum belongs to.
+            attr: The attribute that needs to be checked.
+
+        Returns:
+            If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
+        """
         pass
 
-    def save_test_result():
+    def save_test_result(self, results, attr):
+        """Saves the output of a model.
+
+        Args:
+            results: The output of a model for the datum associated with the attribute passed.
+            attr: The attributes that correspond to the outputs passed in results.
+        """
         pass
 
 
@@ -145,8 +208,6 @@ class NuSceneSplit(BaseDatasetSplit):
         self.path_list = []
         for info in self.infos:
             self.path_list.append(info['lidar_path'])
-
-        log.info("Found {} pointclouds for {}".format(len(self.infos), split))
 
     def __len__(self):
         return len(self.infos)

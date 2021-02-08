@@ -1,6 +1,8 @@
 import numpy as np
 import random
 import copy
+import math
+from scipy.spatial import ConvexHull
 
 from ...metrics import iou_bev
 
@@ -30,7 +32,7 @@ def create_3D_rotations(axis, angle):
         t1 + t2 * t3, t7 - t9, t11 + t12, t7 + t9, t1 + t2 * t15, t19 - t20,
         t11 - t12, t19 + t20, t1 + t2 * t24
     ],
-        axis=1)
+                 axis=1)
 
     return np.reshape(R, (-1, 3, 3))
 
@@ -112,7 +114,7 @@ def corners_nd(dims, origin=0.5):
             where x0 < x1, y0 < y1, z0 < z1.
     """
     ndim = int(dims.shape[1])
-    corners_norm = np.stack(np.unravel_index(np.arange(2 ** ndim), [2] * ndim),
+    corners_norm = np.stack(np.unravel_index(np.arange(2**ndim), [2] * ndim),
                             axis=1).astype(dims.dtype)
     # now corners_norm has format: (2d) x0y0, x0y1, x1y0, x1y1
     # (3d) x0y0z0, x0y0z1, x0y1z0, x0y1z1, x1y0z0, x1y0z1, x1y1z0, x1y1z1
@@ -126,7 +128,7 @@ def corners_nd(dims, origin=0.5):
         corners_norm = corners_norm[[0, 1, 3, 2, 4, 5, 7, 6]]
     corners_norm = corners_norm - np.array(origin, dtype=dims.dtype)
     corners = dims.reshape([-1, 1, ndim]) * corners_norm.reshape(
-        [1, 2 ** ndim, ndim])
+        [1, 2**ndim, ndim])
     return corners
 
 
@@ -254,7 +256,7 @@ def surface_equ_3d(polygon_surfaces):
     # return [a, b, c], d in ax+by+cz+d=0
     # polygon_surfaces: [num_polygon, num_surfaces, num_points_of_polygon, 3]
     surface_vec = polygon_surfaces[:, :, :2, :] - \
-                  polygon_surfaces[:, :, 1:3, :]
+        polygon_surfaces[:, :, 1:3, :]
     # normal_vec: [..., 3]
     normal_vec = np.cross(surface_vec[:, :, 0, :], surface_vec[:, :, 1, :])
     # print(normal_vec.shape, points[..., 0, :].shape)
@@ -330,7 +332,7 @@ def filter_by_min_points(bboxes, min_points_dict):
     for box in bboxes:
         if box.label_class in min_points_dict.keys():
             if box.points_inside_box.shape[0] > min_points_dict[
-                box.label_class]:
+                    box.label_class]:
                 filtered_boxes.append(box)
         else:
             filtered_boxes.append(box)
@@ -425,3 +427,44 @@ def remove_points_in_boxes(points, boxes):
     points = points[np.logical_not(masks.any(-1))]
 
     return points
+
+
+def get_min_bbox(points):
+    """Return minimum bounding box encapsulating points.
+    Args:
+        points (np.ndarray): Input point cloud array.
+    Returns:
+        np.ndarray: 3D BEV bounding box (x, y, z, w, h, l, yaw).
+    """
+    points = points.copy()
+    h_min = np.min(points[:, 2])
+    h_max = np.max(points[:, 2])
+
+    points = points[:, :2]
+
+    # cov_hull = ConvexHull(points)
+    # points = cov_hull.points[cov_hull.vertices]
+
+    cov_points = np.cov(points, rowvar=False, bias=True)
+    val, vect = np.linalg.eig(cov_points)
+    tvect = np.transpose(vect)
+
+    points_rot = np.dot(points, np.linalg.inv(tvect))
+
+    min_a = np.min(points_rot, axis=0)
+    max_a = np.max(points_rot, axis=0)
+
+    diff = max_a - min_a
+
+    center = min_a + diff * 0.5
+    center = np.dot(center, tvect)
+
+    center = np.array([center[0], center[1], (h_min + h_max) * 0.5])
+
+    width = diff[0]
+    length = diff[1]
+    height = h_max - h_min
+
+    yaw = math.atan(tvect[0, 1] / tvect[0, 0])
+
+    return [center[0], center[1], center[2], width, height, length, yaw]

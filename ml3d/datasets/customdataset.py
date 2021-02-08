@@ -23,54 +23,10 @@ log = logging.getLogger(__name__)
 # For test files, format should be : ['x', 'y', 'z', 'feat_1', 'feat_2', ........,'feat_n'].
 
 
-class Custom3DSplit(BaseDatasetSplit):
-    """This class is used to create a custom dataset split.
-    Initialize the class.
-    Args:
-        dataset: The dataset to split.
-        split: A string identifying the dataset split that is usually one of 'training', 'test', 'validation', or 'all'.
-        **kwargs: The configuration of the model as keyword arguments.
-    Returns:
-        A dataset split object providing the requested subset of the data.
-    """
-
-    def __init__(self, dataset, split='training'):
-        super().__init__(dataset, split=split)
-        
-        log.info("Found {} pointclouds for {}".format(len(self.path_list), split))
-
-    def __len__(self):
-        return len(self.path_list)
-
-    def get_data(self, idx):
-        pc_path = self.path_list[idx]
-        data = np.load(pc_path)
-        points = np.array(data[:, :3], dtype=np.float32)
-
-        if (self.split != 'test'):
-            labels = np.array(data[:, 3], dtype=np.int32)
-            feat = data[:, 4:] if data.shape[1] > 4 else None
-        else:
-            feat = np.array(data[:, 3:],
-                            dtype=np.float32) if data.shape[1] > 3 else None
-            labels = np.zeros((points.shape[0],), dtype=np.int32)
-
-        data = {'point': points, 'feat': feat, 'label': labels}
-
-        return data
-
-    def get_attr(self, idx):
-        pc_path = Path(self.path_list[idx])
-        name = pc_path.name.replace('.npy', '')
-
-        attr = {'name': name, 'path': str(pc_path), 'split': self.split}
-
-        return attr
-
-
 class Custom3D(BaseDataset):
     """
-    A template for customized datasetthat you can use with a dataloader to feed data when training a model. This inherits all functions from the base dataset and can be modified by users.
+    A template for customized dataset that you can use with a data loader to feed data when training a model.
+    This inherits all functions from the base dataset and can be modified by users.
     Initialize the function by passing the dataset and other details.
     
     Args:
@@ -123,12 +79,12 @@ class Custom3D(BaseDataset):
     @staticmethod
     def get_label_to_names():
         """
-                Returns a label to names dictonary object.
-        
+        Returns a label to names dictonary object.
+
         Returns:
-            A dict where keys are label numbers and 
+            A dict where keys are label numbers and
             values are the corresponding names.
-    """
+        """
 
         label_to_names = {
             0: 'Unclassified',
@@ -166,8 +122,8 @@ class Custom3D(BaseDataset):
         Returns:
             A dataset split object providing the requested subset of the data.
                                                 
-                                Raises:
-                                     ValueError: Indicates that the split name passed is incorrect. The split name should be one of
+        Raises:
+             ValueError: Indicates that the split name passed is incorrect. The split name should be one of
             'training', 'test', 'validation', or 'all'.
         """
 
@@ -184,16 +140,17 @@ class Custom3D(BaseDataset):
             files = self.val_files + self.train_files + self.test_files
             return files
         else:
+            """Checks if a datum in the dataset has been tested.
+            
+            Args:
+                dataset: The current dataset to which the datum belongs to.
+                                                    attr: The attribute that needs to be checked.
+            
+            Returns:
+                If the dataum attribute is tested, then resturn the path where the attribute is stored;
+                else, returns false.
+            """
             raise ValueError("Invalid split {}".format(split))
-        """Checks if a datum in the dataset has been tested.
-        
-        Args:
-            dataset: The current dataset to which the datum belongs to.
-                                                attr: The attribute that needs to be checked.
-
-        Returns:
-            If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
-    """
 
     def is_tested(self, attr):
 
@@ -213,7 +170,7 @@ class Custom3D(BaseDataset):
         Args:
             results: The output of a model for the datum associated with the attribute passed.
             attr: The attributes that correspond to the outputs passed in results.
-    """
+        """
 
         cfg = self.cfg
         name = attr['name']
@@ -225,6 +182,49 @@ class Custom3D(BaseDataset):
 
         store_path = join(path, name + '.npy')
         np.save(store_path, pred)
+
+
+class Custom3DSplit(BaseDatasetSplit):
+    """This class is used to create a custom dataset split.
+    Initialize the class.
+    Args:
+        dataset: The dataset to split.
+        split: A string identifying the dataset split that is usually one of 'training', 'test', 'validation', or 'all'.
+        **kwargs: The configuration of the model as keyword arguments.
+    Returns:
+        A dataset split object providing the requested subset of the data.
+    """
+
+    def __init__(self, dataset, split='training'):
+        super().__init__(dataset, split=split)
+
+    def __len__(self):
+        return len(self.path_list)
+
+    def get_data(self, idx):
+        pc_path = self.path_list[idx]
+        data = np.load(pc_path)
+        points = np.array(data[:, :3], dtype=np.float32)
+
+        if (self.split != 'test'):
+            labels = np.array(data[:, 3], dtype=np.int32)
+            feat = data[:, 4:] if data.shape[1] > 4 else None
+        else:
+            feat = np.array(data[:, 3:],
+                            dtype=np.float32) if data.shape[1] > 3 else None
+            labels = np.zeros((points.shape[0],), dtype=np.int32)
+
+        data = {'point': points, 'feat': feat, 'label': labels}
+
+        return data
+
+    def get_attr(self, idx):
+        pc_path = Path(self.path_list[idx])
+        name = pc_path.name.replace('.npy', '')
+
+        attr = {'name': name, 'path': str(pc_path), 'split': self.split}
+
+        return attr
 
 
 DATASET._register_module(Custom3D)
