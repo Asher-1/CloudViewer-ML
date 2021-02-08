@@ -218,7 +218,7 @@ class KITTI(BaseDataset):
         file_list = []
 
         if split in ['train', 'training']:
-            seq_list = cfg.training_split
+            # seq_list = cfg.training_split
             return self.train_files
         elif split in ['test', 'testing']:
             return self.test_files
