@@ -42,20 +42,20 @@ class Semantic3D(BaseDataset):
                  test_result_folder='./test',
                  **kwargs):
         """
-		Initialize the function by passing the dataset and other details.
+        Initialize the function by passing the dataset and other details.
 
-		Args:
-			dataset_path: The path to the dataset to use.
-			name: The name of the dataset (Semantic3D in this case).
-			cache_dir: The directory where the cache is stored.
-			use_cache: Indicates if the dataset should be cached.
-			num_points: The maximum number of points to use when splitting the dataset.
-			class_weights: The class weights to use in the dataset.
-			ignored_label_inds: A list of labels that should be ignored in the dataset.
-			val_files: The files with the data.
-			test_result_folder: The folder where the test results should be stored.
+        Args:
+            dataset_path: The path to the dataset to use.
+            name: The name of the dataset (Semantic3D in this case).
+            cache_dir: The directory where the cache is stored.
+            use_cache: Indicates if the dataset should be cached.
+            num_points: The maximum number of points to use when splitting the dataset.
+            class_weights: The class weights to use in the dataset.
+            ignored_label_inds: A list of labels that should be ignored in the dataset.
+            val_files: The files with the data.
+            test_result_folder: The folder where the test results should be stored.
 
-		Returns:
+        Returns:
             class: The corresponding class.
         """
         super().__init__(dataset_path=dataset_path,
@@ -218,8 +218,6 @@ class Semantic3DSplit(BaseDatasetSplit):
 
     def __init__(self, dataset, split='training'):
         super().__init__(dataset, split=split)
-
-        log.info("Found {} pointclouds for {}".format(len(self.path_list), split))
 
     def __len__(self):
         return len(self.path_list)

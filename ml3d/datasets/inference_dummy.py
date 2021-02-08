@@ -17,7 +17,7 @@ class InferenceDummySplit(BaseDatasetSplit):
     def __init__(self, inference_data):
         self.split = 'test'
         self.inference_data = inference_data
-        self.cfg = {}
+        super().__init__(inference_data, split=self.split)
         sampler_cls = get_module('sampler', 'SemSegSpatiallyRegularSampler')
         self.sampler = sampler_cls(self)
 

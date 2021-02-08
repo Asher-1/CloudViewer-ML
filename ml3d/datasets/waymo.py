@@ -19,7 +19,8 @@ log = logging.getLogger(__name__)
 
 class Waymo(BaseDataset):
     """
-    Waymo 3D dataset for Object Detection, used in visualizer, training, or test
+    This class is used to create a dataset based on the Waymo 3D dataset, and used in object detection, visualizer,
+     training, or testing. The Waymo 3D dataset is best suited for autonomous driving applications.
     """
 
     def __init__(self,
@@ -30,10 +31,16 @@ class Waymo(BaseDataset):
                  val_split=3,
                  **kwargs):
         """
-        Initialize
+        Initialize the function by passing the dataset and other details.
+
         Args:
-            dataset_path (str): path to the dataset
-            kwargs:
+            dataset_path: The path to the dataset to use.
+            name: The name of the dataset (Waymo in this case).
+            cache_dir: The directory where the cache is stored.
+            use_cache: Indicates if the dataset should be cached.
+            val_split: The split value to get a set of images for training, validation, for testing.
+        Returns:
+            class: The corresponding class.
         """
 
         super().__init__(dataset_path=dataset_path,
@@ -68,6 +75,14 @@ class Waymo(BaseDataset):
 
     @staticmethod
     def get_label_to_names():
+        """
+        Returns a label to names dictonary object.
+
+        Returns:
+            A dict where keys are label numbers and
+            values are the corresponding names.
+        """
+
         label_to_names = {
             0: 'PEDESTRIAN',
             1: 'VEHICLE',
@@ -78,12 +93,24 @@ class Waymo(BaseDataset):
 
     @staticmethod
     def read_lidar(path):
+        """
+        Reads lidar data from the path provided.
+
+        Returns:
+            A data object with lidar information.
+        """
         assert Path(path).exists()
 
         return np.fromfile(path, dtype=np.float32).reshape(-1, 6)
 
     @staticmethod
     def read_label(path, calib):
+        """
+        Reads labels of bound boxes.
+
+        Returns:
+            The data objects with bound boxes information.
+        """
         if not Path(path).exists():
             return None
 
@@ -106,6 +133,12 @@ class Waymo(BaseDataset):
 
     @staticmethod
     def read_calib(path):
+        """
+        Reads calibiration for the dataset. You can use them to compare modeled results to observed results.
+
+        Returns:
+            The camera and the camera image used in calibration.
+        """
         assert Path(path).exists()
 
         with open(path, 'r') as f:
@@ -142,29 +175,66 @@ class Waymo(BaseDataset):
         return {'world_cam': world_cam, 'cam_img': cam_img}
 
     def get_split(self, split):
+        """Returns a dataset split.
+
+        Args:
+            split: A string identifying the dataset split that is usually one of
+            'training', 'test', 'validation', or 'all'.
+
+        Returns:
+            A dataset split object providing the requested subset of the data.
+        """
         return WaymoSplit(self, split=split)
 
     def get_split_list(self, split):
+        """Returns the list of data splits available.
+
+        Args:
+            split: A string identifying the dataset split that is usually one of
+            'training', 'test', 'validation', or 'all'.
+
+        Returns:
+            A dataset split object providing the requested subset of the data.
+
+        Raises:
+            ValueError: Indicates that the split name passed is incorrect. The split name should be one of
+            'training', 'test', 'validation', or 'all'.
+        """
         cfg = self.cfg
         dataset_path = cfg.dataset_path
         file_list = []
 
         if split in ['train', 'training']:
-            return self.train_files
             seq_list = cfg.training_split
+            return self.train_files
         elif split in ['test', 'testing']:
             return self.test_files
         elif split in ['val', 'validation']:
-            return val_files
+            return self.val_files
         elif split in ['all']:
             return self.train_files + self.val_files + self.test_files
         else:
             raise ValueError("Invalid split {}".format(split))
 
-    def is_tested():
+    def is_tested(self, attr):
+        """Checks if a datum in the dataset has been tested.
+
+        Args:
+            dataset: The current dataset to which the datum belongs to.
+            attr: The attribute that needs to be checked.
+
+        Returns:
+            If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
+        """
         pass
 
-    def save_test_result():
+    def save_test_result(self, results, attr):
+        """Saves the output of a model.
+
+        Args:
+            results: The output of a model for the datum associated with the attribute passed.
+            attr: The attributes that correspond to the outputs passed in results.
+        """
         pass
 
 
@@ -172,8 +242,6 @@ class WaymoSplit(BaseDatasetSplit):
 
     def __init__(self, dataset, split='train'):
         super().__init__(dataset, split=split)
-        
-        log.info("Found {} pointclouds for {}".format(len(self.path_list), split))
 
     def __len__(self):
         return len(self.path_list)
@@ -207,7 +275,8 @@ class WaymoSplit(BaseDatasetSplit):
 
 class Object3d(BEVBox3D):
     """
-    Stores object specific details like bbox coordinates, occlusion etc.
+    The class stores details that are object-specific, such as bounding box coordinates, occulusion and so on.
+
     """
 
     def __init__(self, center, size, label, calib):
@@ -237,7 +306,7 @@ class Object3d(BEVBox3D):
 
     def get_difficulty(self):
         """
-        determines the difficulty level of object.
+        The method determines difficulty level of the object, such as Easy, Moderate, or Hard.
         """
         height = float(self.box2d[3]) - float(self.box2d[1]) + 1
 
@@ -256,14 +325,19 @@ class Object3d(BEVBox3D):
 
     def to_str(self):
         print_str = '%s %.3f %.3f %.3f box2d: %s hwl: [%.3f %.3f %.3f] pos: %s ry: %.3f' \
-                     % (self.label_class, self.truncation, self.occlusion, self.alpha, self.box2d, self.size[2], self.size[0], self.size[1],
-                        self.center, self.yaw)
+                    % (self.label_class, self.truncation, self.occlusion, self.alpha, self.box2d, self.size[2],
+                       self.size[0], self.size[1],
+                       self.center, self.yaw)
         return print_str
 
     def to_kitti_format(self):
+        """
+        This method transforms the class to kitti format.
+        """
         kitti_str = '%s %.2f %d %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f' \
                     % (self.label_class, self.truncation, int(self.occlusion), self.alpha, self.box2d[0], self.box2d[1],
-                       self.box2d[2], self.box2d[3], self.size[2], self.size[0], self.size[1], self.center[0], self.center[1], self.center[2],
+                       self.box2d[2], self.box2d[3], self.size[2], self.size[0], self.size[1], self.center[0],
+                       self.center[1], self.center[2],
                        self.yaw)
         return kitti_str
 

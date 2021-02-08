@@ -125,10 +125,10 @@ class BaseDatasetSplit(ABC):
 
     def __init__(self, dataset, split='training'):
         self.cfg = dataset.cfg
-        path_list = dataset.get_split_list(split)
-        self.path_list = path_list
+        self.path_list = dataset.get_split_list(split)
         self.split = split
         self.dataset = dataset
+        log.info("Found {} pointclouds for {}".format(len(self.path_list), split))
 
         if split in ['test']:
             sampler_cls = get_module('sampler', 'SemSegSpatiallyRegularSampler')

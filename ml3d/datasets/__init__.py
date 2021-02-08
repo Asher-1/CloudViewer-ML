@@ -19,10 +19,12 @@ from .waymo import Waymo
 from .lyft import Lyft
 from .shapenet import ShapeNet
 from .argoverse import Argoverse
+from .scannet import Scannet
+from .sunrgbd import SunRGBD
 
 __all__ = [
     'SemanticKITTI', 'S3DIS', 'Toronto3D', 'ParisLille3D', 'Electricity3D', 'Semantic3D',
     'Custom3D', 'utils', 'KITTI', 'Waymo', 'NuScenes', 'Lyft', 'ShapeNet',
     'SemSegRandomSampler', 'InferenceDummySplit',
-    'SemSegSpatiallyRegularSampler', 'Argoverse'
+    'SemSegSpatiallyRegularSampler', 'Argoverse', 'Scannet', 'SunRGBD'
 ]

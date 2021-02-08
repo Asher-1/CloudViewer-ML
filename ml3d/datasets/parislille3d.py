@@ -20,8 +20,9 @@ log = logging.getLogger(__name__)
 
 class ParisLille3D(BaseDataset):
     """
-    This class is used to create a dataset based on the ParisLille3D dataset, and used in visualizer, training, or testing. The ParisLille3D dataset is best used to train models for urban infrastructure. 
-	You can download the dataset from https://npm3d.fr/paris-lille-3d.
+    This class is used to create a dataset based on the ParisLille3D dataset, and used in visualizer, training, or testing.
+    The ParisLille3D dataset is best used to train models for urban infrastructure.
+    You can download the dataset from https://npm3d.fr/paris-lille-3d.
     """
 
     def __init__(self,
@@ -34,19 +35,19 @@ class ParisLille3D(BaseDataset):
                  val_files=['Lille2.ply'],
                  **kwargs):
         """
-		Initialize the function by passing the dataset and other details.
-	
-		Args:
-			dataset_path: The path to the dataset to use.
-			name: The name of the dataset (ParisLille3D in this case).
-			cache_dir: The directory where the cache is stored.
-			use_cache: Indicates if the dataset should be cached.
-			num_points: The maximum number of points to use when splitting the dataset.
-			ignored_label_inds: A list of labels that should be ignored in the dataset.
-			test_result_folder: The folder where the test results should be stored.
-			val_files: The files that include the values.
-	
-		"""
+        Initialize the function by passing the dataset and other details.
+
+        Args:
+            dataset_path: The path to the dataset to use.
+            name: The name of the dataset (ParisLille3D in this case).
+            cache_dir: The directory where the cache is stored.
+            use_cache: Indicates if the dataset should be cached.
+            num_points: The maximum number of points to use when splitting the dataset.
+            ignored_label_inds: A list of labels that should be ignored in the dataset.
+            test_result_folder: The folder where the test results should be stored.
+            val_files: The files that include the values.
+
+        """
         super().__init__(dataset_path=dataset_path,
                          name=name,
                          cache_dir=cache_dir,
@@ -80,12 +81,12 @@ class ParisLille3D(BaseDataset):
     @staticmethod
     def get_label_to_names():
         """
-	Returns a label to names dictonary object.
-        
+        Returns a label to names dictonary object.
+
         Returns:
-            A dict where keys are label numbers and 
+            A dict where keys are label numbers and
             values are the corresponding names.
-    """
+        """
         label_to_names = {
             0: 'unclassified',
             1: 'ground',
@@ -101,31 +102,31 @@ class ParisLille3D(BaseDataset):
         return label_to_names
 
     def get_split(self, split):
-        return ParisLille3DSplit(self, split=split)
         """Returns a dataset split.
-        
+
         Args:
             split: A string identifying the dataset split that is usually one of
             'training', 'test', 'validation', or 'all'.
 
         Returns:
             A dataset split object providing the requested subset of the data.
-	"""
+        """
+        return ParisLille3DSplit(self, split=split)
 
     def get_split_list(self, split):
         """Returns a dataset split.
-        
+
         Args:
             split: A string identifying the dataset split that is usually one of
             'training', 'test', 'validation', or 'all'.
 
         Returns:
             A dataset split object providing the requested subset of the data.
-			
-		Raises:
-			ValueError: Indicates that the split name passed is incorrect. The split name should be one of
+
+        Raises:
+            ValueError: Indicates that the split name passed is incorrect. The split name should be one of
             'training', 'test', 'validation', or 'all'.
-    """
+        """
         if split in ['test', 'testing']:
             files = self.test_files
         elif split in ['train', 'training']:
@@ -141,15 +142,15 @@ class ParisLille3D(BaseDataset):
 
     def is_tested(self, attr):
         """Checks if a datum in the dataset has been tested.
-        
-        Args:
-            dataset: The current dataset to which the datum belongs to.
-			attr: The attribute that needs to be checked.
+            Args:
+                dataset: The current dataset to which the datum belongs to.
+                attr: The attribute that needs to be checked.
 
-        Returns:
-            If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
-			
-	"""
+            Returns:
+                If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
+
+        """
+
         cfg = self.cfg
         name = attr['name']
         path = cfg.test_result_folder
