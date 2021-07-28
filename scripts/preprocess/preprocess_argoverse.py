@@ -19,9 +19,11 @@ def parse_args():
     parser.add_argument('--dataset_path',
                         help='path to Argoverse root',
                         required=True)
-    parser.add_argument('--out_path',
-                        help='Output path to store infos',
-                        required=True)
+    parser.add_argument(
+        '--out_path',
+        help='Output path to store pickle (default to dataet_path)',
+        default=None,
+        required=False)
 
     parser.add_argument('--version',
                         help='one of {train, val, test, sample}',
@@ -40,7 +42,9 @@ def parse_args():
 
 class ArgoverseProcess():
     """Preprocess Argoverse.
+
     This class collects paths and labels using argoverse-api.
+
     Args:
         dataset_path (str): Directory to load argoverse data.
         out_path (str): Directory to save pickle file(infos).
@@ -91,10 +95,9 @@ class ArgoverseProcess():
 
         bbox_all = []
 
-        for idx in tqdm(range(num_pc)):
+        for idx in tqdm(range(len(lidar_path))):
             boxes = []
             labels = scene.get_label_object(idx)
-
             for label in labels:
                 box = {}
                 box['l'] = label.length
@@ -118,5 +121,8 @@ class ArgoverseProcess():
 
 if __name__ == '__main__':
     args = parse_args()
+    out_path = args.out_path
+    if out_path is None:
+        args.out_path = args.dataset_path
     converter = ArgoverseProcess(args.dataset_path, args.out_path, args.version)
     converter.convert()

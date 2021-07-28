@@ -22,8 +22,9 @@ from cloudViewer.ml.tf.ops import batch_ordered_neighbors as tf_batch_neighbors
 
 
 class KPFCNN(BaseModel):
-    """
-    Class defining KPFCNN. A model for Semantic Segmentation.
+    """Class defining KPFCNN.
+
+    A model for Semantic Segmentation.
     """
 
     def __init__(
@@ -124,7 +125,7 @@ class KPFCNN(BaseModel):
         cfg = self.cfg
 
         # From config parameter, compute higher bound of neighbors number in a neighborhood
-        hist_n = int(np.ceil(4 / 3 * np.pi * (cfg.density_parameter + 1)**3))
+        hist_n = int(np.ceil(4 / 3 * np.pi * (cfg.density_parameter + 1) ** 3))
 
         # Initiate neighbors limit with higher bound
         self.neighborhood_limits = []
@@ -158,8 +159,8 @@ class KPFCNN(BaseModel):
 
             # Detect change to next layer for skip connection
             if np.any([
-                    tmp in block
-                    for tmp in ['pool', 'strided', 'upsample', 'global']
+                tmp in block
+                for tmp in ['pool', 'strided', 'upsample', 'global']
             ]):
                 self.encoder_skips.append(block_i)
                 self.encoder_skip_dims.append(in_dim)
@@ -313,8 +314,8 @@ class KPFCNN(BaseModel):
         return optimizer
 
     def get_loss(self, Loss, logits, inputs):
-        """
-        Runs the loss on outputs of the model
+        """Runs the loss on outputs of the model.
+
         :param outputs: logits
         :param labels: labels
         :return: loss
@@ -330,9 +331,10 @@ class KPFCNN(BaseModel):
         return loss, labels, scores
 
     def big_neighborhood_filter(self, neighbors, layer):
-        """
-        Filter neighborhoods with max number of neighbors. Limit is set to keep XX% of the neighborhoods untouched.
-        Limit is computed at initialization
+        """Filter neighborhoods with max number of neighbors.
+
+        Limit is set to keep XX% of the neighborhoods untouched. Limit is
+        computed at initialization
         """
         # crop neighbors matrix
         if len(self.neighborhood_limits) > 0:
@@ -341,11 +343,12 @@ class KPFCNN(BaseModel):
             return neighbors
 
     def get_batch_inds(self, stacks_len):
-        """
-        Method computing the batch indices of all points, given the batch element sizes (stack lengths). Example:
+        """Method computing the batch indices of all points, given the batch
+        element sizes (stack lengths).
+
+        Example:
         From [3, 2, 5], it would return [0, 0, 0, 1, 1, 2, 2, 2, 2, 2]
         """
-
         # Initiate batch inds tensor
         num_batches = tf.shape(stacks_len)[0]
         num_points = tf.reduce_sum(stacks_len)
@@ -353,7 +356,6 @@ class KPFCNN(BaseModel):
 
         # Define body of the while loop
         def body(batch_i, point_i, b_inds):
-
             num_in = stacks_len[batch_i]
             num_before = tf.cond(tf.less(batch_i, 1), lambda: tf.zeros(
                 (), dtype=tf.int32),
@@ -399,11 +401,10 @@ class KPFCNN(BaseModel):
 
         # Define body of the while loop
         def body(batch_i, point_i, b_inds):
-
             # Create this element indices
             element_inds = tf.expand_dims(tf.range(
                 point_i, point_i + stacks_len[batch_i]),
-                                          axis=0)
+                axis=0)
 
             # Pad to right size
             padded_inds = tf.pad(
@@ -669,9 +670,7 @@ class KPFCNN(BaseModel):
                   point_inds,
                   cloud_inds,
                   is_test=False):
-        """
-        [None, 3], [None, 3], [None], [None]
-        """
+        """[None, 3], [None, 3], [None], [None]"""
         cfg = self.cfg
         # Get batch indice for each point
         batch_inds = self.get_batch_inds(stacks_lengths)
@@ -765,7 +764,7 @@ class KPFCNN(BaseModel):
         for len in self.test_meta['lens']:
             r += len
             self.test_probs[inds[l:r]] = self.test_probs[
-                inds[l:r]] * test_smooth + (1 - test_smooth) * results[l:r]
+                                             inds[l:r]] * test_smooth + (1 - test_smooth) * results[l:r]
             l += len
 
         self.pbar.update(self.possibility[self.possibility > 0.5].shape[0] -
@@ -813,7 +812,7 @@ class KPFCNN(BaseModel):
 
             dists = np.sum(np.square(
                 (points[input_inds] - pick_point).astype(np.float32)),
-                           axis=1)
+                axis=1)
             tuckeys = np.square(1 - dists / np.square(cfg.in_radius))
             tuckeys[dists > np.square(cfg.in_radius)] = 0
             self.possibility[input_inds] += tuckeys

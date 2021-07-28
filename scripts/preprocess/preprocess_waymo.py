@@ -26,7 +26,11 @@ def parse_args():
     parser.add_argument('--dataset_path',
                         help='path to Waymo tfrecord files',
                         required=True)
-    parser.add_argument('--out_path', help='Output path', required=True)
+    parser.add_argument(
+        '--out_path',
+        help='Output path to store pickle (default to dataet_path)',
+        default=None,
+        required=False)
 
     parser.add_argument('--workers',
                         help='Number of workers.',
@@ -51,7 +55,9 @@ def parse_args():
 
 class Waymo2KITTI():
     """Waymo to KITTI converter.
+
     This class converts tfrecord files from Waymo dataset to KITTI format.
+
     Args:
         dataset_path (str): Directory to load waymo raw data.
         save_dir (str): Directory to save data in KITTI format.
@@ -444,6 +450,9 @@ class Waymo2KITTI():
 
 if __name__ == '__main__':
     args = parse_args()
+    out_path = args.out_path
+    if out_path is None:
+        args.out_path = args.dataset_path
     converter = Waymo2KITTI(args.dataset_path, args.out_path, args.workers,
                             args.is_test)
     converter.convert()

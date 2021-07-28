@@ -1,14 +1,11 @@
-import cloudViewer as cv3d
 import numpy as np
-import os, argparse, pickle, sys
-from os.path import exists, join, isfile, dirname, abspath, split
+import os, pickle
+from os.path import join
 from pathlib import Path
-from glob import glob
 import logging
-import yaml
 
 from .base_dataset import BaseDataset, BaseDatasetSplit
-from ..utils import Config, make_dir, DATASET
+from ..utils import DATASET
 from .utils import BEVBox3D
 
 logging.basicConfig(
@@ -19,8 +16,8 @@ log = logging.getLogger(__name__)
 
 
 class SunRGBD(BaseDataset):
-    """
-    SunRGBD 3D dataset for Object Detection, used in visualizer, training, or test
+    """SunRGBD 3D dataset for Object Detection, used in visualizer, training, or
+    test.
     """
 
     def __init__(self,
@@ -29,11 +26,13 @@ class SunRGBD(BaseDataset):
                  cache_dir='./logs/cache',
                  use_cache=False,
                  **kwargs):
-        """
-        Initialize
+        """Initialize the dataset by passing the dataset and other details.
+
         Args:
-            dataset_path (str): path to the dataset
-            kwargs:
+            dataset_path (str): The path to the dataset to use.
+            name (str): The name of the dataset (SunRGBD in this case).
+            cache_dir (str): The directory where the cache is stored.
+            use_cache (bool): Indicates if the dataset should be cached.
         """
         super().__init__(dataset_path=dataset_path,
                          name=name,
@@ -80,7 +79,6 @@ class SunRGBD(BaseDataset):
 
     @staticmethod
     def read_lidar(path):
-        print(path)
         assert Path(path).exists()
         data = np.load(path).astype(np.float32)
 
@@ -151,7 +149,7 @@ class SunRGBDSplit(BaseDatasetSplit):
 
         data = {
             'point': pc,
-            'feat': feat,
+            'feat': feat[:, [2, 1, 0]],
             'calib': None,
             'bounding_boxes': bboxes,
         }

@@ -18,9 +18,10 @@ log = logging.getLogger(__name__)
 
 
 class ShapeNet(BaseDataset):
-    """
-    This class is used to create a dataset based on the ShapeNet dataset, and used in object detection, visualizer,
-     training, or testing. The ShapeNet dataset includes a large set of 3D shapes.
+    """This class is used to create a dataset based on the ShapeNet dataset, and
+    used in object detection, visualizer, training, or testing.
+
+    The ShapeNet dataset includes a large set of 3D shapes.
     """
 
     def __init__(self,
@@ -34,8 +35,7 @@ class ShapeNet(BaseDataset):
                  test_result_folder='./test',
                  task="classification",
                  **kwargs):
-        """
-        Initialize the function by passing the dataset and other details.
+        """Initialize the function by passing the dataset and other details.
 
         Args:
             dataset_path: The path to the dataset to use.
@@ -121,13 +121,12 @@ class ShapeNet(BaseDataset):
 
     @staticmethod
     def get_label_to_names(task="classification"):
-        """
-        Returns a label to names dictonary object depending on the task.
-        The valid values for task for classification and segmentation.
+        """Returns a label to names dictonary object depending on the task. The
+        valid values for task for classification and segmentation.
 
         Returns:
-            A dict where keys are label numbers and
-            values are the corresponding names.
+            A dict where keys are label numbers and values are the corresponding
+            names.
         """
         if task == "classification":
             label_to_names = {
@@ -198,12 +197,11 @@ class ShapeNet(BaseDataset):
         """Checks if a datum in the dataset has been tested.
 
         Args:
-            dataset: The current dataset to which the datum belongs to.
             attr: The attribute that needs to be checked.
 
         Returns:
-            If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
-
+            If the datum attribute is tested, then return the path where the
+                attribute is stored; else, returns false.
         """
         cfg = self.cfg
         name = attr['name']
@@ -236,15 +234,15 @@ class ShapeNet(BaseDataset):
 
 
 class ShapeNetSplit(BaseDatasetSplit):
+    """The class gets data and atributes based on the split and
+    classification.
     """
-    The class gets data and attributes based on the split and classification.
 
-    """
     def __init__(self, dataset, split='training', task='classification'):
         assert task in ['classification', 'segmentation'], f"Invalid task {task}"
 
         super().__init__(dataset, split=split)
-        
+
         self.task = task
 
     def __len__(self):
@@ -256,7 +254,7 @@ class ShapeNetSplit(BaseDatasetSplit):
         label = np.loadtxt(
             path[2],
             dtype=np.int64) if self.task == 'segmentation' else np.array(
-                [np.int64(path[0])])
+            [np.int64(path[0])])
         return {'point': points, 'feat': None, 'label': label}
 
     def get_attr(self, idx):

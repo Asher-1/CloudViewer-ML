@@ -1,4 +1,3 @@
-
 <p align="center">
 <img src="https://github.com/Asher-1/CloudViewer-ML/blob/main/docs/images/erow_logo_1024.png" height="256" width="512" />
 <span style="font-size: 220%"><b>ML</b></span>
@@ -9,31 +8,31 @@
 ![PyTorch badge](https://img.shields.io/badge/PyTorch-supported-brightgreen?style=flat&logo=pytorch)
 ![TensorFlow badge](https://img.shields.io/badge/TensorFlow-supported-brightgreen?style=flat&logo=tensorflow)
 
-[**Installation**](#installation) | [**Get started**](#getting-started) | [**Structure**](#repository-structure) | [**Tasks & Algorithms**](#tasks-and-algorithms) | [**Model Zoo**](model_zoo.md) | [**Datasets**](#datasets) | [**How-tos**](#how-tos) | [**Contribute**](#contribute)
+[**Installation**](#installation) | [**Get started**](#getting-started) | [**Structure**](#repository-structure) | [**
+Tasks & Algorithms**](#tasks-and-algorithms) | [**Model Zoo**](model_zoo.md) | [**Datasets**](#datasets) | [**
+How-tos**](#how-tos) | [**Contribute**](#contribute)
 
-CloudViewer-ML is an extension of CloudViewer for 3D machine learning tasks.
-It builds on top of the CloudViewer core library and extends it with machine learning
-tools for 3D data processing. This repo focuses on applications such as semantic
-point cloud segmentation and provides pretrained models that can be applied to
-common tasks as well as pipelines for training.
+CloudViewer-ML is an extension of CloudViewer for 3D machine learning tasks. It builds on top of the CloudViewer core
+library and extends it with machine learning tools for 3D data processing. This repo focuses on applications such as
+semantic point cloud segmentation and provides pretrained models that can be applied to common tasks as well as
+pipelines for training.
 
-CloudViewer-ML works with **TensorFlow** and **PyTorch** to integrate easily into
-existing projects and also provides general functionality independent of
-ML frameworks such as data visualization.
-
+CloudViewer-ML works with **TensorFlow** and **PyTorch** to integrate easily into existing projects and also provides
+general functionality independent of ML frameworks such as data visualization.
 
 ## Installation
 
 ### Users
 
-CloudViewer-ML is integrated in the CloudViewer v0.3.7+ python distribution and is
-compatible with the following versions of ML frameworks.
+CloudViewer-ML is integrated in the CloudViewer v0.3.7+ python distribution and is compatible with the following
+versions of ML frameworks.
 
- * PyTorch 1.6
- * TensorFlow 2.3
- * CUDA 10.1 (On `GNU/Linux x86_64`, optional)
+* PyTorch 1.7
+* TensorFlow 2.4
+* CUDA 10.1, 11.* (On `GNU/Linux x86_64`, optional)
 
 You can install CloudViewer with
+
 ```bash
 # make sure you have the latest pip version
 pip install --upgrade pip
@@ -41,8 +40,8 @@ pip install --upgrade pip
 pip install cloudViewer
 ```
 
-To install a compatible version of PyTorch or TensorFlow you can use the
-respective requirements files:
+To install a compatible version of PyTorch or TensorFlow you can use the respective requirements files:
+
 ```bash
 # To install a compatible version of TensorFlow
 pip install -r requirements-tensorflow.txt
@@ -59,16 +58,15 @@ $ python -c "import cloudViewer.ml.torch as ml3d"
 $ python -c "import cloudViewer.ml.tf as ml3d"
 ```
 
-If you need to use different versions of the ML frameworks or CUDA we recommend
-to 
+If you need to use different versions of the ML frameworks or CUDA we recommend to
 [build CloudViewer from source](http://www.erow.cn/docs/release/compilation.html).
 
 ## Getting started
 
 ### Reading a dataset
 
-The dataset namespace contains classes for reading common datasets. Here we
-read the SemanticKITTI dataset and visualize it.
+The dataset namespace contains classes for reading common datasets. Here we read the SemanticKITTI dataset and visualize
+it.
 
 ```python
 import cloudViewer.ml.torch as ml3d  # or cloudViewer.ml.tf as ml3d
@@ -89,15 +87,20 @@ print(all_split.get_data(0)['point'].shape)
 vis = ml3d.vis.Visualizer()
 vis.visualize_dataset(dataset, 'all', indices=range(100))
 ```
+
 ![Visualizer GIF](docs/images/getting_started_ml_visualizer.gif)
 
 ### Loading a config file
-Configs of models, datasets, and pipelines are stored in `ml3d/configs`. Users can also construct their own yaml files to keep record of their customized configurations. Here is an example of reading a config file and constructing modules from it.
+
+Configs of models, datasets, and pipelines are stored in `ml3d/configs`. Users can also construct their own yaml files
+to keep record of their customized configurations. Here is an example of reading a config file and constructing modules
+from it.
+
 ```python
 import cloudViewer.ml as _ml3d
-import cloudViewer.ml.torch as ml3d # or cloudViewer.ml.tf as ml3d  
+import cloudViewer.ml.torch as ml3d  # or cloudViewer.ml.tf as ml3d  
 
-framework = "torch" # or tf
+framework = "torch"  # or tf
 cfg_file = "ml3d/configs/randlanet_semantickitti.yml"
 cfg = _ml3d.utils.Config.load_from_file(cfg_file)
 
@@ -117,10 +120,9 @@ pipeline = Pipeline(model, dataset, **cfg.pipeline)
 
 #### Running a pretrained model for semantic segmentation
 
-Building on the previous example we can instantiate a pipeline with a
-pretrained model for semantic segmentation and run it on a point cloud of our
-dataset. See the [model zoo](#model-zoo) for obtaining the weights of the
-pretrained model.
+Building on the previous example we can instantiate a pipeline with a pretrained model for semantic segmentation and run
+it on a point cloud of our dataset. See the [model zoo](#model-zoo) for obtaining the weights of the pretrained model.
+
 ```python
 import os
 import cloudViewer.ml as _ml3d
@@ -142,7 +144,7 @@ randlanet_url = "https://storage.googleapis.com/cloudViewer-releases/model-zoo/r
 if not os.path.exists(ckpt_path):
     cmd = "wget {} -O {}".format(randlanet_url, ckpt_path)
     os.system(cmd)
-    
+
 # load the parameters.
 pipeline.load_ckpt(ckpt_path=ckpt_path)
 
@@ -156,13 +158,12 @@ result = pipeline.run_inference(data)
 # evaluate performance on the test set; this will write logs to './logs'.
 pipeline.run_test()
 ```
-Users can also [use predefined scripts](README.md#using-predefined-scripts) to load pretrained weights and run testing.
 
+Users can also [use predefined scripts](README.md#using-predefined-scripts) to load pretrained weights and run testing.
 
 #### Training a model for semantic segmentation
 
-Similar as for inference, pipelines provide an interface for training a model on
-a dataset.
+Similar as for inference, pipelines provide an interface for training a model on a dataset.
 
 ```python
 # use a cache for storing the results of the preprocessing (default path is './logs/cache')
@@ -180,11 +181,14 @@ pipeline.run_train()
 For more examples see [`examples/`](https://github.com/Asher-1/CloudViewer-ML/tree/master/examples)
 and the [`scripts/`](https://github.com/Asher-1/CloudViewer-ML/tree/master/scripts) directories.
 
-
 ### 3D Object Detection
 
 #### Running a pretrained model for 3D object detection
-The 3D object detection model is similar to a semantic segmentation model. We can instantiate a pipeline with a pretrained model for Object Detection and run it on a point cloud of our dataset. See the [model zoo](#model-zoo) for obtaining the weights of the pretrained model.
+
+The 3D object detection model is similar to a semantic segmentation model. We can instantiate a pipeline with a
+pretrained model for Object Detection and run it on a point cloud of our dataset. See the [model zoo](#model-zoo) for
+obtaining the weights of the pretrained model.
+
 ```python
 import os
 import cloudViewer.ml as _ml3d
@@ -206,7 +210,7 @@ pointpillar_url = "https://storage.googleapis.com/cloudViewer-releases/model-zoo
 if not os.path.exists(ckpt_path):
     cmd = "wget {} -O {}".format(pointpillar_url, ckpt_path)
     os.system(cmd)
-    
+
 # load the parameters.
 pipeline.load_ckpt(ckpt_path=ckpt_path)
 
@@ -220,12 +224,12 @@ result = pipeline.run_inference(data)
 # evaluate performance on the test set; this will write logs to './logs'.
 pipeline.run_test()
 ```
+
 Users can also [use predefined scripts](README.md#using-predefined-scripts) to load pretrained weights and run testing.
 
-
 #### Training a model for 3D object detection
-Similar as for inference, pipelines provide an interface for training a model on
-a dataset.
+
+Similar as for inference, pipelines provide an interface for training a model on a dataset.
 
 ```python
 # use a cache for storing the results of the preprocessing (default path is './logs/cache')
@@ -243,28 +247,27 @@ pipeline.run_train()
 
 Below is an example of visualization using KITTI. The example shows the use of bounding boxes for the KITTI dataset.
 
-<img width="480" src="https://github.com/intel-isl/Open3D/docs/images/visualizer_BoundingBoxes.png">
+<img width="480" src="https://github.com/Asher-1/ErowCloudViewer/docs/images/visualizer_BoundingBoxes.png">
 
 
-For more examples see [`examples/`](https://github.com/intel-isl/Open3D-ML/tree/master/examples)
-and the [`scripts/`](https://github.com/intel-isl/Open3D-ML/tree/master/scripts) directories.
-
+For more examples see [`examples/`](https://github.com/Asher-1/CloudViewer-ML/tree/master/examples)
+and the [`scripts/`](https://github.com/Asher-1/CloudViewer-ML/tree/master/scripts) directories.
 
 ### Using predefined scripts
 
-[`scripts/run_pipeline.py`](https://github.com/intel-isl/Open3D-ML/tree/master/scripts/run_pipeline.py)
-provides an easy interface for training and evaluating a model on a dataset. It saves
-the trouble of defining specific model and passing exact configuration.
+[`scripts/run_pipeline.py`](https://github.com/Asher-1/CloudViewer-ML/tree/master/scripts/run_pipeline.py)
+provides an easy interface for training and evaluating a model on a dataset. It saves the trouble of defining specific
+model and passing exact configuration.
 
 `python scripts/run_pipeline.py {tf/torch} -c <path-to-config> --pipeline {SemanticSegmentation/ObjectDetection} --<extra args>`
 
-You can use script for both semantic segmentation and object detection. You must specify
-either SemanticSegmentation or ObjectDetection in the `pipeline` parameter.
-Note that `extra args` will be prioritized over the same parameter present in the configuration file.
-So instead of changing param in config file, you may pass the same as a command line argument while launching the script.
-
+You can use script for both semantic segmentation and object detection. You must specify either SemanticSegmentation or
+ObjectDetection in the `pipeline` parameter. Note that `extra args` will be prioritized over the same parameter present
+in the configuration file. So instead of changing param in config file, you may pass the same as a command line argument
+while launching the script.
 
 For eg.
+
 ```
 # Launch training for RandLANet on SemanticKITTI with torch.
 python scripts/run_pipeline.py torch -c ml3d/configs/randlanet_semantickitti.yml --dataset.dataset_path <path-to-dataset> --pipeline SemanticSegmentation --dataset.use_cache True
@@ -273,13 +276,15 @@ python scripts/run_pipeline.py torch -c ml3d/configs/randlanet_semantickitti.yml
 python scripts/run_pipeline.py torch -c ml3d/configs/pointpillars_kitti.yml --split test --dataset.dataset_path <path-to-dataset> --pipeline ObjectDetection --dataset.use_cache True
 
 ```
+
 For further help, run `python scripts/run_pipeline.py --help`.
 
 ## Repository structure
-The core part of CloudViewer-ML lives in the `ml3d` subfolder, which is integrated
-into CloudViewer in the `ml` namespace. In addition to the core part, the directories
-`examples` and `scripts` provide supporting scripts for getting started with
-setting up a training pipeline or running a network on a dataset.
+
+The core part of CloudViewer-ML lives in the `ml3d` subfolder, which is integrated into CloudViewer in the `ml`
+namespace. In addition to the core part, the directories
+`examples` and `scripts` provide supporting scripts for getting started with setting up a training pipeline or running a
+network on a dataset.
 
 ```
 ├─ docs                   # Markdown and rst files for documentation
@@ -306,30 +311,59 @@ setting up a training pipeline or running a network on a dataset.
 
 ### Semantic Segmentation
 
-For the task of semantic segmentation, we measure the performance of different methods using the mean intersection-over-union (mIoU) over all classes.
-The table shows the available models and datasets for the segmentation task and the respective scores. Each score links to the respective weight file.
+For the task of semantic segmentation, we measure the performance of different methods using the mean
+intersection-over-union (mIoU) over all classes. The table shows the available models and datasets for the segmentation
+task and the respective scores. Each score links to the respective weight file.
 
-
-| Model / Dataset    | SemanticKITTI | Toronto 3D | S3DIS | Semantic3D | Paris-Lille3D |
-|--------------------|---------------|----------- |-------|--------------|-------------|
-| RandLA-Net (tf)    | [53.7](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantickitti_202010091306.zip) |  [69.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_toronto3d_202010091250.zip) |  [67.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_s3dis_202010091238.zip)    | [76.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantic3d_202012120312utc.zip) |  [70.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_parislille3d_202012160654utc.zip) |
-| RandLA-Net (torch) | [52.8](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantickitti_202009090354utc.pth)        |     [71.2](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_toronto3D_202010091306.pth)  |  [67.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_s3dis_202010091238.pth)  | [76.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantic3d_202012120312utc.pth) |  [70.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_parislille3d_202012160654utc.pth) |
-| KPConv     (tf)    | [58.7](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_semantickitti_202010021102utc.zip)         |     [65.6](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_toronto3d_202012221551utc.zip)  |  [65.0](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_s3dis_202010091238.zip) | - |  [76.7](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_parislille3d_202011241550utc.zip) |
-| KPConv     (torch) | [58.0](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_semantickitti_202009090354utc.pth)          |     [65.6](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_toronto3d_202012221551utc.pth) |  [60.0](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_s3dis_202010091238.pth)  | - | [76.7](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_parislille3d_202011241550utc.pth) |
-
+| Model / Dataset    | SemanticKITTI | Toronto 3D | S3DIS | Semantic3D | Paris-Lille3D | ScanNet |
+|--------------------|---------------|----------- |-------|--------------|-------------|---------|
+| RandLA-Net (tf)    | [53.7](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantickitti_202010091306.zip) |  [69.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_toronto3d_202010091250.zip) |  [67.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_s3dis_202010091238.zip)    | [76.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantic3d_202012120312utc.zip) |  [70.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_parislille3d_202012160654utc.zip) | - |
+| RandLA-Net (torch) | [52.8](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantickitti_202009090354utc.pth)        |     [71.2](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_toronto3d_202010091306utc.pth)  |  [67.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_s3dis_202010091238.pth)  | [76.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_semantic3d_202012120312utc.pth) |  [70.0](https://storage.googleapis.com/open3d-releases/model-zoo/randlanet_parislille3d_202012160654utc.pth) | - |
+| KPConv     (tf)    | [58.7](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_semantickitti_202010021102utc.zip)         |     [65.6](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_toronto3d_202012221551utc.zip)  |  [65.0](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_s3dis_202010091238.zip) | - |  [76.7](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_parislille3d_202011241550utc.zip) | - |
+| KPConv     (torch) | [58.0](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_semantickitti_202009090354utc.pth)          |     [65.6](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_toronto3d_202012221551utc.pth) |  [60.0](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_s3dis_202010091238.pth)  | - | [76.7](https://storage.googleapis.com/open3d-releases/model-zoo/kpconv_parislille3d_202011241550utc.pth) | - |
+| SparseConvUnet (torch)| - | - | - | - | - | [68](https://storage.googleapis.com/open3d-releases/model-zoo/sparseconvunet_scannet_202105031316utc.pth) |
+| SparseConvUnet (tf)| - | - | - | - | - | [68.2](https://storage.googleapis.com/open3d-releases/model-zoo/sparseconvunet_scannet_202105031316utc.zip) |
 
 ### Object Detection
 
-For the task of object detection, we measure the performance of different methods using the mean average precision (mAP) for bird's eye view (BEV) and 3D.
-The table shows the available models and datasets for the object detection task and the respective scores. Each score links to the respective weight file.
-For the evaluation, the models were evaluated using the validation subset, according to KITTI's validation criteria. The models were trained for three classes (car, pedestrian and cyclist). The calculated values are the mean value over the mAP of all classes for all difficulty levels.
+For the task of object detection, we measure the performance of different methods using the mean average precision (mAP)
+for bird's eye view (BEV) and 3D. The table shows the available models and datasets for the object detection task and
+the respective scores. Each score links to the respective weight file. For the evaluation, the models were evaluated
+using the validation subset, according to KITTI's validation criteria. The models were trained for three classes (car,
+pedestrian and cyclist). The calculated values are the mean value over the mAP of all classes for all difficulty levels.
 
-
-| Model / Dataset    | KITTI [BEV / 3D] |
+| Model / Dataset    | KITTI [BEV / 3D] @ 0.70|
 |--------------------|---------------|
 | PointPillars (tf)    | [61.6 / 55.2](https://storage.googleapis.com/open3d-releases/model-zoo/pointpillars_kitti_202012221652utc.zip) |
 | PointPillars (torch) | [61.2 / 52.8](https://storage.googleapis.com/open3d-releases/model-zoo/pointpillars_kitti_202012221652utc.pth)   |
+| PointRCNN (tf)       | [78.2 / 65.9](https://storage.googleapis.com/open3d-releases/model-zoo/pointrcnn_kitti_202105071146utc.zip) |
+| PointRCNN (torch)    | [78.2 / 65.9](https://storage.googleapis.com/open3d-releases/model-zoo/pointrcnn_kitti_202105071146utc.pth) |
 
+#### Training PointRCNN
+
+To use ground truth sampling data augmentation for training, we can generate the ground truth database as follows:
+
+```
+python scripts/collect_bboxes.py --dataset_path <path_to_data_root>
+```
+
+This will generate a database consisting of objects from the train split. It is recommended to use this augmentation for
+dataset like KITTI where objects are sparse.
+
+The two stages of PointRCNN are trained separately. To train the proposal generation stage of PointRCNN with PyTorch,
+run the following command:
+
+```
+# Train RPN for 100 epochs.
+python scripts/run_pipeline.py torch -c ml3d/configs/pointrcnn_kitti.yml --dataset.dataset_path <path-to-dataset> --mode RPN --epochs 100
+```
+
+After getting a well trained RPN network, we can train RCNN network with frozen RPN weights.
+
+```
+# Train RCNN for 70 epochs.
+python scripts/run_pipeline.py torch -c ml3d/configs/pointrcnn_kitti.yml --dataset.dataset_path <path-to-dataset> --mode RCNN --model.ckpt_path <path_to_checkpoint> --epochs 100
+```
 
 
 ## Model Zoo
@@ -348,16 +382,16 @@ The following is a list of datasets for which we provide dataset reader classes.
 * S3DIS ([project-page](http://3dsemantics.stanford.edu/))
 * Paris-Lille 3D ([project-page](https://npm3d.fr/paris-lille-3d))
 * Argoverse ([project-page](https://www.argoverse.org/))
-* KITTI ([project-page](http://www.cvlibs.net/datasets/kitti/))
+* KITTI ([project-page](http://www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=3d))
 * Lyft ([project-page](https://self-driving.lyft.com/level5/data/))
 * nuScenes ([project-page](https://www.nuscenes.org/))
 * Waymo ([project-page](https://waymo.com/open/data/))
+* ScanNet([project-page](http://www.scan-net.org/))
+
 
 For downloading these datasets visit the respective webpages and have a look at the scripts in [`scripts/download_datasets`](https://github.com/Asher-1/CloudViewer-ML/tree/master/scripts/download_datasets).
 
-## For Debugging
 
-os.environ['CLOUDVIEWER_ML_ROOT'] = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 ## How-tos
 
@@ -365,6 +399,7 @@ os.environ['CLOUDVIEWER_ML_ROOT'] = os.path.dirname(os.path.dirname(os.path.real
 * [Visualize custom data](docs/howtos.md#visualize-custom-data)
 * [Adding a new model](docs/howtos.md#adding-a-new-model)
 * [Adding a new dataset](docs/howtos.md#adding-a-new-dataset)
+
 
 ## Contribute
 There are many ways to contribute to this project. You can:
@@ -374,7 +409,7 @@ There are many ways to contribute to this project. You can:
 * Report problems and bugs
 
 Please, **make your pull requests to the** [**dev**](https://github.com/Asher-1/CloudViewer-ML/tree/dev) branch.
-CloudViewer is a community effort. We welcome and celebrate contributions from the
+ErowCloudViewer is a community effort. We welcome and celebrate contributions from the
 community!
 
 If you want to share weights for a model you trained please attach or link the
@@ -385,7 +420,7 @@ Please also check out our communication channels to get in contact with the comm
 ## Communication channels
 
 <!--* [GitHub Issue](https://github.com/Asher-1/ErowCloudViewer/issues): bug reports, feature requests, etc.-->
-* [Forum](https://forum.cloudViewer.org): discussion on the usage of CloudViewer.
+* [Forum](https://github.com/Asher-1/ErowCloudViewer/discussions): discussion on the usage of ErowCloudViewer.
 * [Discord Chat](https://discord.gg/D35BGvn): online chats, discussions,
   and collaboration with other users and developers.
 

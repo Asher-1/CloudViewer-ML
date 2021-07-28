@@ -19,9 +19,10 @@ log = logging.getLogger(__name__)
 
 
 class NuScenes(BaseDataset):
-    """
-    This class is used to create a dataset based on the NuScenes 3D dataset, and used in object detection, visualizer,
-     training, or testing. The NuScenes 3D dataset is best suited for autonomous driving applications.
+    """This class is used to create a dataset based on the NuScenes 3D dataset,
+    and used in object detection, visualizer, training, or testing.
+
+    The NuScenes 3D dataset is best suited for autonomous driving applications.
     """
 
     def __init__(self,

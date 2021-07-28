@@ -25,7 +25,7 @@ def filter_data(data, labels, diffs=None):
             np.all([data['difficulty'] >= 0, data['difficulty'] <= diff],
                    axis=0) for diff in diffs
         ],
-            axis=0)
+                       axis=0)
         cond = np.all([cond, dcond], axis=0)
     idx = np.where(cond)[0]
 
@@ -137,11 +137,13 @@ def precision_3d(pred,
 
 def sample_thresholds(scores, gt_cnt, sample_cnt=41):
     """Computes equally spaced sample thresholds from given scores
+
     Args:
         scores (list): list of scores
         gt_cnt (number): amount of gt samples
         sample_cnt (number): amount of samples
             Default is 41.
+
     Returns:
         Returns a list of equally spaced samples of the input scores.
     """
@@ -152,7 +154,7 @@ def sample_thresholds(scores, gt_cnt, sample_cnt=41):
         l_recall = (i + 1) / gt_cnt
         r_recall = (i + 2) / gt_cnt if i < (len(scores) - 1) else l_recall
         if (((r_recall - current_recall) < (current_recall - l_recall)) and
-                (i < (len(scores) - 1))):
+            (i < (len(scores) - 1))):
             continue
         thresholds.append(score)
         current_recall += 1 / (sample_cnt - 1.0)
@@ -168,6 +170,7 @@ def mAP(pred,
         samples=41,
         similar_classes={}):
     """Computes mAP of the given prediction (11-point interpolation).
+
     Args:
         pred (dict): List of dictionaries with the prediction data (as numpy arrays).
             {
@@ -198,7 +201,6 @@ def mAP(pred,
     Returns:
         Returns the mAP for each class and difficulty specified.
     """
-
     if len(min_overlap) != len(classes):
         assert len(min_overlap) == 1
         min_overlap = min_overlap * len(classes)
@@ -210,7 +212,7 @@ def mAP(pred,
         cnt += len(filter_data(p, classes)[1])
         box_cnts.append(cnt)
 
-    gt_cnt = np.empty((len(classes), len(difficulties)))
+    gt_cnt = np.zeros((len(classes), len(difficulties)))
     for i, c in enumerate(classes):
         for j, d in enumerate(difficulties):
             for t in target:
@@ -234,7 +236,7 @@ def mAP(pred,
         for j in range(len(difficulties)):
             det = detection[i, j, np.argsort(-detection[i, j, :, 0])]
 
-            # gt_cnt = np.sum(det[:,1]) + fns[i, j]
+            #gt_cnt = np.sum(det[:,1]) + fns[i, j]
             thresholds = sample_thresholds(det[np.where(det[:, 1] > 0)[0], 0],
                                            gt_cnt[i, j], samples)
 
@@ -246,6 +248,9 @@ def mAP(pred,
                 prec[ti] = tp_acc / (tp_acc + fp_acc)
                 prec[ti] = np.max(prec[ti:], axis=-1)
 
-            mAP[i, j] = np.sum(prec[::4]) / 11 * 100
+            if len(prec[::4]) < int(samples / 4 + 1):
+                mAP[i, j] = np.sum(prec) / len(prec) * 100
+            else:
+                mAP[i, j] = np.sum(prec[::4]) / int(samples / 4 + 1) * 100
 
     return mAP
