@@ -4,7 +4,6 @@ import os, sys, glob, pickle
 from pathlib import Path
 from os.path import join, exists, dirname, abspath, isdir
 import random
-from plyfile import PlyData, PlyElement
 from sklearn.neighbors import KDTree
 from tqdm import tqdm
 import logging
@@ -21,9 +20,11 @@ log = logging.getLogger(__name__)
 
 
 class S3DIS(BaseDataset):
-    """
-    This class is used to create a dataset based on the S3DIS (Stanford Large-Scale 3D Indoor Spaces) dataset,
-    and used in visualizer, training, or testing. The S3DIS dataset is best used to train models for building indoors.
+    """This class is used to create a dataset based on the S3DIS (Stanford
+    Large-Scale 3D Indoor Spaces) dataset, and used in visualizer, training, or
+    testing.
+
+    The S3DIS dataset is best used to train models for building indoors.
     """
 
     def __init__(self,
@@ -44,8 +45,7 @@ class S3DIS(BaseDataset):
                  ],
                  test_result_folder='./test',
                  **kwargs):
-        """
-        Initialize the function by passing the dataset and other details.
+        """Initialize the function by passing the dataset and other details.
 
         Args:
             dataset_path: The path to the dataset to use.
@@ -57,9 +57,8 @@ class S3DIS(BaseDataset):
             num_points: The maximum number of points to use when splitting the dataset.
             test_area_idx: The area to use for testing. The valid values are 1 through 6.
             ignored_label_inds: A list of labels that should be ignored in the dataset.
+            ignored_objects: Ignored objects
             test_result_folder: The folder where the test results should be stored.
-
-
         """
         super().__init__(dataset_path=dataset_path,
                          name=name,
@@ -99,8 +98,7 @@ class S3DIS(BaseDataset):
 
     @staticmethod
     def get_label_to_names():
-        """
-        Returns a label to names dictonary object.
+        """Returns a label to names dictonary object.
 
         Returns:
             A dict where keys are label numbers and
@@ -133,7 +131,6 @@ class S3DIS(BaseDataset):
         Returns:
             A dataset split object providing the requested subset of the data.
         """
-
         return S3DISSplit(self, split=split)
 
     def get_split_list(self, split):
@@ -160,12 +157,7 @@ class S3DIS(BaseDataset):
         return file_list
 
     def is_tested(self, attr):
-        """Saves the output of a model.
 
-            Args:
-                results: The output of a model for the datum associated with the attribute passed.
-                attr: The attributes that correspond to the outputs passed in results.
-        """
         cfg = self.cfg
         name = attr['name']
         path = cfg.test_result_folder
@@ -175,6 +167,13 @@ class S3DIS(BaseDataset):
             return True
         else:
             return False
+
+    """Saves the output of a model.
+
+        Args:
+            results: The output of a model for the datum associated with the attribute passed.
+            attr: The attributes that correspond to the outputs passed in results.
+    """
 
     def save_test_result(self, results, attr):
 
@@ -251,17 +250,18 @@ class S3DIS(BaseDataset):
 
 
 class S3DISSplit(BaseDatasetSplit):
-    """
-    This class is used to create a split for S3DIS dataset.
+    """This class is used to create a split for S3DIS dataset.
 
     Initialize the class.
+
     Args:
         dataset: The dataset to split.
         split: A string identifying the dataset split that is usually one of
             'training', 'test', 'validation', or 'all'.
         **kwargs: The configuration of the model as keyword arguments.
+
     Returns:
-        A dataset split object providing the requested subset of the data.		
+        A dataset split object providing the requested subset of the data.
     """
 
     def __init__(self, dataset, split='training'):

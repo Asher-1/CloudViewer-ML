@@ -19,9 +19,10 @@ log = logging.getLogger(__name__)
 
 
 class Lyft(BaseDataset):
-    """
-    This class is used to create a dataset based on the Lyft dataset, and used in object detection, visualizer,
-    training, or testing. The Lyft level 5 dataset is best suited for self-driving applications.
+    """This class is used to create a dataset based on the Lyft dataset, and
+    used in object detection, visualizer, training, or testing.
+
+    The Lyft level 5 dataset is best suited for self-driving applications.
     """
 
     def __init__(self,
@@ -31,12 +32,13 @@ class Lyft(BaseDataset):
                  cache_dir='./logs/cache',
                  use_cache=False,
                  **kwargs):
-        """
-        Initialize the function by passing the dataset and other details.
+        """Initialize the function by passing the dataset and other details.
 
         Args:
             dataset_path: The path to the dataset to use.
-            info_path: The path to the file that includes information about the dataset. This is default to dataset path if nothing is provided.
+            info_path: The path to the file that includes information about
+            the dataset. This is default to dataset path if nothing is
+            provided.
             name: The name of the dataset (Lyft in this case).
             cache_dir: The directory where the cache is stored.
             use_cache: Indicates if the dataset should be cached.
@@ -79,8 +81,7 @@ class Lyft(BaseDataset):
 
     @staticmethod
     def get_label_to_names():
-        """
-        Returns a label to names dictonary object.
+        """Returns a label to names dictonary object.
 
         Returns:
             A dict where keys are label numbers and
@@ -103,8 +104,7 @@ class Lyft(BaseDataset):
 
     @staticmethod
     def read_lidar(path):
-        """
-        Reads lidar data from the path provided.
+        """Reads lidar data from the path provided.
 
         Returns:
             A data object with lidar information.
@@ -115,8 +115,7 @@ class Lyft(BaseDataset):
 
     @staticmethod
     def read_label(info, calib):
-        """
-        Reads labels of bound boxes.
+        """Reads labels of bound boxes.
 
         Returns:
             The data objects with bound boxes information.
@@ -164,8 +163,9 @@ class Lyft(BaseDataset):
             A dataset split object providing the requested subset of the data.
 
         Raises:
-            ValueError: Indicates that the split name passed is incorrect. The split name should be one of
-            'training', 'test', 'validation', or 'all'.
+            ValueError: Indicates that the split name passed is incorrect. The
+            split name should be one of 'training', 'test', 'validation', or
+            'all'.
         """
         if split in ['train', 'training']:
             return self.train_info
@@ -223,14 +223,11 @@ class LyftSplit(BaseDatasetSplit):
         calib = {'world_cam': world_cam.T}
 
         pc = self.dataset.read_lidar(lidar_path)
-        label = self.dataset.read_label(info, calib)
 
-        data = {
-            'point': pc,
-            'feat': None,
-            'calib': calib,
-            'bounding_boxes': label,
-        }
+        data = {'point': pc, 'feat': None, 'calib': calib}
+
+        if self.split not in ["test", "testing"]:
+            data['bounding_boxes'] = self.dataset.read_label(info, calib)
 
         return data
 

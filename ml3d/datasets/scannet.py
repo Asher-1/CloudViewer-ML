@@ -1,14 +1,11 @@
-import cloudViewer as cv3d
 import numpy as np
-import os, argparse, pickle, sys
-from os.path import exists, join, isfile, dirname, abspath, split
+import os
+from os.path import join
 from pathlib import Path
-from glob import glob
 import logging
-import yaml
 
 from .base_dataset import BaseDataset, BaseDatasetSplit
-from ..utils import Config, make_dir, DATASET
+from ..utils import make_dir, DATASET
 from .utils import BEVBox3D
 
 logging.basicConfig(
@@ -29,11 +26,13 @@ class Scannet(BaseDataset):
                  cache_dir='./logs/cache',
                  use_cache=False,
                  **kwargs):
-        """
-        Initialize
+        """Initialize the dataset by passing the dataset and other details.
+
         Args:
-            dataset_path (str): path to the dataset
-            kwargs:
+            dataset_path (str): The path to the dataset to use.
+            name (str): The name of the dataset (Scannet in this case).
+            cache_dir (str): The directory where the cache is stored.
+            use_cache (bool): Indicates if the dataset should be cached.
         """
         super().__init__(dataset_path=dataset_path,
                          name=name,
@@ -91,6 +90,11 @@ class Scannet(BaseDataset):
             elif scene in test_files:
                 self.test_scenes.append(join(self.dataset_path, scene))
 
+        self.semantic_ids = [
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 24, 28, 33, 34, 36,
+            39
+        ]
+
     def get_label_to_names(self):
         return self.label2cat
 
@@ -109,6 +113,12 @@ class Scannet(BaseDataset):
         ## For filtering semantic labels to have same classes as object detection.
         # for i in range(semantic_mask.shape[0]):
         #     semantic_mask[i] = self.cat_ids2class.get(semantic_mask[i], 0)
+
+        remapper = np.ones(150) * (-1)
+        for i, x in enumerate(self.semantic_ids):
+            remapper[x] = i
+
+        semantic_mask = remapper[semantic_mask]
 
         objects = []
         for box in bboxes:
@@ -138,7 +148,23 @@ class Scannet(BaseDataset):
         pass
 
     def save_test_result(self, results, attr):
-        pass
+        cfg = self.cfg
+        name = attr['name']
+        path = cfg.test_result_folder
+        make_dir(path)
+
+        pred = results['predict_labels']
+        pred = np.array(pred)
+
+        remapper = np.ones(20) * -1
+        for i, x in enumerate(self.semantic_ids):
+            remapper[i] = x
+        pred = remapper[pred]
+
+        store_path = join(path, self.name, name + '.npy')
+        make_dir(Path(store_path).parent)
+        np.save(store_path, pred)
+        log.info("Saved {} in {}.".format(name, store_path))
 
 
 class ScannetSplit(BaseDatasetSplit):

@@ -9,6 +9,15 @@ if 'PATH_TO_CLOUDVIEWER_ML' in os.environ.keys():
 else:
     base = '.'
 
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    # Use first GPU and restrict memory growth.
+    try:
+        tf.config.experimental.set_visible_devices(gpus[0], 'GPU')
+        tf.config.set_memory_growth(gpu[0], True)
+    except RuntimeError as e:
+        print(e)
+
 
 def test_randlanet_torch():
     import cloudViewer.ml.torch as ml3d
@@ -159,16 +168,19 @@ def test_pointpillars_torch():
 
     net = ml3d.models.PointPillars(**cfg.model, device='cpu')
 
+    batcher = ml3d.dataloaders.ConcatBatcher('cpu', model='PointPillars')
     data = {
         'point': np.array(np.random.random((10000, 4)), dtype=np.float32),
-        'calib': None
+        'calib': None,
+        'bounding_boxes': [],
     }
+    data = net.preprocess(data, {'split': 'test'})
+    data = net.transform(data, {'split': 'test'})
+    data = batcher.collate_fn([{'data': data, 'attr': {'split': 'test'}}])
 
     net.eval()
     with torch.no_grad():
-        inputs = torch.tensor(data['point'], dtype=torch.float32, device='cpu')
-        inputs = torch.reshape(inputs, (1, -1, inputs.shape[-1]))
-        results = net(inputs)
+        results = net(data)
         boxes = net.inference_end(results, data)
         assert type(boxes) == list
 
@@ -182,19 +194,12 @@ def test_pointpillars_tf():
 
     net = ml3d.models.PointPillars(**cfg.model, device='cpu')
 
-    data = {
-        'point': np.array(np.random.random((10000, 4)), dtype=np.float32),
-        'calib': None
-    }
+    data = [
+        tf.constant(np.random.random((10000, 4)), dtype=tf.float32), None, None,
+        [tf.constant(np.stack([np.eye(4), np.eye(4)], axis=0))]
+    ]
 
-    inputs = tf.convert_to_tensor(data['point'], dtype=np.float32)
-    inputs = tf.reshape(inputs, (1, -1, inputs.shape[-1]))
-
-    results = net(inputs, training=False)
+    results = net(data, training=False)
     boxes = net.inference_end(results, data)
 
     assert type(boxes) == list
-
-
-if __name__ == '__main__':
-    test_randlanet_torch()

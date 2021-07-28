@@ -18,8 +18,10 @@ log = logging.getLogger(__name__)
 
 
 class SemanticKITTI(BaseDataset):
-    """
-    This class is used to create a dataset based on the SemanticKitti dataset, and used in visualizer, training, or testing. The dataset is best for semantic scene understanding.
+    """This class is used to create a dataset based on the SemanticKitti
+    dataset, and used in visualizer, training, or testing.
+
+    The dataset is best for semantic scene understanding.
     """
 
     def __init__(self,
@@ -48,8 +50,7 @@ class SemanticKITTI(BaseDataset):
                      '20', '21'
                  ],
                  **kwargs):
-        """
-        Initialize the function by passing the dataset and other details.
+        """Initialize the function by passing the dataset and other details.
 
         Args:
             dataset_path: The path to the dataset to use.
@@ -76,6 +77,8 @@ class SemanticKITTI(BaseDataset):
                          validation_split=validation_split,
                          all_split=all_split,
                          **kwargs)
+
+        cfg = self.cfg
 
         self.label_to_names = self.get_label_to_names()
         self.num_classes = len(self.label_to_names)
@@ -174,7 +177,7 @@ class SemanticKITTI(BaseDataset):
         Args:
             results: The output of a model for the datum associated with the attribute passed.
             attr: The attributes that correspond to the outputs passed in results.
-    """
+        """
         cfg = self.cfg
         name = attr['name']
         name_seq, name_points = name.split("_")

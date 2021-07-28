@@ -18,9 +18,10 @@ log = logging.getLogger(__name__)
 
 
 class Waymo(BaseDataset):
-    """
-    This class is used to create a dataset based on the Waymo 3D dataset, and used in object detection, visualizer,
-     training, or testing. The Waymo 3D dataset is best suited for autonomous driving applications.
+    """This class is used to create a dataset based on the Waymo 3D dataset, and
+    used in object detection, visualizer, training, or testing.
+
+    The Waymo 3D dataset is best suited for autonomous driving applications.
     """
 
     def __init__(self,
@@ -30,8 +31,7 @@ class Waymo(BaseDataset):
                  use_cache=False,
                  val_split=3,
                  **kwargs):
-        """
-        Initialize the function by passing the dataset and other details.
+        """Initialize the function by passing the dataset and other details.
 
         Args:
             dataset_path: The path to the dataset to use.
@@ -39,10 +39,10 @@ class Waymo(BaseDataset):
             cache_dir: The directory where the cache is stored.
             use_cache: Indicates if the dataset should be cached.
             val_split: The split value to get a set of images for training, validation, for testing.
+
         Returns:
             class: The corresponding class.
         """
-
         super().__init__(dataset_path=dataset_path,
                          name=name,
                          cache_dir=cache_dir,
@@ -75,14 +75,12 @@ class Waymo(BaseDataset):
 
     @staticmethod
     def get_label_to_names():
-        """
-        Returns a label to names dictonary object.
+        """Returns a label to names dictonary object.
 
         Returns:
             A dict where keys are label numbers and
             values are the corresponding names.
         """
-
         label_to_names = {
             0: 'PEDESTRIAN',
             1: 'VEHICLE',
@@ -93,8 +91,7 @@ class Waymo(BaseDataset):
 
     @staticmethod
     def read_lidar(path):
-        """
-        Reads lidar data from the path provided.
+        """Reads lidar data from the path provided.
 
         Returns:
             A data object with lidar information.
@@ -105,8 +102,7 @@ class Waymo(BaseDataset):
 
     @staticmethod
     def read_label(path, calib):
-        """
-        Reads labels of bound boxes.
+        """Reads labels of bound boxes.
 
         Returns:
             The data objects with bound boxes information.
@@ -133,8 +129,8 @@ class Waymo(BaseDataset):
 
     @staticmethod
     def read_calib(path):
-        """
-        Reads calibiration for the dataset. You can use them to compare modeled results to observed results.
+        """Reads calibiration for the dataset. You can use them to compare
+        modeled results to observed results.
 
         Returns:
             The camera and the camera image used in calibration.
@@ -197,8 +193,9 @@ class Waymo(BaseDataset):
             A dataset split object providing the requested subset of the data.
 
         Raises:
-            ValueError: Indicates that the split name passed is incorrect. The split name should be one of
-            'training', 'test', 'validation', or 'all'.
+            ValueError: Indicates that the split name passed is incorrect. The
+            split name should be one of 'training', 'test', 'validation', or
+            'all'.
         """
         cfg = self.cfg
         dataset_path = cfg.dataset_path
@@ -274,9 +271,8 @@ class WaymoSplit(BaseDatasetSplit):
 
 
 class Object3d(BEVBox3D):
-    """
-    The class stores details that are object-specific, such as bounding box coordinates, occulusion and so on.
-
+    """The class stores details that are object-specific, such as bounding box
+    coordinates, occlusion and so on.
     """
 
     def __init__(self, center, size, label, calib):
@@ -305,8 +301,8 @@ class Object3d(BEVBox3D):
         self.yaw = float(label[14])
 
     def get_difficulty(self):
-        """
-        The method determines difficulty level of the object, such as Easy, Moderate, or Hard.
+        """The method determines difficulty level of the object, such as Easy,
+        Moderate, or Hard.
         """
         height = float(self.box2d[3]) - float(self.box2d[1]) + 1
 

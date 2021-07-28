@@ -19,9 +19,11 @@ def parse_args():
     parser.add_argument('--dataset_path',
                         help='path to Lyft root',
                         required=True)
-    parser.add_argument('--out_path',
-                        help='Output path to store infos',
-                        required=True)
+    parser.add_argument(
+        '--out_path',
+        help='Output path to store pickle (default to dataet_path)',
+        default=None,
+        required=False)
 
     parser.add_argument('--version',
                         help='one of {v1.01-train, v1.01-test, sample}',
@@ -40,7 +42,9 @@ def parse_args():
 
 class LyftProcess():
     """Preprocess Lyft.
+
     This class collects paths and labels using lyft-devkit.
+
     Args:
         dataset_path (str): Directory to load lyft data.
         out_path (str): Directory to save pickle file(infos).
@@ -60,16 +64,16 @@ class LyftProcess():
         if version == 'v1.01-train':
             train_scenes = open(
                 join(dirname(__file__),
-                     '../ml3d/datasets/_resources/lyft/train.txt'),
+                     '../../ml3d/datasets/_resources/lyft/train.txt'),
                 'r').read().split('\n')
             val_scenes = open(
                 join(dirname(__file__),
-                     '../ml3d/datasets/_resources/lyft/val.txt'),
+                     '../../ml3d/datasets/_resources/lyft/val.txt'),
                 'r').read().split('\n')
-        elif version == 'v1.0-test':
+        elif version == 'v1.01-test':
             train_scenes = open(
                 join(dirname(__file__),
-                     '../ml3d/datasets/_resources/lyft/test.txt'),
+                     '../../ml3d/datasets/_resources/lyft/test.txt'),
                 'r').read().split('\n')
             val_scenes = []
         else:
@@ -213,5 +217,8 @@ class LyftProcess():
 
 if __name__ == '__main__':
     args = parse_args()
+    out_path = args.out_path
+    if out_path is None:
+        args.out_path = args.dataset_path
     converter = LyftProcess(args.dataset_path, args.out_path, args.version)
     converter.convert()

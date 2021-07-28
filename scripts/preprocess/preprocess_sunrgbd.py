@@ -1,15 +1,9 @@
 import numpy as np
-import os, sys, glob, pickle
-from pathlib import Path
-from os.path import join, exists, dirname, abspath
-from os import makedirs
-import random
+import os, pickle
+from os.path import join
 import argparse
-import json
-import csv
 import scipy.io
 import imageio
-import pickle
 
 from shutil import copyfile
 from tqdm import tqdm
@@ -38,7 +32,9 @@ def parse_args():
 
 class SunRGBDProcess():
     """Preprocess SunRGBD.
+
     This class converts Sunrgbd raw data into npy files.
+
     Args:
         dataset_path (str): Directory to load sunrgbd data.
         out_path (str): Directory to save pickle file(infos).
@@ -213,7 +209,7 @@ class SunRGBDProcess():
             img = np.array((depth.shape[0], depth.shape[1], 3), np.float32)
             img[:, :, 1] = 1
 
-        invalid = depth == 0
+        # invalid = depth == 0
 
         x, y = np.meshgrid([i for i in range(1, depth.shape[1] + 1)],
                            [j for j in range(1, depth.shape[0] + 1)])

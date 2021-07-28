@@ -5,6 +5,7 @@ import logging
 
 from ..utils import Config, get_module
 
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(levelname)s - %(asctime)s - %(module)s - %(message)s',
@@ -25,31 +26,27 @@ class BaseDataset(ABC):
         cfg: The configuration file as Config object that stores the keyword
             arguments that were passed to the constructor.
         name: The name of the dataset.
-                                
-        **Example:** 
+
+    **Example:**
         This example shows a custom dataset that inherit from the base_dataset class:
+
             from .base_dataset import BaseDataset
-                                                
-            class MyDataset(BaseDataset): 
+
+            class MyDataset(BaseDataset):
             def __init__(self,
                  dataset_path,
                  name='CustomDataset',
                  cache_dir='./logs/cache',
                  use_cache=False,
                  num_points=65536,
-                 class_weights=[
-                 ],
+                 class_weights=[],
                  test_result_folder='./test',
                  val_files=['Custom.ply'],
                  **kwargs):
-
     """
 
     def __init__(self, **kwargs):
-        """"
-        Initialize the class by passing the dataset path.
-        """
-
+        """Initialize the class by passing the dataset path."""
         if kwargs['dataset_path'] is None:
             raise KeyError("Provide dataset_path to initialize the dataset")
 
@@ -63,16 +60,16 @@ class BaseDataset(ABC):
     @abstractmethod
     def get_label_to_names():
         """Returns a label to names dictonary object.
-        
+
         Returns:
-            A dict where keys are label numbers and 
+            A dict where keys are label numbers and
             values are the corresponding names.
         """
 
     @abstractmethod
     def get_split(self, split):
         """Returns a dataset split.
-        
+
         Args:
             split: A string identifying the dataset split that is usually one of
             'training', 'test', 'validation', or 'all'.

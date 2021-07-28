@@ -61,7 +61,11 @@ class SemSegSpatiallyRegularSampler(object):
 
     def get_point_sampler(self):
 
-        def _random_centered_gen(**kwargs):
+        def _random_centered_gen(patchwise=True, **kwargs):
+            if not patchwise:
+                self.possibilities[self.cloud_id][:] = 1.
+                self.min_possibilities[self.cloud_id] = 1.
+                return
             pc = kwargs.get('pc', None)
             num_points = kwargs.get('num_points', None)
             radius = kwargs.get('radius', None)
@@ -85,8 +89,10 @@ class SemSegSpatiallyRegularSampler(object):
                         diff = num_points - pc.shape[0]
                         idxs = np.array(range(pc.shape[0]))
                         idxs = list(idxs) + list(random.choices(idxs, k=diff))
+                        idxs = np.asarray(idxs)
                     else:
-                        idxs = search_tree.query(center_point, k=num_points)[1][0]
+                        idxs = search_tree.query(center_point,
+                                                 k=num_points)[1][0]
                 n = len(idxs)
                 if n < 2:
                     self.possibilities[cloud_id][center_id] += 0.001

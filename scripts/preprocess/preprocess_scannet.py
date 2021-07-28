@@ -1,13 +1,11 @@
 import numpy as np
-import os, sys, glob, pickle
+import os
 from pathlib import Path
-from os.path import join, exists, dirname, abspath
-from os import makedirs
-import random
+from os.path import join
 import argparse
 import json
 import csv
-from plyfile import PlyData
+import cloudViewer as cv3d
 from tqdm import tqdm
 
 
@@ -34,8 +32,10 @@ def parse_args():
 
 def represents_int(s):
     """Judge whether string s represents an int.
+
     Args:
         s(str): The input string to be judged.
+
     Returns:
         bool: Whether s represents int or not.
     """
@@ -48,13 +48,15 @@ def represents_int(s):
 
 class ScannetProcess():
     """Preprocess Scannet.
+
     This class converts Scannet raw data into npy files.
+
     Args:
         dataset_path (str): Directory to load argoverse data.
         out_path (str): Directory to save pickle file(infos).
     """
 
-    def __init__(self, dataset_path, out_path, max_num_point=100000):
+    def __init__(self, dataset_path, out_path, max_num_point=10000000):
 
         self.out_path = out_path
         self.dataset_path = dataset_path
@@ -75,7 +77,10 @@ class ScannetProcess():
 
     def convert(self):
         for scan in tqdm(self.scans):
-            self.process_scene(scan)
+            try:
+                self.process_scene(scan)
+            except Exception as e:
+                print(e)
 
     def process_scene(self, scan):
         in_path = join(self.dataset_path, scan)
@@ -196,22 +201,18 @@ class ScannetProcess():
     @staticmethod
     def read_mesh_vertices_rgb(filename):
         """Read XYZ and RGB for each vertex.
+
         Args:
             filename(str): The name of the mesh vertices file.
+
         Returns:
             Vertices. Note that RGB values are in 0-255.
         """
         assert os.path.isfile(filename)
-        with open(filename, 'rb') as f:
-            plydata = PlyData.read(f)
-            num_verts = plydata['vertex'].count
-            vertices = np.zeros(shape=[num_verts, 6], dtype=np.float32)
-            vertices[:, 0] = plydata['vertex'].data['x']
-            vertices[:, 1] = plydata['vertex'].data['y']
-            vertices[:, 2] = plydata['vertex'].data['z']
-            vertices[:, 3] = plydata['vertex'].data['red']
-            vertices[:, 4] = plydata['vertex'].data['green']
-            vertices[:, 5] = plydata['vertex'].data['blue']
+        data = cv3d.t.io.read_point_cloud(filename)
+        points = data.point["points"].numpy().astype(np.float32)
+        colors = data.point["colors"].numpy().astype(np.float32)
+        vertices = np.concatenate([points, colors], axis=1)
         return vertices
 
     @staticmethod
