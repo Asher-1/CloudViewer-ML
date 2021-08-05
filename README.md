@@ -206,7 +206,7 @@ pipeline = ml3d.pipelines.ObjectDetection(model, dataset=dataset, device="gpu", 
 ckpt_folder = "./logs/"
 os.makedirs(ckpt_folder, exist_ok=True)
 ckpt_path = ckpt_folder + "pointpillars_kitti_202012171738utc.pth"
-pointpillar_url = "https://storage.googleapis.com/cloudViewer-releases/model-zoo/pointpillars_kitti_202012171738utc.pth"
+pointpillar_url = "https://storage.googleapis.com/open3d-releases/model-zoo/pointpillars_kitti_202012171738utc.pth"
 if not os.path.exists(ckpt_path):
     cmd = "wget {} -O {}".format(pointpillar_url, ckpt_path)
     os.system(cmd)
