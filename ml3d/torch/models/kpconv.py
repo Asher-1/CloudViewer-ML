@@ -12,7 +12,7 @@ from sklearn.neighbors import KDTree
 from cloudViewer.ml.contrib import subsample_batch
 from cloudViewer.ml.contrib import radius_search
 
-# use relative import for being compatible with Open3d main repo
+# use relative import for being compatible with CloudViewer main repo
 from .base_model import BaseModel
 from ..modules.losses import filter_valid_label
 from ...utils import MODEL

@@ -738,7 +738,7 @@ class Visualizer:
 
         self._3d = gui.SceneWidget()
         self._3d.enable_scene_caching(True)  # makes UI _much_ more responsive
-        self._3d.scene = rendering.Open3DScene(self.window.renderer)
+        self._3d.scene = rendering.CloudViewerScene(self.window.renderer)
         self.window.add_child(self._3d)
 
         self._panel = gui.Vert()
@@ -1495,7 +1495,7 @@ class Visualizer:
 
         self._consolidate_bounding_boxes = True
         self._init_dataset(dataset, split, indices)
-        self._visualize("Open3D - " + dataset.name, width, height)
+        self._visualize("CloudViewer - " + dataset.name, width, height)
 
     def visualize(self,
                   data,
@@ -1569,7 +1569,7 @@ class Visualizer:
                         current_group = []
             self._objects.bounding_box_data = box_data
 
-        self._visualize("Open3D", width, height)
+        self._visualize("CloudViewer", width, height)
 
     def _visualize(self, title, width, height):
         gui.Application.instance.initialize()

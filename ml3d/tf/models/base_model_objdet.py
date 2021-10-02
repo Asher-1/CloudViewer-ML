@@ -4,7 +4,7 @@ import tensorflow as tf
 from os.path import join, exists, dirname, abspath
 from abc import ABC, abstractmethod
 
-# use relative import for being compatible with Open3d main repo
+# use relative import for being compatible with cloudViewer main repo
 from ...utils import Config
 
 

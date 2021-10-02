@@ -22,7 +22,7 @@ def furthest_point_sample(xyz, npoint):
     return output
 
 
-ops.NoGradient('Open3DFurthestPointSampling')
+ops.NoGradient('CloudViewerFurthestPointSampling')
 
 
 def three_nn_gpu(query_pts, data_pts):
@@ -41,7 +41,7 @@ def three_nn_gpu(query_pts, data_pts):
     return tf.sqrt(dist2), idx
 
 
-ops.NoGradient("Open3DTreeNN")
+ops.NoGradient("CloudViewerTreeNN")
 
 
 def three_interpolate_gpu(features, idx, weight):
@@ -60,7 +60,7 @@ def three_interpolate_gpu(features, idx, weight):
     return output
 
 
-@tf.RegisterGradient("Open3DThreeInterpolate")
+@tf.RegisterGradient("CloudViewerThreeInterpolate")
 def _tree_interpolate_gradient(op, grad_out):
     if not cloudViewer.core.cuda.device_count() > 0:
         raise NotImplementedError
@@ -91,7 +91,7 @@ def ball_query_gpu(radius, nsample, xyz, new_xyz):
     return idx
 
 
-ops.NoGradient("Open3DBallQuery")
+ops.NoGradient("CloudViewerBallQuery")
 
 
 class QueryAndGroup(tf.keras.layers.Layer):

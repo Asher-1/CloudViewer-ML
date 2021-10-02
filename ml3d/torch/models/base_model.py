@@ -4,7 +4,7 @@ import torch
 from os.path import join, exists, dirname, abspath
 from abc import ABC, abstractmethod
 
-# use relative import for being compatible with Open3d main repo
+# use relative import for being compatible with CloudViewer main repo
 from ...utils import Config
 from ...datasets.samplers import SemSegRandomSampler
 
