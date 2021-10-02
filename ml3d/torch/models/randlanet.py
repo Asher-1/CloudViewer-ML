@@ -10,7 +10,7 @@ from sklearn.neighbors import KDTree
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import Dataset, IterableDataset, DataLoader, Sampler, BatchSampler
 
-# use relative import for being compatible with Open3d main repo
+# use relative import for being compatible with CloudViewer main repo
 from .base_model import BaseModel
 from ..utils import helper_torch
 from ..dataloaders import DefaultBatcher

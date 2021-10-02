@@ -315,7 +315,7 @@ class ObjectDetection(BasePipeline):
     def save_config(self, writer):
         with writer.as_default():
             with tf.name_scope("Description"):
-                tf.summary.text("Open3D-ML", self.cfg_tb['readme'], step=0)
+                tf.summary.text("cloudViewer-ML", self.cfg_tb['readme'], step=0)
                 tf.summary.text("Command line", self.cfg_tb['cmd_line'], step=0)
             with tf.name_scope("Configuration"):
                 tf.summary.text('Dataset',

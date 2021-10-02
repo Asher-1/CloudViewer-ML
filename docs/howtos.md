@@ -232,7 +232,7 @@ To test code with an already installed CloudViewer package you can set the
 environment variable `CLOUDVIEWER_ML_ROOT` to the root dir of the repo. This can be
 done with
 ```bash 
-source /path/to/CloudViewer-ML/set_open3d_ml_root.sh
+source /path/to/CloudViewer-ML/set_cloudViewer_ml_root.sh
 ```
 which will make the _ml_ namespace point to `ml3d` in the repo.
 Our example model can then be instantiated with

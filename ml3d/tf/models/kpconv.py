@@ -10,7 +10,7 @@ from pathlib import Path
 from sklearn.neighbors import KDTree
 from tqdm import tqdm
 
-# use relative import for being compatible with Open3d main repo
+# use relative import for being compatible with cloudViewer main repo
 from cloudViewer.ml.tf.ops import *
 from .network_blocks import *
 from .base_model import BaseModel

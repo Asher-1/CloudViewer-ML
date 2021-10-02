@@ -289,15 +289,15 @@ network on a dataset.
 ```
 ├─ docs                   # Markdown and rst files for documentation
 ├─ examples               # Place for example scripts and notebooks
-├─ ml3d                   # Package root dir that is integrated in open3d
+├─ ml3d                   # Package root dir that is integrated in cloudViewer
      ├─ configs           # Model configuration files
-     ├─ datasets          # Generic dataset code; will be integratede as open3d.ml.{tf,torch}.datasets
+     ├─ datasets          # Generic dataset code; will be integratede as cloudViewer.ml.{tf,torch}.datasets
      ├─ metrics           # Metrics available for evaluating ML models     
-     ├─ utils             # Framework independent utilities; available as open3d.ml.{tf,torch}.utils
+     ├─ utils             # Framework independent utilities; available as cloudViewer.ml.{tf,torch}.utils
      ├─ vis               # ML specific visualization functions
      ├─ tf                # Directory for TensorFlow specific code. same structure as ml3d/torch.
-     │                    # This will be available as open3d.ml.tf
-     ├─ torch             # Directory for PyTorch specific code; available as open3d.ml.torch
+     │                    # This will be available as cloudViewer.ml.tf
+     ├─ torch             # Directory for PyTorch specific code; available as cloudViewer.ml.torch
           ├─ dataloaders  # Framework specific dataset code, e.g. wrappers that can make use of the
           │               # generic dataset code.
           ├─ models       # Code for models
