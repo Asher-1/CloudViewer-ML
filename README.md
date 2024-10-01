@@ -27,9 +27,9 @@ general functionality independent of ML frameworks such as data visualization.
 CloudViewer-ML is integrated in the CloudViewer v0.3.7+ python distribution and is compatible with the following
 versions of ML frameworks.
 
-* PyTorch 1.7.1
-* TensorFlow 2.3.1
-* CUDA 10.1, 11.* (On `GNU/Linux x86_64`, optional)
+-   PyTorch 2.0.\*
+-   TensorFlow 2.13.\* (macOS, see below for Linux)
+-   CUDA 10.1, 11.\* (On `GNU/Linux x86_64`, optional)
 
 You can install CloudViewer with
 
@@ -45,7 +45,9 @@ To install a compatible version of PyTorch or TensorFlow you can use the respect
 ```bash
 # To install a compatible version of TensorFlow
 pip install -r requirements-tensorflow.txt
-# To install a compatible version of PyTorch with CUDA
+# To install a compatible version of PyTorch
+pip install -r requirements-torch.txt
+# To install a compatible version of PyTorch with CUDA on Linux
 pip install -r requirements-torch-cuda.txt
 ```
 
