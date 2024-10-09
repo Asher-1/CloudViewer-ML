@@ -20,11 +20,11 @@ python -m pip install -U Cython
 
 
 #
-# 2. clone ErowCloudViewer and install dependencies
+# 2. clone ACloudViewer and install dependencies
 #
-git clone --recursive --branch master  https://github.com/Asher-1/ErowCloudViewer.git
+git clone --recursive --branch master  https://github.com/Asher-1/ACloudViewer.git
 
-./ErowCloudViewer/util/install_deps_ubuntu.sh assume-yes
+./ACloudViewer/util/install_deps_ubuntu.sh assume-yes
 python -m pip install -U tensorflow==$TENSORFLOW_VER
 python -m pip install -U torch==${TORCH_GLNX_VER} -f https://download.pytorch.org/whl/torch_stable.html
 python -m pip install -U pytest
@@ -33,8 +33,8 @@ python -m pip install -U yapf=="$YAPF_VER"
 #
 # 3. Configure for bundling the CloudViewer-ML part
 #
-mkdir ErowCloudViewer/build
-pushd ErowCloudViewer/build
+mkdir ACloudViewer/build
+pushd ACloudViewer/build
 cmake -DBUNDLE_CLOUDVIEWER_ML=ON \
       -DCLOUDVIEWER_ML_ROOT=$PATH_TO_CLOUDVIEWER_ML \
       -DBUILD_TENSORFLOW_OPS=ON \

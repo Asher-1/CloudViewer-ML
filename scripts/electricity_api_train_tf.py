@@ -7,10 +7,10 @@ import os
 import cloudViewer.ml as _ml3d
 from cloudViewer.ml.utils import Config, get_module
 
-CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/scripts/logs/" \
+CKPT_PATH = "/media/yons/data/develop/pcl_projects/ACloudViewer/CloudViewer-ML/scripts/logs/" \
             "RandLANet_Electricity3D_tf/checkpoint/ckpt-21"
 
-CONFIG_FILE = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/" \
+CONFIG_FILE = "/media/yons/data/develop/pcl_projects/ACloudViewer/CloudViewer-ML/" \
               "scripts/test_randlanet_electricity3d.yml"
 
 DATASET_PATH = "/media/yons/data/dataset/pointCloud/data/Electricity3D/cloudViewer_processed"
