@@ -1,27 +1,32 @@
 name: Ubuntu CI
+permissions: {}
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - master
+    branches: [main, dev]
   pull_request:
     types: [opened, reopened, synchronize]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NPROC: 3
+
 jobs:
   ubuntu:
-    runs-on: ubuntu-18.04
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-    env:
-      NPROC: 2
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
-        with:
-          submodules: true
+        uses: actions/checkout@v4
       - name: Setup cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           # Ref: https://github.com/apache/incubator-mxnet/pull/18459/files
           path: ~/.ccache
@@ -34,10 +39,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-ccache
       - name: Set up Python version
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.6
-      # Pre-installed 18.04 packages: https://git.io/JfHmW
+          python-version: "3.11"
+      # Pre-installed  packages: https://github.com/actions/runner-images/tree/main/images
       - name: Install ccache
         run: |
           sudo apt-get --yes install ccache
