@@ -327,9 +327,7 @@ class Object3d(BEVBox3D):
         return print_str
 
     def to_kitti_format(self):
-        """
-        This method transforms the class to kitti format.
-        """
+        """This method transforms the class to kitti format."""
         kitti_str = '%s %.2f %d %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f' \
                     % (self.label_class, self.truncation, int(self.occlusion), self.alpha, self.box2d[0], self.box2d[1],
                        self.box2d[2], self.box2d[3], self.size[2], self.size[0], self.size[1], self.center[0],

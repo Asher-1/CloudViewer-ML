@@ -302,9 +302,7 @@ class S3DISSplit(BaseDatasetSplit):
 
 
 class Object3d(BEVBox3D):
-    """
-    Stores object specific details like bbox coordinates.
-    """
+    """Stores object specific details like bbox coordinates."""
 
     def __init__(self, name, center, size, yaw):
         super().__init__(center, size, yaw, name, -1.0)

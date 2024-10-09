@@ -108,7 +108,9 @@ def read_ply(filename, triangular_mesh=False):
     ----------
     filename : string
         the name of the file to read.
-
+    triangular_mesh : boolean
+        PointCloud reader vs mesh reader.
+        
     Returns
     -------
     result : array
@@ -136,7 +138,6 @@ def read_ply(filename, triangular_mesh=False):
            [ 0.873  0.996  0.092]])
 
     """
-
     with open(filename, 'rb') as plyfile:
 
         # Check if the file start with ply
@@ -221,6 +222,9 @@ def write_ply(filename, field_list, field_names, triangular_faces=None):
     field_names : list
         the name of each fields as a list of strings. Has to be the same length as the number of 
         fields.
+        
+    triangular_faces : numpy array
+        Add faces if needed.
 
     Examples
     --------
@@ -235,7 +239,6 @@ def write_ply(filename, field_list, field_names, triangular_faces=None):
     >>> write_ply('example3.ply', [points, colors, values], field_names)
 
     """
-
     # Format list input to the right form
     field_list = list(field_list) if (type(field_list) == list or
                                       type(field_list) == tuple) else list(
@@ -275,7 +278,7 @@ def write_ply(filename, field_list, field_names, triangular_faces=None):
         # Points properties description
         header.extend(header_properties(field_list, field_names))
 
-        # Add faces if needded
+        # Add faces if needed
         if triangular_faces is not None:
             header.append('element face {:d}'.format(triangular_faces.shape[0]))
             header.append('property list uchar int vertex_indices')
@@ -321,12 +324,16 @@ def write_ply(filename, field_list, field_names, triangular_faces=None):
 
 
 def describe_element(name, df):
-    """ Takes the columns of the dataframe and builds a ply-like description
+    """
+    Takes the columns of the data frame and builds a ply-like description
 
     Parameters
     ----------
-    name: str
+    name: string
+        the name of the file
+        
     df: pandas DataFrame
+        the pandas data frame type
 
     Returns
     -------

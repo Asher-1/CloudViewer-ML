@@ -78,9 +78,7 @@ class PythonFormatter:
 
     @staticmethod
     def _check_style(file_path, style_config):
-        """
-        Returns true if style is valid.
-        """
+        """Returns true if style is valid."""
         _, _, changed = yapf.yapflib.yapf_api.FormatFile(
             file_path, style_config=style_config, in_place=False)
         return not changed

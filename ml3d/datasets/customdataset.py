@@ -22,12 +22,14 @@ log = logging.getLogger(__name__)
 
 
 class Custom3DSplit(BaseDatasetSplit):
-    """This class is used to create a custom dataset split.
+    """
+    This class is used to create a custom dataset split.
     Initialize the class.
     Args:
         dataset: The dataset to split.
         split: A string identifying the dataset split that is usually one of 'training', 'test', 'validation', or 'all'.
         **kwargs: The configuration of the model as keyword arguments.
+        
     Returns:
         A dataset split object providing the requested subset of the data.
     """

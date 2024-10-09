@@ -45,7 +45,6 @@ class NuScenes(BaseDataset):
         Returns:
             class: The corresponding class.
         """
-
         if info_path is None:
             info_path = dataset_path
 
