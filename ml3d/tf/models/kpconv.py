@@ -125,7 +125,7 @@ class KPFCNN(BaseModel):
         cfg = self.cfg
 
         # From config parameter, compute higher bound of neighbors number in a neighborhood
-        hist_n = int(np.ceil(4 / 3 * np.pi * (cfg.density_parameter + 1) ** 3))
+        hist_n = int(np.ceil(4 / 3 * np.pi * (cfg.density_parameter + 1)**3))
 
         # Initiate neighbors limit with higher bound
         self.neighborhood_limits = []
@@ -159,8 +159,8 @@ class KPFCNN(BaseModel):
 
             # Detect change to next layer for skip connection
             if np.any([
-                tmp in block
-                for tmp in ['pool', 'strided', 'upsample', 'global']
+                    tmp in block
+                    for tmp in ['pool', 'strided', 'upsample', 'global']
             ]):
                 self.encoder_skips.append(block_i)
                 self.encoder_skip_dims.append(in_dim)
@@ -404,7 +404,7 @@ class KPFCNN(BaseModel):
             # Create this element indices
             element_inds = tf.expand_dims(tf.range(
                 point_i, point_i + stacks_len[batch_i]),
-                axis=0)
+                                          axis=0)
 
             # Pad to right size
             padded_inds = tf.pad(
@@ -764,7 +764,7 @@ class KPFCNN(BaseModel):
         for len in self.test_meta['lens']:
             r += len
             self.test_probs[inds[l:r]] = self.test_probs[
-                                             inds[l:r]] * test_smooth + (1 - test_smooth) * results[l:r]
+                inds[l:r]] * test_smooth + (1 - test_smooth) * results[l:r]
             l += len
 
         self.pbar.update(self.possibility[self.possibility > 0.5].shape[0] -
@@ -812,7 +812,7 @@ class KPFCNN(BaseModel):
 
             dists = np.sum(np.square(
                 (points[input_inds] - pick_point).astype(np.float32)),
-                axis=1)
+                           axis=1)
             tuckeys = np.square(1 - dists / np.square(cfg.in_radius))
             tuckeys[dists > np.square(cfg.in_radius)] = 0
             self.possibility[input_inds] += tuckeys

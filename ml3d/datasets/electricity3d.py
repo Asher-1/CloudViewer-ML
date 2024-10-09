@@ -33,14 +33,12 @@ class Electricity3D(BaseDataset):
                  use_cache=False,
                  num_points=65536,
                  class_weights=[
-                     635262, 1881335, 3351389, 135650, 1132024, 282850, 3384, 102379, 357589, 20374,
-                     332435, 42973, 164957, 8626, 7962, 11651, 64765, 26884, 42479
+                     635262, 1881335, 3351389, 135650, 1132024, 282850, 3384,
+                     102379, 357589, 20374, 332435, 42973, 164957, 8626, 7962,
+                     11651, 64765, 26884, 42479
                  ],
                  ignored_label_inds=[0],
-                 val_files=[
-                     '1_9_local_a',
-                     '7_29_local'
-                 ],
+                 val_files=['1_9_local_a', '7_29_local'],
                  test_result_folder='./test',
                  **kwargs):
         """
@@ -232,7 +230,7 @@ class Electricity3DSplit(BaseDatasetSplit):
 
     def __init__(self, dataset, split='training'):
         super().__init__(dataset, split=split)
-        
+
     def __len__(self):
         return len(self.path_list)
 
@@ -260,11 +258,7 @@ class Electricity3DSplit(BaseDatasetSplit):
         else:
             labels = np.zeros((points.shape[0],), dtype=np.int32)
 
-        data = {
-            'point': points,
-            'feat': feat,
-            'label': labels
-        }
+        data = {'point': points, 'feat': feat, 'label': labels}
 
         return data
 

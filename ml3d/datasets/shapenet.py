@@ -92,8 +92,8 @@ class ShapeNet(BaseDataset):
         splits = []
         splits_path = join(self.dataset_path, 'train_test_split')
         for split in [
-            'shuffled_train_file_list.json', 'shuffled_test_file_list.json',
-            'shuffled_val_file_list.json'
+                'shuffled_train_file_list.json', 'shuffled_test_file_list.json',
+                'shuffled_val_file_list.json'
         ]:
             with open(join(splits_path, split)) as source:
                 json_source = source.read()
@@ -239,7 +239,8 @@ class ShapeNetSplit(BaseDatasetSplit):
     """
 
     def __init__(self, dataset, split='training', task='classification'):
-        assert task in ['classification', 'segmentation'], f"Invalid task {task}"
+        assert task in ['classification',
+                        'segmentation'], f"Invalid task {task}"
 
         super().__init__(dataset, split=split)
 
@@ -254,7 +255,7 @@ class ShapeNetSplit(BaseDatasetSplit):
         label = np.loadtxt(
             path[2],
             dtype=np.int64) if self.task == 'segmentation' else np.array(
-            [np.int64(path[0])])
+                [np.int64(path[0])])
         return {'point': points, 'feat': None, 'label': label}
 
     def get_attr(self, idx):

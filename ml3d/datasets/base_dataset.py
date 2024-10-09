@@ -5,7 +5,6 @@ import logging
 
 from ..utils import Config, get_module
 
-
 logging.basicConfig(
     level=logging.INFO,
     format='%(levelname)s - %(asctime)s - %(module)s - %(message)s',
@@ -125,7 +124,8 @@ class BaseDatasetSplit(ABC):
         self.path_list = dataset.get_split_list(split)
         self.split = split
         self.dataset = dataset
-        log.info("Found {} pointclouds for {}".format(len(self.path_list), split))
+        log.info("Found {} pointclouds for {}".format(len(self.path_list),
+                                                      split))
 
         if split in ['test']:
             sampler_cls = get_module('sampler', 'SemSegSpatiallyRegularSampler')

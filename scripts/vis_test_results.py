@@ -13,7 +13,8 @@ def get_custom_data(pc_names, data_path, labels_path, extend=".txt"):
         pc_path = join(data_path, name + extend)
         label_path = join(labels_path, name + '.labels')
         if not os.path.exists(pc_path):
-            print("cannot find pointcloud data corresponding to {}".format(pc_path))
+            print("cannot find pointcloud data corresponding to {}".format(
+                pc_path))
             continue
 
         pc = pd.read_csv(pc_path,
@@ -74,7 +75,10 @@ def main():
 
     pc_names = [os.path.basename(file).split(".")[0] for file in all_files]
 
-    pcs_with_pred = get_custom_data(pc_names, data_path, test_label_path, extend=EXTEND)
+    pcs_with_pred = get_custom_data(pc_names,
+                                    data_path,
+                                    test_label_path,
+                                    extend=EXTEND)
 
     v.visualize(pcs_with_pred)
 

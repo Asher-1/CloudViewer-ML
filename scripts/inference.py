@@ -21,13 +21,19 @@ cfg_file = "/media/yons/data/develop/pcl_projects/ACloudViewer/" \
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Demo for training and inference')
-    parser.add_argument('--main_log_dir', help='the dir to save logs and models')
-    parser.add_argument('--dataset_path', help='path to Electricity3D', default=data_dir)
+    parser = argparse.ArgumentParser(
+        description='Demo for training and inference')
+    parser.add_argument('--main_log_dir',
+                        help='the dir to save logs and models')
+    parser.add_argument('--dataset_path',
+                        help='path to Electricity3D',
+                        default=data_dir)
     parser.add_argument('--split', help='train or test', default='test')
     parser.add_argument('--ckpt_path', help='model path', default=ckpt_path)
     parser.add_argument('--cfg_file', help='configure file', default=cfg_file)
-    parser.add_argument('--device', default=DEVICE, help='path to RandLANet checkpoint')
+    parser.add_argument('--device',
+                        default=DEVICE,
+                        help='path to RandLANet checkpoint')
 
     args, _ = parser.parse_known_args()
 
@@ -121,7 +127,10 @@ def main(args):
     pipeline = ml3d.pipelines.SemanticSegmentation(model, **cfg_dict_pipeline)
     pipeline.load_ckpt(model.cfg.ckpt_path)
 
-    pc_names = ["domfountain_station3_xyz_intensity_rgb.txt", "untermaederbrunnen_station3_xyz_intensity_rgb.txt"]
+    pc_names = [
+        "domfountain_station3_xyz_intensity_rgb.txt",
+        "untermaederbrunnen_station3_xyz_intensity_rgb.txt"
+    ]
     pcs = get_custom_data(pc_names, args.dataset_path)
     pcs_with_pred = pred_custom_data(pc_names, pcs, pipeline)
 

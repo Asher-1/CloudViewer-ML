@@ -279,7 +279,8 @@ class InputLayer(nn.Module):
     def forward(self, features, in_positions):
         v = voxelize(
             in_positions,
-            torch.LongTensor([0, in_positions.shape[0]]).to(in_positions.device),
+            torch.LongTensor([0,
+                              in_positions.shape[0]]).to(in_positions.device),
             self.voxel_size, torch.Tensor([0, 0, 0]),
             torch.Tensor([40960, 40960, 40960]))
 

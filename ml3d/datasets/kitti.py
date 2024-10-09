@@ -264,7 +264,8 @@ class KITTISplit(BaseDatasetSplit):
 
     def get_data(self, idx):
         pc_path = self.path_list[idx]
-        label_path = pc_path.replace('velodyne', 'label_2').replace('.bin', '.txt')
+        label_path = pc_path.replace('velodyne',
+                                     'label_2').replace('.bin', '.txt')
         calib_path = label_path.replace('label_2', 'calib')
 
         pc = self.dataset.read_lidar(pc_path)

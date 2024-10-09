@@ -3,7 +3,8 @@ import pprint
 from pathlib import Path
 import os
 
-os.environ['CLOUDVIEWER_ML_ROOT'] = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+os.environ['CLOUDVIEWER_ML_ROOT'] = os.path.dirname(
+    os.path.dirname(os.path.realpath(__file__)))
 import cloudViewer.ml as _ml3d
 from cloudViewer.ml.utils import Config, get_module
 
@@ -35,19 +36,35 @@ GRID_SIZE = 0.06
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Demo for training and inference')
-    parser.add_argument('--dataset_path', help='path to Electricity3D', default=DATASET_PATH)
-    parser.add_argument('--main_log_dir', help='the dir to save logs and models')
-    parser.add_argument('--cfg_file', help='path to the config file', default=CONFIG_FILE)
-    parser.add_argument('--batch_size', help='training batch size', default=BATCH_SIZE)
-    parser.add_argument('--ckpt_path', default=CKPT_PATH, help='path to RandLANet checkpoint')
+    parser = argparse.ArgumentParser(
+        description='Demo for training and inference')
+    parser.add_argument('--dataset_path',
+                        help='path to Electricity3D',
+                        default=DATASET_PATH)
+    parser.add_argument('--main_log_dir',
+                        help='the dir to save logs and models')
+    parser.add_argument('--cfg_file',
+                        help='path to the config file',
+                        default=CONFIG_FILE)
+    parser.add_argument('--batch_size',
+                        help='training batch size',
+                        default=BATCH_SIZE)
+    parser.add_argument('--ckpt_path',
+                        default=CKPT_PATH,
+                        help='path to RandLANet checkpoint')
     parser.add_argument('--split', help='train or test', default='train')
-    parser.add_argument('--framework', default=FRAMEWORK, help='path to RandLANet checkpoint')
-    parser.add_argument('--device', default=DEVICE, help='path to RandLANet checkpoint')
-    parser.add_argument('--steps_per_epoch_train', default=STEPS_PER_EPOCH_TRAIN,
+    parser.add_argument('--framework',
+                        default=FRAMEWORK,
+                        help='path to RandLANet checkpoint')
+    parser.add_argument('--device',
+                        default=DEVICE,
+                        help='path to RandLANet checkpoint')
+    parser.add_argument('--steps_per_epoch_train',
+                        default=STEPS_PER_EPOCH_TRAIN,
                         help='steps per epoch train')
-    parser.add_argument('--grid_size', default=GRID_SIZE, help='path to RandLANet checkpoint')
-
+    parser.add_argument('--grid_size',
+                        default=GRID_SIZE,
+                        help='path to RandLANet checkpoint')
 
     args, _ = parser.parse_known_args()
 
@@ -95,7 +112,8 @@ def demo_train(args):
     if args.cfg_file is not None:
         cfg = _ml3d.utils.Config.load_from_file(args.cfg_file)
 
-        Pipeline = _ml3d.utils.get_module("pipeline", cfg.pipeline.name, framework)
+        Pipeline = _ml3d.utils.get_module("pipeline", cfg.pipeline.name,
+                                          framework)
         Model = _ml3d.utils.get_module("model", cfg.model.name, framework)
         Dataset = _ml3d.utils.get_module("dataset", cfg.dataset.name)
 
@@ -106,7 +124,8 @@ def demo_train(args):
                                                "dataset": {"steps_per_epoch_train": str(args.steps_per_epoch_train)},
                                                })
 
-        dataset = Dataset(cfg_dict_dataset.pop('dataset_path', None), **cfg_dict_dataset)
+        dataset = Dataset(cfg_dict_dataset.pop('dataset_path', None),
+                          **cfg_dict_dataset)
         model = Model(**cfg_dict_model)
         pipeline = Pipeline(model, dataset, **cfg_dict_pipeline)
     else:
@@ -120,18 +139,23 @@ def demo_train(args):
         # Initialize the training by passing parameters
         dataset = Dataset(args.ckpt_path, use_cache=True)
 
-        model = Model(num_layers=5, num_points=65536, num_classes=19,
-                      sub_sampling_ratio=[4, 4, 4, 4, 2], dim_input=6,
-                      dim_output=[16, 64, 128, 256, 512], grid_size=GRID_SIZE)
+        model = Model(num_layers=5,
+                      num_points=65536,
+                      num_classes=19,
+                      sub_sampling_ratio=[4, 4, 4, 4, 2],
+                      dim_input=6,
+                      dim_output=[16, 64, 128, 256, 512],
+                      grid_size=GRID_SIZE)
 
-        pipeline = Pipeline(model=model,
-                            dataset=dataset,
-                            batch_size=2,
-                            val_batch_size=1,
-                            test_batch_size=1,
-                            max_epoch=100,  # maximum epoch during training
-                            learning_rate=1e-2,  # initial learning rate
-                            save_ckpt_freq=5)
+        pipeline = Pipeline(
+            model=model,
+            dataset=dataset,
+            batch_size=2,
+            val_batch_size=1,
+            test_batch_size=1,
+            max_epoch=100,  # maximum epoch during training
+            learning_rate=1e-2,  # initial learning rate
+            save_ckpt_freq=5)
 
     with open(Path(__file__).parent / 'README.md', 'r') as f:
         readme = f.read()
@@ -185,9 +209,13 @@ def demo_inference(args):
     dataset = Dataset(args.dataset_path, use_cache=False)
 
     num_classes = dataset.num_classes - len(dataset.ignored_labels)
-    RandLANet = Model(num_layers=5, num_points=65536, num_classes=num_classes,
-                      sub_sampling_ratio=[4, 4, 4, 4, 2], dim_input=6,
-                      dim_output=[16, 64, 128, 256, 512], grid_size=GRID_SIZE,
+    RandLANet = Model(num_layers=5,
+                      num_points=65536,
+                      num_classes=num_classes,
+                      sub_sampling_ratio=[4, 4, 4, 4, 2],
+                      dim_input=6,
+                      dim_output=[16, 64, 128, 256, 512],
+                      grid_size=GRID_SIZE,
                       ckpt_path=args.ckpt_path)
 
     pipeline = Pipeline(model=RandLANet, dataset=dataset)
