@@ -180,8 +180,8 @@ pipeline = SemanticSegmentation(model=model, dataset=dataset, max_epoch=100)
 pipeline.run_train()
 ```
 
-For more examples see [`examples/`](https://github.com/Asher-1/CloudViewer-ML/tree/master/examples)
-and the [`scripts/`](https://github.com/Asher-1/CloudViewer-ML/tree/master/scripts) directories.
+For more examples see [`examples/`](https://github.com/Asher-1/CloudViewer-ML/tree/main/examples)
+and the [`scripts/`](https://github.com/Asher-1/CloudViewer-ML/tree/main/scripts) directories.
 
 ### 3D Object Detection
 
@@ -249,15 +249,15 @@ pipeline.run_train()
 
 Below is an example of visualization using KITTI. The example shows the use of bounding boxes for the KITTI dataset.
 
-<img width="480" src="https://github.com/Asher-1/ErowCloudViewer/docs/images/visualizer_BoundingBoxes.png">
+<img width="480" src="docs/images/visualizer_BoundingBoxes.png">
 
 
-For more examples see [`examples/`](https://github.com/Asher-1/CloudViewer-ML/tree/master/examples)
-and the [`scripts/`](https://github.com/Asher-1/CloudViewer-ML/tree/master/scripts) directories.
+For more examples see [`examples/`](https://github.com/Asher-1/CloudViewer-ML/tree/main/examples)
+and the [`scripts/`](https://github.com/Asher-1/CloudViewer-ML/tree/main/scripts) directories.
 
 ### Using predefined scripts
 
-[`scripts/run_pipeline.py`](https://github.com/Asher-1/CloudViewer-ML/tree/master/scripts/run_pipeline.py)
+[`scripts/run_pipeline.py`](https://github.com/Asher-1/CloudViewer-ML/tree/main/scripts/run_pipeline.py)
 provides an easy interface for training and evaluating a model on a dataset. It saves the trouble of defining specific
 model and passing exact configuration.
 
@@ -391,7 +391,7 @@ The following is a list of datasets for which we provide dataset reader classes.
 * ScanNet([project-page](http://www.scan-net.org/))
 
 
-For downloading these datasets visit the respective webpages and have a look at the scripts in [`scripts/download_datasets`](https://github.com/Asher-1/CloudViewer-ML/tree/master/scripts/download_datasets).
+For downloading these datasets visit the respective webpages and have a look at the scripts in [`scripts/download_datasets`](https://github.com/Asher-1/CloudViewer-ML/tree/main/scripts/download_datasets).
 
 
 
