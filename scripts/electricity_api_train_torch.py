@@ -13,18 +13,18 @@ DATASET_NAME = "Semantic3D"
 
 if DATASET_NAME == "Electricity3D":
     CKPT_PATH = None
-    # CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML" \
+    # CKPT_PATH = "/media/yons/data/develop/pcl_projects/ACloudViewer/CloudViewer-ML" \
     #             "/scripts/logs/RandLANet_Electricity3D_torch/checkpoint/ckpt_00100.pth"
     DATASET_PATH = "/media/yons/data/dataset/pointCloud/data/Electricity3D/cloudViewer_processed"
-    CONFIG_FILE = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/" \
+    CONFIG_FILE = "/media/yons/data/develop/pcl_projects/ACloudViewer/CloudViewer-ML/" \
                   "scripts/test_randlanet_electricity3d.yml"
 else:
     CKPT_PATH = None
-    # CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/scripts/logs/" \
+    # CKPT_PATH = "/media/yons/data/develop/pcl_projects/ACloudViewer/CloudViewer-ML/scripts/logs/" \
     #             "RandLANet_Semantic3D_torch/checkpoint/ckpt_00100.pth"
-    # CKPT_PATH = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/runtimeDll/randlanet_semantic3d_202012120312utc.pth"
+    # CKPT_PATH = "/media/yons/data/develop/pcl_projects/ACloudViewer/runtimeDll/randlanet_semantic3d_202012120312utc.pth"
     DATASET_PATH = "/media/yons/data/dataset/pointCloud/data/Semantic3D/cloudViewer_processed"
-    CONFIG_FILE = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/CloudViewer-ML/" \
+    CONFIG_FILE = "/media/yons/data/develop/pcl_projects/ACloudViewer/CloudViewer-ML/" \
                   "ml3d/configs/randlanet_semantic3d.yml"
 
 DEVICE = "gpu:1"

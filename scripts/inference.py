@@ -13,10 +13,10 @@ import cloudViewer.ml.torch as ml3d
 from os.path import exists, join, isfile, dirname, abspath, split
 
 DEVICE = "gpu:1"
-ckpt_path = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/runtimeDll/" \
+ckpt_path = "/media/yons/data/develop/pcl_projects/ACloudViewer/runtimeDll/" \
             "CloudViewer_ML_Models/semantic_segmentation/randlanet_semantic3d_202012120312utc.pth"
 data_dir = "/media/yons/data/dataset/pointCloud/data/Semantic3D/cloudViewer_processed"
-cfg_file = "/media/yons/data/develop/pcl_projects/ErowCloudViewer/" \
+cfg_file = "/media/yons/data/develop/pcl_projects/ACloudViewer/" \
            "CloudViewer-ML/ml3d/configs/randlanet_electricity3d.yml"
 
 

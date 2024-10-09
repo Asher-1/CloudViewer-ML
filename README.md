@@ -61,7 +61,7 @@ $ python -c "import cloudViewer.ml.tf as ml3d"
 ```
 
 If you need to use different versions of the ML frameworks or CUDA we recommend to
-[build CloudViewer from source](http://www.erow.cn/docs/release/compilation.html).
+[build CloudViewer from source](http://http://asher-1.github.io/docs/release/compilation.html).
 
 ## Getting started
 
@@ -411,7 +411,7 @@ There are many ways to contribute to this project. You can:
 * Report problems and bugs
 
 Please, **make your pull requests to the** [**dev**](https://github.com/Asher-1/CloudViewer-ML/tree/dev) branch.
-ErowCloudViewer is a community effort. We welcome and celebrate contributions from the
+ACloudViewer is a community effort. We welcome and celebrate contributions from the
 community!
 
 If you want to share weights for a model you trained please attach or link the
@@ -421,8 +421,8 @@ Please also check out our communication channels to get in contact with the comm
 
 ## Communication channels
 
-<!--* [GitHub Issue](https://github.com/Asher-1/ErowCloudViewer/issues): bug reports, feature requests, etc.-->
-* [Forum](https://github.com/Asher-1/ErowCloudViewer/discussions): discussion on the usage of ErowCloudViewer.
+<!--* [GitHub Issue](https://github.com/Asher-1/ACloudViewer/issues): bug reports, feature requests, etc.-->
+* [Forum](https://github.com/Asher-1/ACloudViewer/discussions): discussion on the usage of ACloudViewer.
 * [Discord Chat](https://discord.gg/D35BGvn): online chats, discussions,
   and collaboration with other users and developers.
 

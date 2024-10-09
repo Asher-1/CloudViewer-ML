@@ -8,7 +8,7 @@ import random
 from tqdm import tqdm
 from sklearn.neighbors import KDTree
 
-# use relative import for being compatible with ErowCloudViewer main repo
+# use relative import for being compatible with ACloudViewer main repo
 from .base_model import BaseModel
 from ..utils import helper_tf
 from ...utils import MODEL
