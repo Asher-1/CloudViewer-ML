@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/Asher-1/CloudViewer-ML/blob/main/docs/images/erow_logo_1024.png" height="256" width="512" />
+<img src="docs/images/ACloudViewer_logo_horizontal.png" height="256" width="256" />
 <span style="font-size: 220%"><b>ML</b></span>
 </p>
 
