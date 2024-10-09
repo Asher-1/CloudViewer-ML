@@ -289,7 +289,7 @@ class DatasetModel(Model):
                 self._name2datasetidx[name] = i
 
             if dataset.__class__.__name__ in [
-                "Toronto3D", "Semantic3D", "S3DIS"
+                    "Toronto3D", "Semantic3D", "S3DIS"
             ]:
                 self._attr_rename["feat"] = "colors"
                 self._attr_rename["feature"] = "colors"
@@ -559,8 +559,8 @@ class Visualizer:
             value = min(1.0, max(0.0, value))
 
             if ((idx > 0 and value < self.colormap.points[idx - 1].value) or
-                    (idx < len(self.colormap.points) - 1 and
-                     value > self.colormap.points[idx + 1].value)):
+                (idx < len(self.colormap.points) - 1 and
+                 value > self.colormap.points[idx + 1].value)):
                 self.colormap.points[idx].value = value
                 o = self.colormap.points[idx]
                 self.colormap.points.sort(key=lambda cmap_pt: cmap_pt.value)
@@ -577,7 +577,7 @@ class Visualizer:
                 value = value + 0.5 * (upper - value)
                 needs_update = True
             if idx < len(self.colormap.points
-                         ) - 1 and value == self.colormap.points[idx + 1].value:
+                        ) - 1 and value == self.colormap.points[idx + 1].value:
                 if idx > 0:
                     lower = self.colormap.points[idx - 1].value
                 else:
@@ -601,7 +601,7 @@ class Visualizer:
                 idx = self._itemid2idx[self._edit.selected_item]
                 self.colormap.points = self.colormap.points[:
                                                             idx] + self.colormap.points[
-                                                                   idx + 1:]
+                                                                idx + 1:]
                 del self._itemid2idx[self._edit.selected_item]
                 self._update_later()
                 if self._on_changed is not None:
@@ -1148,7 +1148,7 @@ class Visualizer:
             if animation_frame is None:
                 for bbox_data in self._objects.bounding_box_data:
                     if bbox_data.name in self._name2treenode and self._name2treenode[
-                        bbox_data.name].checkbox.checked:
+                            bbox_data.name].checkbox.checked:
                         boxes += bbox_data.boxes
             else:
                 geom_name = self._animation_frames[animation_frame]
@@ -1170,7 +1170,7 @@ class Visualizer:
             # because nothing will change.
             if len(self._objects.bounding_box_data) > 0:
                 if self._objects.bounding_box_data[
-                    0].name in self._name2treenode:
+                        0].name in self._name2treenode:
                     return
 
             for bbox_data in self._objects.bounding_box_data:

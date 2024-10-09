@@ -48,7 +48,7 @@ class Pointnet2MSG(tf.keras.layers.Layer):
                 i + 1][-1] if i + 1 < len(fp_mlps) else out_channels
             self.FP_modules.append(
                 PointnetFPModule(mlp=[pre_channel + skip_channel_list[i]] +
-                                     fp_mlps[i],
+                                 fp_mlps[i],
                                  batch_norm=True))
 
     def _break_up_pc(self, pc):
@@ -104,7 +104,7 @@ class _PointnetSAModuleBase(tf.keras.layers.Layer):
         if new_xyz is None and self.npoint is not None:
             sampling = tf.expand_dims(pointnet2_utils.furthest_point_sample(
                 xyz, self.npoint),
-                axis=-1)
+                                      axis=-1)
             new_xyz = tf.gather_nd(xyz, sampling, batch_dims=1)
 
         for i in range(len(self.groupers)):

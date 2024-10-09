@@ -33,14 +33,12 @@ def pred_custom_data():
     num_points = 100000
     points = np.random.rand(num_points, 3).astype(np.float32)
 
-    data = [
-        {
-            'name': 'my_point_cloud',
-            'points': points,
-            'random_colors': np.random.rand(*points.shape).astype(np.float32),
-            'int_attr': (points[:, 0] * 5).astype(np.int32),
-        }
-    ]
+    data = [{
+        'name': 'my_point_cloud',
+        'points': points,
+        'random_colors': np.random.rand(*points.shape).astype(np.float32),
+        'int_attr': (points[:, 0] * 5).astype(np.int32),
+    }]
 
     vis = ml3d.vis.Visualizer()
     lut = ml3d.vis.LabelLUT()

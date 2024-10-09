@@ -54,13 +54,11 @@ def preprocess(args):
     all_files = glob.glob(str(Path(dataset_path) / '*.xyz'))
 
     train_files = [
-        f for f in all_files
-        if exists(str(Path(f).parent / Path(f).name.replace(extend, label_extend)))
+        f for f in all_files if exists(
+            str(Path(f).parent / Path(f).name.replace(extend, label_extend)))
     ]
 
-    test_files = [
-        f for f in all_files if f not in train_files
-    ]
+    test_files = [f for f in all_files if f not in train_files]
 
     files = {}
     for f in train_files:
@@ -82,7 +80,8 @@ def preprocess(args):
         # check if it has already preprocessed
         if exists(join(out_path, Path(key).name.replace(extend, extend))):
             print("ignore train file {} because already preprocessed, "
-                  "you should remove it before running!".format(Path(key).name.replace(extend, extend)))
+                  "you should remove it before running!".format(
+                      Path(key).name.replace(extend, extend)))
             continue
 
         if parts == 1:
@@ -108,10 +107,12 @@ def preprocess(args):
                 pc = np.concatenate([points, feat], 1)
                 subsampling_pc_shape = pc.shape
                 subsampling_labels_shape = labels.shape
-                print("subsampling {} from {} to {}".format(Path(key).name.replace(extend, extend),
-                                                            raw_pc_shape, subsampling_pc_shape))
-                print("subsampling {} from {} to {}".format(Path(key).name.replace(extend, label_extend),
-                                                            raw_labels_shape, subsampling_labels_shape))
+                print("subsampling {} from {} to {}".format(
+                    Path(key).name.replace(extend, extend), raw_pc_shape,
+                    subsampling_pc_shape))
+                print("subsampling {} from {} to {}".format(
+                    Path(key).name.replace(extend, label_extend),
+                    raw_labels_shape, subsampling_labels_shape))
 
                 name = join(out_path, Path(key).name.replace(extend, extend))
                 name_lbl = name.replace(extend, label_extend)
@@ -154,10 +155,12 @@ def preprocess(args):
 
             subsampling_pc_shape = pc.shape
             subsampling_labels_shape = lbl.shape
-            print("subsampling {} from {} to {}".format(Path(key).name.replace(extend, extend),
-                                                        raw_pc_shape, subsampling_pc_shape))
-            print("subsampling {} from {} to {}".format(Path(key).name.replace(extend, label_extend),
-                                                        raw_labels_shape, subsampling_labels_shape))
+            print("subsampling {} from {} to {}".format(
+                Path(key).name.replace(extend, extend), raw_pc_shape,
+                subsampling_pc_shape))
+            print("subsampling {} from {} to {}".format(
+                Path(key).name.replace(extend, label_extend), raw_labels_shape,
+                subsampling_labels_shape))
 
         for i in range(parts):
             name = join(
@@ -177,7 +180,8 @@ def preprocess(args):
         # check if it has already preprocessed
         if exists(join(out_path, Path(key).name.replace(extend, extend))):
             print("ignore test file {} because already preprocessed, "
-                  "you should remove it before running!".format(Path(key).name.replace(extend, extend)))
+                  "you should remove it before running!".format(
+                      Path(key).name.replace(extend, extend)))
             continue
 
         pc = pd.read_csv(key,
@@ -186,13 +190,12 @@ def preprocess(args):
                          dtype=np.float32).values
         raw_pc_shape = pc.shape
         points, feat = utils.DataProcessing.grid_subsampling(
-            pc[:, :3],
-            features=pc[:, 3:],
-            grid_size=sub_grid_size)
+            pc[:, :3], features=pc[:, 3:], grid_size=sub_grid_size)
         pc = np.concatenate([points, feat], 1)
         subsampling_pc_shape = pc.shape
-        print("subsampling {} from {} to {}".format(Path(key).name.replace(extend, extend),
-                                                    raw_pc_shape, subsampling_pc_shape))
+        print("subsampling {} from {} to {}".format(
+            Path(key).name.replace(extend, extend), raw_pc_shape,
+            subsampling_pc_shape))
 
         name = join(out_path, Path(key).name.replace(extend, extend))
         np.savetxt(name, pc, fmt='%.3f %.3f %.3f %i %i %i')

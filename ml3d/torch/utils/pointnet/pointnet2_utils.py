@@ -105,6 +105,7 @@ class FurthestPointSamplingV2(Function):
 
 furthest_point_sample_v2 = FurthestPointSamplingV2.apply
 
+
 class ThreeNN(Function):
 
     @staticmethod

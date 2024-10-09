@@ -1,5 +1,5 @@
-
-from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D, S3DIS, Toronto3D, Electricity3D)
+from cloudViewer.ml.datasets import (SemanticKITTI, ParisLille3D, Semantic3D,
+                                     S3DIS, Toronto3D, Electricity3D)
 import argparse
 import yaml
 import numpy as np
@@ -45,7 +45,9 @@ def demo_dataset(args):
     if args.path_s3dis is not None:
         datasets.append(S3DIS(dataset_path=args.path_s3dis, use_cache=False))
     if args.path_electricity3d is not None:
-        datasets.append(Electricity3D(dataset_path=args.path_electricity3d, use_cache=False))
+        datasets.append(
+            Electricity3D(dataset_path=args.path_electricity3d,
+                          use_cache=False))
 
     for dataset in datasets:
         print(dataset.name)

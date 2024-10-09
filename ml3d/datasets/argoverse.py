@@ -309,7 +309,8 @@ class Argoverse(BaseDataset):
         """
         assert Path(path).exists()
 
-        data = np.asarray(cv3d.io.read_point_cloud(path).get_points()).astype(np.float32)
+        data = np.asarray(cv3d.io.read_point_cloud(path).get_points()).astype(
+            np.float32)
 
         return data
 

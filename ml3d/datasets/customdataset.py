@@ -16,10 +16,10 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-
 # Expect point clouds to be in npy format with train, val and test files in separate folders.
 # Expected format of npy files : ['x', 'y', 'z', 'class', 'feat_1', 'feat_2', ........,'feat_n'].
 # For test files, format should be : ['x', 'y', 'z', 'feat_1', 'feat_2', ........,'feat_n'].
+
 
 class Custom3DSplit(BaseDatasetSplit):
     """This class is used to create a custom dataset split.
