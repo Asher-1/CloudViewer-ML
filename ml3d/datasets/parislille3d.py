@@ -143,15 +143,13 @@ class ParisLille3D(BaseDataset):
 
     def is_tested(self, attr):
         """Checks if a datum in the dataset has been tested.
-            Args:
-                dataset: The current dataset to which the datum belongs to.
-                attr: The attribute that needs to be checked.
+        Args:
+            dataset: The current dataset to which the datum belongs to.
+            attr: The attribute that needs to be checked.
 
-            Returns:
-                If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
-
+        Returns:
+            If the dataum attribute is tested, then resturn the path where the attribute is stored; else, returns false.
         """
-
         cfg = self.cfg
         name = attr['name']
         path = cfg.test_result_folder
@@ -169,7 +167,6 @@ class ParisLille3D(BaseDataset):
             results: The output of a model for the datum associated with the attribute passed.
             attr: The attributes that correspond to the outputs passed in results.
         """
-
         cfg = self.cfg
         name = attr['name'].split('.')[0]
         path = cfg.test_result_folder

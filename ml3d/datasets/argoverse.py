@@ -206,9 +206,8 @@ class Argoverse(BaseDataset):
 
 
 class Argoverse(BaseDataset):
-    """
-     This class is used to create a dataset based on the Agroverse dataset,
-     and used in object detection, visualizer, training, or testing.
+    """This class is used to create a dataset based on the Agroverse dataset.
+    used in object detection, visualizer, training, or testing.
     """
 
     def __init__(self,
@@ -278,7 +277,6 @@ class Argoverse(BaseDataset):
             A dict where keys are label numbers and
             values are the corresponding names.
         """
-
         label_to_names = {
             0: 'ignore',
             1: 'VEHICLE',
@@ -322,7 +320,6 @@ class Argoverse(BaseDataset):
         Returns:
             The data objects with bound boxes information.
         """
-
         objects = []
         for box in bboxes:
             name = box['label_class']
@@ -407,6 +404,7 @@ class ArgoverseSplit(BaseDatasetSplit):
         split: A string identifying the dataset split that is usually one of
             'training', 'test', 'validation', or 'all'.
         **kwargs: The configuration of the model as keyword arguments.
+        
     Returns:
         A dataset split object providing the requested subset of the data.
     """

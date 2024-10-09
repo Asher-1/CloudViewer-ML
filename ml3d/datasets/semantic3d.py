@@ -124,7 +124,8 @@ class Semantic3D(BaseDataset):
         return label_to_names
 
     def get_split(self, split):
-        """ Returns a dataset split.
+        """
+        Returns a dataset split.
 
         Args:
             split: A string identifying the dataset split that is usually one of
@@ -136,7 +137,8 @@ class Semantic3D(BaseDataset):
         return Semantic3DSplit(self, split=split)
 
     def get_split_list(self, split):
-        """ Returns the list of data splits available.
+        """
+        Returns the list of data splits available.
 
         Args:
             split: A string identifying the dataset split that is usually one of
@@ -205,13 +207,13 @@ class Semantic3DSplit(BaseDatasetSplit):
     """
     This class is used to create a split for Semantic3D dataset.
     
-    
     Initialize the class.
     Args:
         dataset: The dataset to split.
         split: A string identifying the dataset split that is usually one of
             'training', 'test', 'validation', or 'all'.
         **kwargs: The configuration of the model as keyword arguments.
+        
     Returns:
         A dataset split object providing the requested subset of the data.		
     """

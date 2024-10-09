@@ -105,9 +105,9 @@ class Electricity3D(BaseDataset):
         """
         Returns a label to names dictonary object.
 
-            Returns:
-                A dict where keys are label numbers and
-                values are the corresponding names.
+        Returns:
+            A dict where keys are label numbers and
+            values are the corresponding names.
         """
         label_to_names = {
             0: 'unlabeled',
@@ -134,7 +134,8 @@ class Electricity3D(BaseDataset):
         return label_to_names
 
     def get_split(self, split):
-        """ Returns a dataset split.
+        """
+        Returns a dataset split.
 
         Args:
             split: A string identifying the dataset split that is usually one of
@@ -146,7 +147,7 @@ class Electricity3D(BaseDataset):
         return Electricity3DSplit(self, split=split)
 
     def get_split_list(self, split):
-        """ Returns the list of data splits available.
+        """Returns the list of data splits available.
 
         Args:
             split: A string identifying the dataset split that is usually one of
@@ -159,7 +160,6 @@ class Electricity3D(BaseDataset):
             ValueError: Indicates that the split name passed is incorrect. The split name should be one of
             'training', 'test', 'validation', or 'all'.
         """
-
         if split in ['test', 'testing']:
             files = self.test_files
         elif split in ['train', 'training']:
@@ -217,13 +217,13 @@ class Electricity3DSplit(BaseDatasetSplit):
     """
     This class is used to create a split for Electricity3D dataset.
 
-
     Initialize the class.
     Args:
         dataset: The dataset to split.
         split: A string identifying the dataset split that is usually one of
             'training', 'test', 'validation', or 'all'.
         **kwargs: The configuration of the model as keyword arguments.
+        
     Returns:
         A dataset split object providing the requested subset of the data.
     """
