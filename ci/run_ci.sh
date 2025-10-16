@@ -38,6 +38,18 @@ apt-apt -y update && \
     fi && \
     ldconfig
 
+if [ "$(lsb_release -c --short)" = "jammy" ] || [ "$(lsb_release -c --short)" = "noble" ]; then
+    export QT_BASE_DIR="/usr/lib/x86_64-linux-gnu/qt5"
+else 
+    export QT_BASE_DIR="/opt/qt515"
+fi
+
+export QT_ROOT=${QT_BASE_DIR}
+export QT_DIR=${QT_BASE_DIR}
+export PATH=${QT_BASE_DIR}/bin:$PATH
+export LD_LIBRARY_PATH=${QT_BASE_DIR}/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=${QT_BASE_DIR}/lib/pkgconfig:$PKG_CONFIG_PATH
+
 python -m pip install -r ACloudViewer/python/requirements.txt \
     -r ACloudViewer/python/requirements_style.txt \
     -r ACloudViewer/python/requirements_test.txt
