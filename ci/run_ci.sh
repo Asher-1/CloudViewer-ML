@@ -2,7 +2,7 @@
 set -euo pipefail
 
 NPROC=${NPROC:?'env var must be set to number of available CPUs.'}
-PIP_VER="23.2.1"
+PIP_VER="24.3.1"
 
 echo 1. Prepare the CloudViewer-ML repo and install dependencies
 echo
@@ -20,9 +20,24 @@ python -m pip install -U Cython
 
 echo 2. clone ACloudViewer and install dependencies
 echo
-git clone --branch main https://github.com/Asher-1/ACloudViewer.git
+git clone --branch main --depth 1 https://github.com/Asher-1/ACloudViewer.git
 
 ./ACloudViewer/util/install_deps_ubuntu.sh assume-yes
+
+apt-apt -y update && \
+    if [ "$(lsb_release -c --short)" = "jammy" ] || [ "$(lsb_release -c --short)" = "noble" ]; then \
+        apt-get install -qy \
+          libqt5svg5-dev libqt5opengl5-dev qtbase5-dev qttools5-dev qttools5-dev-tools qml-module-qtquick* \
+          libqt5websockets5-dev libqt5xmlpatterns5-dev libqt5x11extras5-dev qt5-image-formats-plugins \
+          qttranslations5-l10n qtdeclarative5-dev qtdeclarative5-dev-tools libqt5quickcontrols2-5 libqt5networkauth5-dev; \
+    else \
+        add-apt-repository ppa:beineri/opt-qt-5.15.2-$(lsb_release -c --short) -y; \
+        apt-get -y update; \
+        apt-get -y install qt515base qt515imageformats qt515declarative qt515quickcontrols2 qt515svg qt515tools \
+            qt515translations qt515websockets qt515x11extras qt515xmlpatterns qt515networkauth-no-lgpl; \
+    fi && \
+    ldconfig
+
 python -m pip install -r ACloudViewer/python/requirements.txt \
     -r ACloudViewer/python/requirements_style.txt \
     -r ACloudViewer/python/requirements_test.txt
@@ -34,7 +49,6 @@ pushd ACloudViewer/build
 # TF disabled on Linux (ACloudViewer PR#6288)
 cmake -DBUNDLE_CLOUDVIEWER_ML=ON \
     -DCLOUDVIEWER_ML_ROOT="${PATH_TO_CLOUDVIEWER_ML}" \
-    -DGLIBCXX_USE_CXX11_ABI=OFF \
     -DBUILD_TENSORFLOW_OPS=OFF \
     -DBUILD_PYTORCH_OPS=ON \
     -DBUILD_GUI=ON \
