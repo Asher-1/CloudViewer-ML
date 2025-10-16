@@ -4,7 +4,7 @@ permissions: {}
 on:
   workflow_dispatch:
   push:
-    branches: [main, dev]
+    branches: [main]
   pull_request:
     types: [opened, reopened, synchronize]
 
@@ -41,7 +41,7 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       # Pre-installed  packages: https://github.com/actions/runner-images/tree/main/images
       - name: Install ccache
         run: |
