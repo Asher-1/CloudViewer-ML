@@ -267,8 +267,8 @@ class SemanticSegmentation(BasePipeline):
         this_possiblility = sampler.possibilities[sampler.cloud_id]
         self.pbar.update(this_possiblility[this_possiblility > end_threshold].shape[0] \
             - self.pbar_update)
-        self.pbar_update = this_possiblility[
-            this_possiblility > end_threshold].shape[0]
+        self.pbar_update = this_possiblility[this_possiblility >
+                                             end_threshold].shape[0]
         self.test_probs[self.curr_cloud_id], self.test_labels[self.curr_cloud_id] \
             = self.model.update_probs(inputs, results,
                 self.test_probs[self.curr_cloud_id],
