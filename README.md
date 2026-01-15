@@ -181,7 +181,10 @@ pipeline.run_train()
 ```
 
 For more examples see [`examples/`](https://github.com/Asher-1/CloudViewer-ML/tree/main/examples)
-and the [`scripts/`](https://github.com/Asher-1/CloudViewer-ML/tree/main/scripts) directories.
+and the [`scripts/`](https://github.com/Asher-1/CloudViewer-ML/tree/main/scripts) directories. You
+can also enable saving training summaries in the config file and visualize ground truth and
+results with tensorboard. See this [tutorial](docs/tensorboard.md#3dml-models-training-and-inference)
+for details.
 
 ### 3D Object Detection
 
@@ -401,6 +404,7 @@ For downloading these datasets visit the respective webpages and have a look at 
 * [Visualize custom data](docs/howtos.md#visualize-custom-data)
 * [Adding a new model](docs/howtos.md#adding-a-new-model)
 * [Adding a new dataset](docs/howtos.md#adding-a-new-dataset)
+* [Visualize and compare input data, ground truth and results in TensorBoard](docs/tensorboard.md)
 
 
 ## Contribute
