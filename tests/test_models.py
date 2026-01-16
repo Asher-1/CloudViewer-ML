@@ -1,24 +1,37 @@
 import os
 import pytest
 import numpy as np
-import torch
-import tensorflow as tf
+import cloudViewer as cv3d
+try:
+    import torch
+except ImportError:
+    torch = None
 
 if 'PATH_TO_CLOUDVIEWER_ML' in os.environ.keys():
     base = os.environ['PATH_TO_CLOUDVIEWER_ML']
 else:
     base = '.'
-
-gpus = tf.config.list_physical_devices('GPU')
-if gpus:
-    # Use first GPU and restrict memory growth.
-    try:
+    
+try:
+    import tensorflow as tf
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        # Use first GPU and restrict memory growth.
         tf.config.experimental.set_visible_devices(gpus[0], 'GPU')
-        tf.config.set_memory_growth(gpu[0], True)
-    except RuntimeError as e:
-        print(e)
+        tf.config.set_memory_growth(gpus[0], True)
+except RuntimeError as e:
+    print(e)
+except ImportError:
+    tf = None
+
+try:
+    from cloudViewer.ml.torch.models import OpenVINOModel
+    openvino_available = True
+except:
+    openvino_available = False
 
 
+@pytest.mark.skipif("not cv3d._build_config['BUILD_PYTORCH_OPS']")
 def test_randlanet_torch():
     import cloudViewer.ml.torch as ml3d
 
@@ -56,7 +69,7 @@ def test_randlanet_torch():
 
     assert out.shape == (1, 5000, 10)
 
-
+@pytest.mark.skipif("not cv3d._build_config['BUILD_TENSORFLOW_OPS']")
 def test_randlanet_tf():
     import cloudViewer.ml.tf as ml3d
 
@@ -89,8 +102,15 @@ def test_randlanet_tf():
     out = net(inputs).numpy()
 
     assert out.shape == (1, 5000, 10)
+    
+    if openvino_available:
+        ov_net = ml3d.models.OpenVINOModel(net)
+        ov_out = ov_net(inputs)
+        assert ov_out.shape == out.shape
+        assert np.max(np.abs(ov_out - out)) < 1e-6
 
 
+@pytest.mark.skipif("not cv3d._build_config['BUILD_PYTORCH_OPS']")
 def test_kpconv_torch():
     import cloudViewer.ml.torch as ml3d
 
@@ -119,7 +139,14 @@ def test_kpconv_torch():
 
     assert out.shape[1] == 5
 
+    if openvino_available:
+        ov_net = ml3d.models.OpenVINOModel(net)
+        ov_net.to("cpu")
+        ov_out = ov_net(inputs['data']).detach().numpy()
+        assert ov_out.shape == out.shape
+        assert np.max(np.abs(ov_out - out)) < 1e-7
 
+@pytest.mark.skipif("not cv3d._build_config['BUILD_TENSORFLOW_OPS']")
 def test_kpconv_tf():
     import cloudViewer.ml.tf as ml3d
 
@@ -157,8 +184,15 @@ def test_kpconv_tf():
     out = net(inputs)
 
     assert out.shape == (1000, 5)
+    
+    if openvino_available:
+        ov_net = ml3d.models.OpenVINOModel(net)
+        ov_out = ov_net(inputs)
+        assert ov_out.shape == out.shape
+        assert np.max(np.abs(ov_out - out)) < 1e-5
 
 
+@pytest.mark.skipif("not cv3d._build_config['BUILD_PYTORCH_OPS']")
 def test_pointpillars_torch():
     import cloudViewer.ml.torch as ml3d
     from cloudViewer.ml.utils import Config
@@ -184,7 +218,15 @@ def test_pointpillars_torch():
         boxes = net.inference_end(results, data)
         assert type(boxes) == list
 
+    if openvino_available:
+        ov_net = ml3d.models.OpenVINOModel(net)
+        ov_results = ov_net(data)
 
+        for out, ref in zip(ov_results, results):
+            assert out.shape == ref.shape
+            assert torch.max(torch.abs(out - ref)) < 1e-5
+
+@pytest.mark.skipif("not cv3d._build_config['BUILD_TENSORFLOW_OPS']")
 def test_pointpillars_tf():
     import cloudViewer.ml.tf as ml3d
     from cloudViewer.ml.utils import Config

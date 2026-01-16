@@ -103,4 +103,8 @@ pipeline:
     Person_sitting: Pedestrian
   }
   difficulties: [0, 1, 2]
-    
+  summary:
+    record_for: []
+    max_pts:
+    use_reference: false
+    max_outputs: 1

@@ -35,4 +35,3 @@ The following is a list of datasets for which we provide dataset reader classes.
 * Paris-Lille 3D ([project-page](https://npm3d.fr/paris-lille-3d))
 
 For downloading these datasets visit the respective webpages and have a look at the scripts in [`scripts/download_datasets`](https://github.com/isl-org/CloudViewer-ML/tree/main/scripts/download_datasets).
-

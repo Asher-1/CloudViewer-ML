@@ -1,5 +1,6 @@
 import pytest
 import os
+import cloudViewer as cv3d
 
 if 'PATH_TO_CLOUDVIEWER_ML' in os.environ.keys():
     base = os.environ['PATH_TO_CLOUDVIEWER_ML']
@@ -8,6 +9,7 @@ else:
     # base = '../CloudViewer-ML'
 
 
+@pytest.mark.skipif("not cv3d._build_config['BUILD_PYTORCH_OPS']")
 def test_integration_torch():
     import torch
     import cloudViewer.ml.torch as ml3d
@@ -25,6 +27,7 @@ def test_integration_torch():
     print(model)
 
 
+@pytest.mark.skipif("not cv3d._build_config['BUILD_TENSORFLOW_OPS']")
 def test_integration_tf():
     import tensorflow as tf
     import cloudViewer.ml.tf as ml3d
@@ -42,7 +45,13 @@ def test_integration_tf():
     print(model)
 
 
-if __name__ == '__main__':
+def test_integration_openvino():
+    try:
+        from openvino.inference_engine import IECore
+    except ImportError:
+        return
 
-    test_integration_torch()
-    test_integration_tf()
+    if cv3d._build_config['BUILD_TORCH_OPS']:
+        from cloudViewer.ml.torch.models import OpenVINOModel
+    if cv3d._build_config['BUILD_TENSORFLOW_OPS']:
+        from cloudViewer.ml.tf.models import OpenVINOModel

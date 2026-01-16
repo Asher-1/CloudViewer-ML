@@ -1,3 +1,6 @@
+from colorsys import rgb_to_yiq
+
+
 class LabelLUT:
     """The class to manage look-up table for assigning colors to labels."""
 
@@ -26,9 +29,17 @@ class LabelLUT:
               [0.5, 0.5, 0.5], [0.625, 0.625, 0.625], [0.75, 0.75, 0.75],
               [0.875, 0.875, 0.875]]
 
-    def __init__(self):
+    def __init__(self, label_to_names=None):
+        """
+        Args:
+            label_to_names: Initialize the colormap with this mapping from
+                labels (int) to class names (str).
+        """
         self._next_color = 0
         self.labels = {}
+        if label_to_names is not None:
+            for val in sorted(label_to_names.keys()):
+                self.add_label(label_to_names[val], val)
 
     def add_label(self, name, value, color=None):
         """Adds a label to the table.
@@ -53,3 +64,29 @@ class LabelLUT:
                 color = self.Colors[self._next_color]
                 self._next_color += 1
         self.labels[value] = self.Label(name, value, color)
+
+    @classmethod
+    def get_colors(self, name='default', mode=None):
+        """Return full list of colors in the lookup table.
+
+        Args:
+            name (str): Name of lookup table colormap. Only 'default' is
+                supported.
+            mode (str): Colormap mode. May be None (return as is), 'lightbg" to
+                move the dark colors earlier in the list or 'darkbg' to move
+                them later in the list. This will provide better visual
+                discrimination for the earlier classes.
+
+        Returns:
+            List of colors (R, G, B) in the LUT.
+        """
+        if mode is None:
+            return self.Colors
+        dark_colors = list(
+            filter(lambda col: rgb_to_yiq(*col)[0] < 0.5, self.Colors))
+        light_colors = list(
+            filter(lambda col: rgb_to_yiq(*col)[0] >= 0.5, self.Colors))
+        if mode == 'lightbg':
+            return dark_colors + light_colors
+        if mode == 'darkbg':
+            return light_colors + dark_colors

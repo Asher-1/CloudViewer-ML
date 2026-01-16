@@ -104,4 +104,8 @@ pipeline:
   # evaluation properties
   overlaps: [0.5, 0.5, 0.7]
   difficulties: [0, 1, 2]
-    
+  summary:
+    record_for: []
+    max_pts:
+    use_reference: false
+    max_outputs: 1
