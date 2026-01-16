@@ -316,12 +316,23 @@ class DatasetModel(Model):
         data = self._dataset.get_data(idx)
         data["name"] = name
         data["points"] = data["point"]
-
+        
+        self.create_point_cloud(data)
+        
         if 'bounding_boxes' in data:
             self.bounding_box_data.append(
                 Model.BoundingBoxData(name, data['bounding_boxes']))
+            
+            if 'cams' in data:
+                for _, val in data['cams'].items():
+                    lidar2img_rt = val['lidar2img_rt']
+                    bbox_data = data['bounding_boxes']
+                    bbox_3d_img = BoundingBox3D.project_to_img(
+                        bbox_data, np.copy(val['img']), lidar2img_rt)
+                    val['bbox_3d'] = bbox_3d_img
 
-        self.create_point_cloud(data)
+                self.create_cams(data['name'], data['cams'], update=True)
+
         size = self._calc_pointcloud_size(self._data[name], self.tclouds[name])
         if size + self._current_memory_usage > self._memory_limit:
             if fail_if_no_space:
